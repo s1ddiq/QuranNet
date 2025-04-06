@@ -39,7 +39,7 @@ const Surah = () => {
           </p> */}
       </div>
       <div className="flex flex-col w-full gap-16">
-          <p className="arabic-text text-5xl text-white text-center my-4 opacity-70" title="In the name of allah, the most merciful">بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+          <p className="arabic-text md:text-5xl text-3xl text-white text-center my-4 opacity-70" title="In the name of allah, the most merciful">بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
         {ayahs.map((ayah: Ayah) => (
           <div
             key={ayah.number}
@@ -70,7 +70,7 @@ const Surah = () => {
 
               <div className="text-white text-right">
                 {/* <p className="text-sm opacity-60 inline">{ayah.number}</p> */}
-                <p className="text-4xl font-light tracking-wider inline arabic-text md:pl-8">
+                <p className="md:text-4xl text-2xl font-light tracking-wider inline arabic-text md:pl-8">
                   {ayah.text.split('بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ')}
                 </p>
               </div>

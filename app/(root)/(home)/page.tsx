@@ -27,11 +27,11 @@ const SurahsList = () => {
   return (
     <div className="w-full flex items-center flex-col bg-[#08080aff] flex-1 pt-16 gap-4">
       <div>
-        <h1 className="text-6xl font-bold text-center text-white font-open-sans">
+        <h1 className="md:text-6xl text-4xl font-bold text-center text-white font-open-sans">
           QuranNet
         </h1>
 
-        <div className="rounded-full border border-px border-[#262629ff] w-128 h-16 flex items-center justify-center my-5 relative p-4">
+        <div className="rounded-full border border-px border-[#262629ff] md:w-128  w-fullh-16 flex items-center justify-center my-5 relative p-4">
           <Image
             src="/svg/search.svg"
             alt="Search Icon"

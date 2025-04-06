@@ -53,8 +53,8 @@ const Sidebar = () => {
         <SheetTrigger className="text-white fixed w-full sm:hidden flex justify-between p-2 top-0 bg-[#08080a] border-b border-px border-[#262629ff]">
           <Image
             src="/svg/menu.svg"
-            width={64}
-            height={64}
+            width={32}
+            height={32}
             alt="Logo"
             title="QuranNet - Menu"
           />
@@ -67,7 +67,7 @@ const Sidebar = () => {
             title="QuranNet - Home"
           />
         </SheetTrigger>
-        <SheetContent side="top" className="h-[25%] bg-[#08080a]">
+        <SheetContent side="top" className="h-[30%] bg-[#08080a]">
           <SheetHeader>
             <div className="flex flex-col gap-3 mt-4 px-4">
               <p className="text-white text-lg font-light">
