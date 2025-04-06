@@ -39,7 +39,7 @@ const Surah = () => {
           </p> */}
       </div>
       <div className="flex flex-col w-full gap-16">
-          <p className="arabic-text text-5xl text-white text-center" title="In the name of allah, the most merciful">بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+          <p className="arabic-text text-5xl text-white text-center my-4 opacity-70" title="In the name of allah, the most merciful">بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
         {ayahs.map((ayah: Ayah) => (
           <div
             key={ayah.number}
