@@ -70,7 +70,7 @@ const Surah = () => {
 
               <div className="text-white text-right">
                 {/* <p className="text-sm opacity-60 inline">{ayah.number}</p> */}
-                <p className="md:text-4xl text-2xl font-light tracking-wider inline arabic-text md:pl-8">
+                <p className="md:text-4xl text-2xl font-light tracking-wider arabic-text md:pl-8">
                   {ayah.text.split('بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ')}
                 </p>
               </div>
