@@ -39,68 +39,80 @@ const Surah = () => {
           </p> */}
       </div>
       <div className="flex flex-col w-full gap-16">
-          <p className="arabic-text md:text-5xl text-3xl text-white text-center my-4 opacity-70" title="In the name of allah, the most merciful">بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+        <p
+          className="arabic-text md:text-5xl text-3xl text-white text-center my-4 opacity-70"
+          title="In the name of allah, the most merciful"
+        >
+          بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+        </p>
         {ayahs.map((ayah: Ayah) => (
           <div
             key={ayah.number}
             className="bg-transparent border-b border-px border-[#262629ff] p-4 flex flex-row justify-between"
           >
             <div className="text-white h-full flex flex-col gap-3">
-                <p className="text-lg font-light">
-                  {params.surah}:{ayah.numberInSurah}
-                </p>
+              <p className="text-lg font-light">
+                {params.surah}:{ayah.numberInSurah}
+              </p>
 
-               <Image
-                  src="/svg/document.svg"
-                  alt="Document Icon"
-                  width={22}
-                  height={16}
-                  className="cursor-pointer"
-                />
+              <Image
+                src="/svg/document.svg"
+                alt="Document Icon"
+                width={22}
+                height={16}
+                className="cursor-pointer"
+              />
 
-                {/* TODO: Make dynamic components */}
-                 <Image
-                  src="/svg/play.svg"
-                  alt="Play Icon"
-                  width={22}
-                  height={16}
-                  className="cursor-pointer"
-                />
+              {/* TODO: Make dynamic components */}
+              <Image
+                src="/svg/play.svg"
+                alt="Play Icon"
+                width={22}
+                height={16}
+                className="cursor-pointer"
+              />
             </div>
 
-              <div className="text-white text-right">
-                {/* <p className="text-sm opacity-60 inline">{ayah.number}</p> */}
-                <p className="md:text-4xl text-2xl font-light tracking-wider arabic-text md:pl-8">
-                  {ayah.text.split('بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ')}
-                </p>
-              </div>
+            <div className="text-white text-right">
+              {/* <p className="text-sm opacity-60 inline">{ayah.number}</p> */}
+              <p className="md:text-4xl text-2xl font-light tracking-wider arabic-text md:pl-8">
+                {ayah.text.split("بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ")}
+              </p>
+            </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 mb-8 w-full flex justify-center items-center gap-2 flex-col">
+      <div className="mt-4 mb-8 w-full flex justify-center items-center flex-col p-4 gap-3">
         <div className="flex gap-3 flex-row">
           {/* TODO: Add arrow svgs appropriately */}
           <Link
             href={`${params.surah ? Number(params.surah) - 1 : 1}`}
-            className="w-36 h-12 flex justify-center items-center font-semibold px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
+            className="max-h-16 flex justify-center items-center text-center py-2 font-semibold px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
           >
             Previous Surah
           </Link>
           <Link
             href={`/`}
-            className="w-36 h-12 flex justify-center items-center font-semibold px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
+            className="max-h-16 flex justify-center items-center text-center font-semibold py-2 px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
           >
             Go back home
           </Link>
           <Link
             href={`${params.surah ? Number(params.surah) + 1 : 1}`}
-            className="w-36 h-12 flex justify-center items-center font-semibold px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
+            className="max-h-16 flex justify-center items-center text-center font-semibold py-2 px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
           >
             Next Surah
           </Link>
         </div>
-        <p className="text-white text-2xl">QuranNet</p>
+        <div className="flex justify-between w-full">
+          <p className="text-white text-sm font-bold tracking-widest pt-8 opacity-60">
+            QuranNet
+          </p>
+          <p className="text-white text-sm font-bold tracking-widest pt-8 opacity-60">
+            {new Date().getFullYear()}
+          </p>
+        </div>
       </div>
     </section>
   );
