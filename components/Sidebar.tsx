@@ -67,7 +67,7 @@ const Sidebar = () => {
             title="QuranNet - Home"
           />
         </SheetTrigger>
-        <SheetContent side="top" className="h-[30%] bg-[#08080a]">
+        <SheetContent side="top" className="min-h-[35%] py-4 bg-[#08080a]">
           <SheetHeader>
             <div className="flex flex-col gap-3 mt-4 px-4">
               <p className="text-white text-lg font-light">
