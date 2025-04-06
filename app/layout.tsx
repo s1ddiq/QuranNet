@@ -1,6 +1,6 @@
 import { Inter, Noto_Sans_Arabic, Codystar, DM_Sans } from "next/font/google";
 import "./globals.css";
-
+import Head from "next/head";
 
 const inter = Inter({ subsets: ['latin'] })
 const cody = Codystar({ subsets: ['latin'], weight: "400", variable: '--font-cody' });
@@ -20,11 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${dm_sans.className}`}
-      >
-        {children}
-      </body>
-    </html>
+    <Head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </Head>
+    <body className={`${dm_sans.className}`}>
+      {children}
+    </body>
+  </html>
   );
 }

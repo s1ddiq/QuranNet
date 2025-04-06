@@ -61,8 +61,8 @@ const Sidebar = () => {
 
 <Image
             src="/svg/logo.svg"
-            width={56}
-            height={56}
+            width={32}
+            height={32}
             alt="Logo"
             title="QuranNet - Home"
           />
