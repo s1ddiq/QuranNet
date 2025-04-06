@@ -18,3 +18,11 @@ interface Ayah {
     hizbQuarter: number,
     sajda: boolean,
 }
+
+interface SearchResult {
+    edition: Object,
+    number: number,
+    numberInsurah: number,
+    surah: Object,
+    text: string,
+}

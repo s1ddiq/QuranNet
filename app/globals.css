@@ -116,6 +116,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     background-color: #08080aff;
     font-family: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
@@ -135,4 +136,26 @@
 
 .arabic-text {
   font-family: var(--font-arabic), sans-serif;
+}
+
+/* Hide the scrollbar visually but still allow scrolling */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Customizing scrollbar for WebKit browsers */
+.scrollbar-hidden::-webkit-scrollbar-thumb {
+  background-color: #262629ff;
+  border-radius: 10px;
+}
+
+.scrollbar-hidden::-webkit-scrollbar-track {
+  background-color: transparent;
 }

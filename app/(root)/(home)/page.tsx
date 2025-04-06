@@ -26,7 +26,7 @@ const SurahsList = () => {
 
   return (
     <div className="w-full flex items-center flex-col bg-[#08080aff] flex-1 pt-16 gap-4">
-      <div className="w-full px-6">
+      <div className="w-full px-6 flex flex-col items-center">
         <h1 className="md:text-6xl text-4xl font-bold text-center text-white font-open-sans">
           QuranNet
         </h1>
