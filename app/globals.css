@@ -120,3 +120,14 @@
     background-color: #08080aff;
   }
 }
+
+
+/* Apply Noto Sans Arabic */
+.font-noto-sans-arabic {
+  font-family: 'Noto Sans Arabic', sans-serif;
+}
+
+/* Apply Noto Kufi Arabic */
+.font-noto-kufi-arabic {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+}

@@ -6,20 +6,20 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 const SurahsList = () => {
-  const [surahs, setSurahs] = useState<any[]>([]);
+  const [surahs, setSurahs] = useState<Surah[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const func = async () => {
       const response = await fetchAllSurahs();
-      setSurahs(response);
+      setSurahs(response.data);
+      {/* console.log(response.data) */}
     };
     func();
   }, []);
 
-  // Filter surahs based on search query
-  const filteredSurahs = surahs.filter((surah) =>
-    surah.surahName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredSurahs = surahs.filter((surah: Surah) =>
+    surah.englishName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -47,24 +47,24 @@ const SurahsList = () => {
       </div>
 
       <div className="w-full flex flex-row flex-wrap gap-5 justify-center md:px-24">
-        {filteredSurahs.map((surah: any) => (
-          <Link href={`/surah/${surah.surahName}`} key={surah.number || Math.random() * 115}>
+        {filteredSurahs.map((surah: Surah) => (
+          <Link href={`/surah/${surah.number}`} key={surah.number}>
             <div>
-              <div className="w-72 min-h-24 h-auto bg-transparent border border-px border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-lg hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg">
+              <div className="w-80 min-h-24 h-auto bg-transparent border border-px border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-lg hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg">
                 <div>
-                  <p className="text-white text-lg">{surah.surahName}</p>
+                  <p className="text-white text-lg font-semibold">{surah.englishName}</p>
                 </div>
                 <p className="text-white text-sm opacity-60 absolute left-4 bottom-4">
-                  {surah.surahNameTranslation}
+                  {surah.englishNameTranslation}
                 </p>
 
                 <div className="absolute top-4 right-4 text-center">
                   <p className="text-white text-base">
-                    {surah.surahNameArabicLong}
+                    {surah.englishNameTranslation}
                   </p>
                 </div>
                 <p className="text-white text-sm opacity-60 absolute right-4 bottom-4">
-                  {surah.totalAyah} Ayahs
+                  {surah.numberOfAyahs} Ayahs
                 </p>
               </div>
             </div>
