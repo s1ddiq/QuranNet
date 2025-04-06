@@ -13,7 +13,9 @@ const SurahsList = () => {
     const func = async () => {
       const response = await fetchAllSurahs();
       setSurahs(response.data);
-      {/* console.log(response.data) */}
+      {
+        /* console.log(response.data) */
+      }
     };
     func();
   }, []);
@@ -23,9 +25,9 @@ const SurahsList = () => {
   );
 
   return (
-    <div className="w-full flex items-center flex-col bg-[#08080aff] flex-1">
+    <div className="w-full flex items-center flex-col bg-[#08080aff] flex-1 pt-16 gap-4">
       <div>
-        <h1 className="text-6xl opacity-60 font-bold text-center text-white">
+        <h1 className="text-6xl font-bold text-center text-white font-open-sans">
           QuranNet
         </h1>
 
@@ -50,17 +52,19 @@ const SurahsList = () => {
         {filteredSurahs.map((surah: Surah) => (
           <Link href={`/surah/${surah.number}`} key={surah.number}>
             <div>
-              <div className="w-80 min-h-24 h-auto bg-transparent border border-px border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-lg hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg">
+              <div className="w-80 min-h-24 h-auto bg-transparent border border-px border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-[2px] hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg">
                 <div>
-                  <p className="text-white text-lg font-semibold">{surah.englishName}</p>
+                  <p className="text-white text-lg font-semibold">
+                    {surah.englishName}
+                  </p>
                 </div>
                 <p className="text-white text-sm opacity-60 absolute left-4 bottom-4">
                   {surah.englishNameTranslation}
                 </p>
 
                 <div className="absolute top-4 right-4 text-center">
-                  <p className="text-white text-base">
-                    {surah.englishNameTranslation}
+                  <p className="text-white text-sm opacity-60">
+                    {surah.number}
                   </p>
                 </div>
                 <p className="text-white text-sm opacity-60 absolute right-4 bottom-4">

@@ -118,10 +118,11 @@
   }
   body {
     background-color: #08080aff;
+    font-family: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
   }
 }
 
-
+/* globals.css */
 /* Apply Noto Sans Arabic */
 .font-noto-sans-arabic {
   font-family: 'Noto Sans Arabic', sans-serif;
@@ -130,4 +131,8 @@
 /* Apply Noto Kufi Arabic */
 .font-noto-kufi-arabic {
   font-family: 'Noto Kufi Arabic', sans-serif;
+}
+
+.arabic-text {
+  font-family: var(--font-arabic), sans-serif;
 }
