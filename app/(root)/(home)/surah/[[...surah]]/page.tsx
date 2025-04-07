@@ -1,16 +1,17 @@
 "use client";
-import { fetchAllSurahs, fetchSurahById } from "@/api/api";
-import { useParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
-import { Progress } from "@/components/ui/progress";
+import { fetchSurahById } from "@/api/api";
+import { useParams, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import NavigatorButton from "@/components/NavigatorButton";
+import AyahCard from "@/components/AyahCard";
 
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | null>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const params = useParams();
+  const searchParams = useSearchParams();
+  const ayahParam = searchParams.get("ayah");
 
   useEffect(() => {
     const func = async () => {
@@ -19,97 +20,71 @@ const Surah = () => {
       setAyahs(response.data.ayahs || []);
     };
     func();
-  }, []);
+  }, [params.surah]);
 
-  {
-    /* TODO: Fix calling the fetchSurahById twice */
-  }
+  useEffect(() => {
+    const element = document.getElementById(`ayah-${ayahParam}`);
+    // console.log(element); --DEBUG
+    // console.log(ayahParam); --DEBUG
+    if(element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      element.classList.add("bg-[#1c1c1cff]");
+      setTimeout(() => {   
+        element.classList.remove("bg-[#1c1c1cff]");
+      }, 1200)
+    }
+  }, [ayahParam, ayahs]);
 
   return (
-    <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 pt-8">
-      {/* <Progress value={progress} className="fixed top-4 bg-white" /> */}
-
+    <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 pt-8 text-white">
       <div className="my-16">
-        <h1 className="text-6xl font-bold text-center text-white">
-          {/* {params.surah} */}
+        <h1 className="text-6xl font-bold text-center ">
           {/* {surah?.englishName} */}
         </h1>
-        {/* <p className="text-xl opacity-60 text-white text-center">
+        {/* <p className="text-xl opacity-60  text-center">
           "{surah?.englishNameTranslation}"
-          </p> */}
+        </p> */}
       </div>
+
+      <div
+        className="fixed bottom-8 right-8 text-3xl bg-[#08080aff] p-4 rounded-full 
+        md:flex hidden justify-center items-center border border-px border-[#262629ff]
+        cursor-pointer transition-discrete transition-all duration-300 hover:-translate-y-2 opacity-10"
+      >
+        <p className="pointer-events-none text=[#262629ff">۞</p>
+      </div>
+
       <div className="flex flex-col w-full gap-16">
         <p
-          className="arabic-text md:text-5xl text-3xl text-white text-center my-4 opacity-70"
+          className="arabic-text md:text-5xl text-3xl text-center my-4 text-gray-400 shadow-xl"
           title="In the name of allah, the most merciful"
         >
           بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
         </p>
         {ayahs.map((ayah: Ayah) => (
-          <div
-            key={ayah.number}
-            className="bg-transparent border-b border-px border-[#262629ff] p-4 flex flex-row justify-between"
-          >
-            <div className="text-white h-full flex flex-col gap-3">
-              <p className="text-lg font-light">
-                {params.surah}:{ayah.numberInSurah}
-              </p>
-
-              <Image
-                src="/svg/document.svg"
-                alt="Document Icon"
-                width={22}
-                height={16}
-                className="cursor-pointer"
-              />
-
-              {/* TODO: Make dynamic components */}
-              <Image
-                src="/svg/play.svg"
-                alt="Play Icon"
-                width={22}
-                height={16}
-                className="cursor-pointer"
-              />
-            </div>
-
-            <div className="text-white text-right">
-              {/* <p className="text-sm opacity-60 inline">{ayah.number}</p> */}
-              <p className="md:text-4xl text-2xl font-light tracking-wider arabic-text md:pl-8">
-                {ayah.text.split("بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ")}
-              </p>
-            </div>
-          </div>
+          <AyahCard key={ayah.number} ayah={ayah} params={params} />
         ))}
       </div>
 
-      <div className="mt-4 mb-8 w-full flex justify-center items-center flex-col p-4 gap-3">
-        <div className="flex gap-3 flex-row">
-          {/* TODO: Add arrow svgs appropriately */}
-          <Link
-            href={`${params.surah ? Number(params.surah) - 1 : 1}`}
-            className="max-h-16 flex justify-center items-center text-center py-2 font-semibold px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
-          >
-            Previous Surah
+      <div className="mb-8 w-full flex justify-center items-center flex-col p-4 sm:p-8">
+        <div className="flex flex-row w-full">
+          <NavigatorButton
+            direction="Previous"
+            surahNumber={params.surah ? Number(params.surah) - 1 : 1}
+          />
+          <Link href={`/`} className="flex-center navigator-styles">
+            Go Home
           </Link>
-          <Link
-            href={`/`}
-            className="max-h-16 flex justify-center items-center text-center font-semibold py-2 px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
-          >
-            Go back home
-          </Link>
-          <Link
-            href={`${params.surah ? Number(params.surah) + 1 : 1}`}
-            className="max-h-16 flex justify-center items-center text-center font-semibold py-2 px-4 text-white rounded-xl bg-transparent border border-px border-[#262629ff]"
-          >
-            Next Surah
-          </Link>
+          <NavigatorButton
+            direction="Next"
+            surahNumber={params.surah ? Number(params.surah) + 1 : 1}
+          />
         </div>
-        <div className="flex justify-between w-full">
-          <p className="text-white text-sm font-bold tracking-widest pt-8 opacity-60">
+        <div className="flex justify-between w-full pt-2 sm:pt-8">
+          <p className="text-sm font-bold tracking-widest text-gray-400">
             QuranNet
           </p>
-          <p className="text-white text-sm font-bold tracking-widest pt-8 opacity-60">
+          <p className="text-sm font-bold tracking-widest text-gray-400">
             {new Date().getFullYear()}
           </p>
         </div>

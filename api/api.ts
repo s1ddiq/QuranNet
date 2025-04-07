@@ -32,9 +32,9 @@ export const searchQuran = async (query: string) => {
     const response = await fetch(
       `https://api.alquran.cloud/v1/search/${query}/all/en`
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! status: ${response.status}`);
+    // }
     const data = await response.json();
     return data;
   } catch (error) {

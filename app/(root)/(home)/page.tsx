@@ -25,13 +25,13 @@ const SurahsList = () => {
   );
 
   return (
-    <div className="w-full flex items-center flex-col bg-[#08080aff] flex-1 pt-16 gap-4">
-      <div className="w-full px-6 flex flex-col items-center">
+    <div className="w-full flex-items-center flex-col bg-primary flex-1 pt-16 gap-4">
+      <div className="w-full px-6 flex-col items-center">
         <h1 className="md:text-6xl text-4xl font-bold text-center text-white font-open-sans">
           QuranNet
         </h1>
 
-        <div className="rounded-full border border-2 border-[#262629ff] md:w-128 w-full h-16 flex items-center justify-center my-5 relative p-4">
+        <div className="rounded-full border border-2 border-[#262629ff] md:w-128 w-full h-16 flex-items-center justify-center my-5 relative p-4">
           <Image
             src="/svg/search.svg"
             alt="Search Icon"
@@ -52,22 +52,18 @@ const SurahsList = () => {
         {filteredSurahs.map((surah: Surah) => (
           <Link href={`/surah/${surah.number}`} key={surah.number}>
             <div>
-              <div className="w-80 min-h-24 h-auto bg-transparent border border-px border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-[2px] hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg">
+              <div className="w-80 min-h-24 h-auto bg-transparent border border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-[2px] hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400">
                 <div>
-                  <p className="text-white text-lg font-semibold">
-                    {surah.englishName}
-                  </p>
+                  <p className="text-lg font-semibold text-white">{surah.englishName}</p>
                 </div>
-                <p className="text-white text-sm opacity-60 absolute left-4 bottom-4">
+                <p className="text-sm absolute left-4 bottom-4">
                   {surah.englishNameTranslation}
                 </p>
 
                 <div className="absolute top-4 right-4 text-center">
-                  <p className="text-white text-sm opacity-60">
-                    {surah.number}
-                  </p>
+                  <p className=" text-sm">{surah.number}</p>
                 </div>
-                <p className="text-white text-sm opacity-60 absolute right-4 bottom-4">
+                <p className="text-sm absolute right-4 bottom-4">
                   {surah.numberOfAyahs} Ayahs
                 </p>
               </div>
