@@ -97,7 +97,7 @@ const Surah = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  if(loading) return <Loader className="text-white m-8 animate-spin" size={16}/>
+  if(loading) return <Loader className="text-gray-400 m-8 animate-spin" size={32}/>
   return (
     <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 text-white">
       <div
@@ -130,7 +130,7 @@ const Surah = () => {
           width={512}
           height={512}
           alt='Bismillahirahmaniraheem'
-          className='translate-y-12 pt-8'
+          className={cn('translate-y-12 pt-8', loading && '!translate-y-12')}
           title="In the name of allah, the most merciful"
 
         />
