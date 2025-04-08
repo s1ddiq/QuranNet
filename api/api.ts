@@ -44,7 +44,7 @@ export const searchQuran = async (query: string) => {
 
 export const fetchSurahTranslation = async (surahId: number) => {
   try {
-    const response = await fetch(`http://api.alquran.cloud/v1/surah/${surahId}/en.sahih`);
+    const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahId}/en.sahih`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -60,7 +60,7 @@ export const fetchSurahTranslation = async (surahId: number) => {
 
 export const fetchAyahTranslation = async (surahId: number, ayahId: number) => {
   try {
-    const response = await fetch(`http://api.alquran.cloud/v1/ayah/${surahId}:${ayahId}/en.sahih`);
+    const response = await fetch(`https://api.alquran.cloud/v1/ayah/${surahId}:${ayahId}/en.sahih`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
