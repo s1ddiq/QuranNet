@@ -1,3 +1,4 @@
+'use client'
 import { cn } from "@/lib/utils";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Sheet } from "../ui/sheet";
@@ -12,6 +13,7 @@ import {
   SheetHeader,
 } from "../ui/sheet";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const MobileSheet = ({
   isOpen,
@@ -23,6 +25,7 @@ const MobileSheet = ({
   setSearchQuery,
   amount,
 }: MobileSheetProps) => {
+  const router = useRouter();
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger
