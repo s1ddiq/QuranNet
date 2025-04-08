@@ -6,7 +6,8 @@ import Link from "next/link";
 import NavigatorButton from "@/components/NavigatorButton";
 import AyahCard from "@/components/AyahCard";
 import { cn } from "@/lib/utils";
-
+import { Loader } from "lucide-react";
+import Image from "next/image";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | null>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
@@ -17,6 +18,7 @@ const Surah = () => {
   const [scrollY, setScrollY] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [loading, setLoading] = useState(true);
   // Fetch the surah data (metadata and list of ayahs)
   useEffect(() => {
     const fetchSurahData = async () => {
@@ -24,9 +26,10 @@ const Surah = () => {
         const response = await fetchSurahById(Number(params.surah));
         setSurah(response.data);
         setAyahs(response.data.ayahs || []);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching surah data:", error);
-      }
+      } 
     };
     fetchSurahData();
   }, [params.surah]);
@@ -39,6 +42,7 @@ const Surah = () => {
           const response = await fetchSurahTranslation(Number(params.surah));
           // Assume the translation response returns an object and the ayahs array is stored in response.ayahs
           setEnglishAyahs(response.ayahs || []);
+          setLoading(false);
         } catch (error) {
           console.error("Error fetching surah translation:", error);
           setEnglishAyahs([]);
@@ -50,17 +54,19 @@ const Surah = () => {
 
   // Scroll to the selected ayah (if provided via the "ayah" search param)
   useEffect(() => {
-    if (ayahParam) {
+    if (ayahParam && !loading) {
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
         element.classList.add("bg-[#1c1c1cff]");
-
+        element.classList.add("brightness-125");
+        
         // Set timeouts
         const a = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
         }, 200);
-
+        
         const b = setTimeout(() => {
+          element.classList.remove("brightness-125");
           element.classList.remove("bg-[#1c1c1cff]");
         }, 4000);
 
@@ -85,17 +91,18 @@ const Surah = () => {
 
       setLastScrollY(currentScrollY);
     };
-
     window.addEventListener("scroll", handleScroll);
+    setLoading(false);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  if(loading) return <Loader className="text-white m-8 animate-spin" size={16}/>
   return (
     <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 text-white">
       <div
         className={cn(
-          "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 bg-[#08080aff] w-full px-6 border-b border-[#262629ff] transition-all duration-1000",
+          "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 bg-[#08080aff] w-full px-6 border-b border-[#262629ff] transition-all duration-400",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
@@ -117,13 +124,18 @@ const Surah = () => {
       </div>
 
       <div className="flex flex-col w-full gap-16">
-        <p
-          className="arabic-text md:text-5xl text-3xl text-center my-4 text-gray-400 shadow-xl translate-y-12 pt-8"
+      <div className="flex justify-center w-full md:px-0 px-8">
+        <Image
+          src='/svg/bismillah.svg'
+          width={512}
+          height={512}
+          alt='Bismillahirahmaniraheem'
+          className='translate-y-12 pt-8'
           title="In the name of allah, the most merciful"
-        >
-          بِسْمِ ٱللّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-        </p>
-        {ayahs.map((ayah: Ayah) => (
+
+        />
+        </div>
+        {!loading && ayahs.map((ayah: Ayah) => (
           <AyahCard
             key={ayah.number}
             ayah={ayah}
@@ -134,7 +146,7 @@ const Surah = () => {
       </div>
 
       <div className="mb-8 w-full flex justify-center items-center flex-col p-4 sm:p-8">
-        <div className="flex flex-row w-full">
+        <div className={cn('flex flex-row w-full', loading && 'mt-16')}>
           <NavigatorButton
             direction="Previous"
             surahNumber={params.surah ? Number(params.surah) - 1 : 1}

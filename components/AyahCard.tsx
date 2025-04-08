@@ -11,7 +11,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
   return (
     <div
       key={ayah.number}
-      className="border-b border-px border-[#262629ff] p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12"
+      className="border-b border-px border-[#262629ff] p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-500"
       id={`ayah-${ayah.numberInSurah}`}
     >
       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
