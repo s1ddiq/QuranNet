@@ -53,14 +53,26 @@ const Surah = () => {
     if (ayahParam) {
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
         element.classList.add("bg-[#1c1c1cff]");
-        setTimeout(() => {
+
+        // Set timeouts
+        const a = setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 200);
+
+        const b = setTimeout(() => {
           element.classList.remove("bg-[#1c1c1cff]");
-        }, 1200);
+        }, 4000);
+
+        // Cleanup timeouts when the effect is cleaned up or ayahParam changes
+        return () => {
+          clearTimeout(a);
+          clearTimeout(b);
+        };
       }
     }
   }, [ayahParam, ayahs]);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -83,7 +95,7 @@ const Surah = () => {
     <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 text-white">
       <div
         className={cn(
-          "flex flex-row justify-between items-center w-1/3 pt-2 mb-2 min-h-16 md:sticky top-0 bg-[#08080aff] w-full px-6 border-b border-[#262629ff] transition-all duration-1000",
+          "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 bg-[#08080aff] w-full px-6 border-b border-[#262629ff] transition-all duration-1000",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >

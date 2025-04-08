@@ -146,6 +146,7 @@
 .bg-primary {
   @apply bg-[#08080aff];
 }
+
 .navigator-styles {
   @apply min-h-16 font-semibold px-4 text-center text-sm w-1/3 border border-[#262629ff] transition-all duration-300 transition-discrete;
 }
@@ -156,6 +157,38 @@
 
 .hide-navigation {
   @apply flex absolute -top-32;
+}
+
+.scrollable-container-sty {
+  @apply overflow-y-auto [&::-webkit-scrollbar]:w-[3px] max-h-[calc(100vh-100px)] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-full dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500;
+}
+
+.scrollable-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 160px);
+}
+
+/* Scrollbar styles */
+.scrollable-container::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* gray-400 */
+  border-radius: 9999px;
+}
+
+/* Dark mode support */
+.dark .scrollable-container::-webkit-scrollbar-track {
+  background-color: #374151; /* neutral-700 */
+}
+
+.dark .scrollable-container::-webkit-scrollbar-thumb {
+  background-color: #6b7280; /* neutral-500 */
 }
 
 

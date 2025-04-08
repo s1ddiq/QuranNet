@@ -1,5 +1,5 @@
 import useSurahNavigation from "@/hooks/useSurahNavigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const SearchResultCard = ({
@@ -12,7 +12,7 @@ const SearchResultCard = ({
 }: SearchResultCardProps) => {
   const surahNavigation = useSurahNavigation();
   const router = useRouter();
-
+  const pathname = usePathname();
   const handleNavigateToSurah = async ({
     surah,
     number,
@@ -20,7 +20,8 @@ const SearchResultCard = ({
     const surahNumber = surahNavigation.getSurahNumber(surah);
     if (surahNumber) {
       surahNavigation.goToSurah(surah); // Update the state
-      console.log(`Navigating to Surah ${surah}, Verse ${number}`);
+      // console.log(`Navigating to Surah ${surah}, Verse ${number}`);
+      // console.log(pathname);
       router.push(`/surah/${surahNumber}?ayah=${number}`); // Navigate to the new URL
     } else {
       console.log(`Surah wasn't found!`);

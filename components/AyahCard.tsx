@@ -15,7 +15,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
       id={`ayah-${ayah.numberInSurah}`}
     >
       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
-        <p className="text-lg font-light ">
+        <p className="text-lg font-light text-gray-400">
           {params.surah}:{ayah.numberInSurah}
         </p>
         <Image
@@ -36,7 +36,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
 
       <div className="text-right sm:order-2 order-1 flex flex-col w-full">
         <p
-          className="md:text-3xl text-2xl font-light tracking-wider arabic-text 
+          className="md:text-3xl text-xl font-light tracking-wider arabic-text 
           sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25]"
         >
           {ayah.text.startsWith("بِسۡمِ")
@@ -47,7 +47,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
             : ayah.text}
         </p>
         <div>
-          <p className="text-gray-400 text-lg md:ml-8 text-left">
+          <p className="text-gray-400 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 sm:pt-2">
             {translation?.text}
           </p>
         </div>
