@@ -1,3 +1,4 @@
+'use client'
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
