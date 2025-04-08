@@ -19,7 +19,7 @@ const surahMap: { [key: string]: number } = {
   "An-Nahl": 16,
   "Al-Israa": 17,
   "Al-Kahf": 18,
-  Maryam: 19,
+  "  Maryam": 19,
   "Taa-Haa": 20,
   "Al-Anbiyaa": 21,
   "Al-Hajj": 22,

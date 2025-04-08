@@ -30,7 +30,7 @@ const SearchResultCard = ({
   if (type === "desktop") {
     return (
       <div
-        key={`${result.number}-${Math.random() * 5000}`}
+        key={`${result.number}-${index}`}
         className="text-white w-11/12 bg-transparent border rounded-xl border-[#262629ff] p-4 flex-col justify-between text-base cursor-pointer"
         onClick={() =>
           handleNavigateToSurah({

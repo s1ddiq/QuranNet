@@ -120,9 +120,9 @@ const Sidebar = () => {
             {searchResults.length > 0 ? (
               searchResults
                 .slice(0, amount)
-                .map((result: SearchResult) => (
+                .map((result: SearchResult, index) => (
                   <SearchResultCard
-                    key={result.number}
+                    key={`${result.number}-${index}`}
                     result={result}
                     searchQuery={searchQuery}
                     type="desktop"
@@ -164,6 +164,7 @@ const Sidebar = () => {
             alt="Logo"
             title="QuranNet - Home"
             className="mr-2"
+            onClick={() => router.push("/")}
           />
         </SheetTrigger>
         <SheetContent
@@ -206,7 +207,7 @@ const Sidebar = () => {
                 .slice(0, amount)
                 .map((result: SearchResult, index) => (
                   <SearchResultCard
-                    key={result.number}
+                    key={`${result.number}-${index}`}
                     result={result}
                     searchQuery={searchQuery}
                     type="mobile"

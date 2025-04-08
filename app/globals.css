@@ -150,6 +150,10 @@
   @apply min-h-16 font-semibold px-4 text-center text-sm w-1/3 border border-[#262629ff] transition-all duration-300 transition-discrete;
 }
 
+.border-primary {
+  @apply border border-[#262629ff];
+}
+
 .hide-navigation {
   @apply flex absolute -top-32;
 }
