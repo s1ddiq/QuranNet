@@ -1,6 +1,7 @@
 import { Inter, Noto_Sans_Arabic, Codystar, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ['latin'] })
 const cody = Codystar({ subsets: ['latin'], weight: "400", variable: '--font-cody' });
@@ -25,6 +26,7 @@ export default function RootLayout({
     </Head>
     <body className={`${dm_sans.className}`}>
       {children}
+      <Toaster />
     </body>
   </html>
   );

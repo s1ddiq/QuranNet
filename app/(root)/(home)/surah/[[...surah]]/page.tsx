@@ -8,8 +8,9 @@ import AyahCard from "@/components/AyahCard";
 import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
 import Image from "next/image";
+import { toast } from "sonner";
 const Surah = () => {
-  const [surah, setSurah] = useState<Surah | null>(null);
+  const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
   const [englishAyahs, setEnglishAyahs] = useState<EnglishAyah[]>([]);
   const params = useParams();
@@ -55,6 +56,7 @@ const Surah = () => {
   // Scroll to the selected ayah (if provided via the "ayah" search param)
   useEffect(() => {
     if (ayahParam && !loading) {
+      toast("Scrolling to requested Ayah")
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
         element.classList.add("bg-[#1c1c1cff]");
@@ -138,6 +140,7 @@ const Surah = () => {
         {!loading && ayahs.map((ayah: Ayah) => (
           <AyahCard
             key={ayah.number}
+            surah={surah}
             ayah={ayah}
             params={params}
             translatedAyahs={englishAyahs} // Pass the entire translations array

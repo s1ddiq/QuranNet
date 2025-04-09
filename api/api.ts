@@ -71,3 +71,16 @@ export const fetchAyahTranslation = async (surahId: number, ayahId: number) => {
     console.log("Error fetching ayah translation:", error);
   }
 }
+
+export const fetchAyahAudio = async (surahId: number, ayahId: number, type?: unknown) => {
+  try {
+    const response = await fetch(`https://api.alquran.cloud/v1/ayah/${surahId}:${ayahId}/ar.alafasy`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log('Error fetching ayah-audio:', error);
+  }
+}

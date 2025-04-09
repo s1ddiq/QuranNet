@@ -1,12 +1,36 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { fetchAyahAudio } from "@/api/api";
+import { toast } from "sonner"
 
-const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
+const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
   // Find the translation for this ayah based on its number in the surah.
   const translation = translatedAyahs?.find(
     (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah
   );
+
+  const [clickable, setClickable] = useState(true);
+
+  const handleFetchAudio = async () => {
+    if(!clickable) return;
+
+    const response = await fetchAyahAudio(surah.number, ayah.numberInSurah);
+    // console.log(response);
+    if(response && response.data.audio) {
+      const audio = new Audio(response.data.audio);
+      audio.play();
+      audio.addEventListener("ended", handleAudioEnd)
+      setClickable(false);
+    } else {
+
+    }
+  }
+  
+  const handleAudioEnd = () => {
+    setClickable(true);
+  };
+  
 
   return (
     <div
@@ -31,6 +55,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
           width={22}
           height={16}
           className="cursor-pointer"
+          onClick={() => handleFetchAudio()}
         />
       </div>
 
@@ -47,7 +72,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
             : ayah.text}
         </p>
         <div>
-          <p className="text-gray-400 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-1/2">
+          <p className="text-gray-400 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-1/2 md:w-4/6">
             {translation?.text}
           </p>
         </div>

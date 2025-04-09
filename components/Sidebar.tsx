@@ -12,6 +12,7 @@ import MobileSheet from "./sidebar/MobileSheet";
 import useScrollHandler from "@/hooks/useScrollHandler";
 import SidebarHeader from "./sidebar/SidebarHeader";
 import SearchInput from "./SearchInput";
+import { toast } from "sonner";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const Sidebar = () => {
   const debouncedSearch = debounce(async (query: string) => {
     const trimmed = query.trim();
 
-    if (trimmed.length < 3) {
+    if (trimmed.length < 1) {
       setSearchResults([]); // Clear results if query is too short
       setIsScrolling(false); // Reset scrolling state
       console.log(isScrolling); // --DEBUG
@@ -128,6 +129,7 @@ const Sidebar = () => {
                 href={`/surah/${surah.number}`}
                 key={surah.number}
                 title={`${surah.englishName} - ${surah.englishNameTranslation}`}
+                onClick={() => toast("Navigating to surah")}
               >
                 <div className="flex gap-5">
                   <p className="text-gray-400">{surah.number}</p>
