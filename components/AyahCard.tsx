@@ -47,7 +47,7 @@ const AyahCard = ({ ayah, params, translatedAyahs }: AyahCardProps) => {
             : ayah.text}
         </p>
         <div>
-          <p className="text-gray-400 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 sm:pt-2">
+          <p className="text-gray-400 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-1/2">
             {translation?.text}
           </p>
         </div>
