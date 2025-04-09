@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { UserButton } from "@clerk/nextjs";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
@@ -102,6 +103,7 @@ const Surah = () => {
   if(loading) return <Loader className="text-gray-400 m-8 animate-spin" size={32}/>
   return (
     <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 text-white">
+      {/* turn into component */}
       <div
         className={cn(
           "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 bg-[#08080aff] w-full px-6 border-b border-[#262629ff] transition-all duration-400",
@@ -115,6 +117,7 @@ const Surah = () => {
           {surah?.englishNameTranslation}
         </p>
         <p className="font-bold text-center text-2xl">{surah?.name}</p>
+        <UserButton />
       </div>
 
       <div
@@ -132,7 +135,7 @@ const Surah = () => {
           width={512}
           height={512}
           alt='Bismillahirahmaniraheem'
-          className={cn('translate-y-12 pt-8', loading && '!translate-y-12')}
+          className={cn('py-16', loading && 'pt-8')}
           title="In the name of allah, the most merciful"
 
         />

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { fetchAyahAudio } from "@/api/api";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
   // Find the translation for this ayah based on its number in the surah.
@@ -11,26 +11,41 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
   );
 
   const [clickable, setClickable] = useState(true);
+  const [highlighted, setHighlighted] = useState(false);
 
   const handleFetchAudio = async () => {
-    if(!clickable) return;
+    if (!clickable) return;
 
     const response = await fetchAyahAudio(surah.number, ayah.numberInSurah);
     // console.log(response);
-    if(response && response.data.audio) {
+    if (response && response.data.audio) {
       const audio = new Audio(response.data.audio);
       audio.play();
-      audio.addEventListener("ended", handleAudioEnd)
+      audio.addEventListener("ended", handleAudioEnd);
       setClickable(false);
     } else {
-
     }
-  }
-  
+  };
+
   const handleAudioEnd = () => {
     setClickable(true);
   };
-  
+
+  const handleHighlightAyah = async () => {
+    const e = document.getElementById(`ayah-${ayah.numberInSurah}`);
+    // turn into globals.css just class for all these
+    if (highlighted) {
+      e?.classList.remove("bg-[#1c1c1cff]");
+      e?.classList.remove("border-l-4");
+      e?.classList.remove("border-l-white");
+      setHighlighted(false);
+    } else {
+      e?.classList.add("bg-[#1c1c1cff]");
+      e?.classList.add("border-l-4");
+      e?.classList.add("border-l-white");
+      setHighlighted(true);
+    }
+  };
 
   return (
     <div
@@ -42,6 +57,15 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
         <p className="text-lg font-light text-gray-400">
           {params.surah}:{ayah.numberInSurah}
         </p>
+
+        <Image
+          src="/svg/highlight.svg"
+          alt="Play Icon"
+          width={22}
+          height={16}
+          className="cursor-pointer"
+          onClick={() => handleHighlightAyah()}
+        />
         <Image
           src="/svg/document.svg"
           alt="Document Icon"
@@ -62,13 +86,11 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
       <div className="text-right sm:order-2 order-1 flex flex-col w-full">
         <p
           className="md:text-3xl text-xl font-light tracking-wider arabic-text 
-          sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25]"
+          sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] hover:text-gray-400 cursor-pointer"
+          onClick={() => handleFetchAudio()}
         >
           {ayah.text.startsWith("بِسۡمِ")
-            ? ayah.text.replace(
-                "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
-                ""
-              )
+            ? ayah.text.replace("بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ", "")
             : ayah.text}
         </p>
         <div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/nextjs";
 
 const SurahsList = () => {
   const [surahs, setSurahs] = useState<Surah[]>([]);
@@ -31,7 +32,7 @@ const SurahsList = () => {
           QuranNet
         </h1>
 
-        <div className="rounded-full border border-2 border-[#262629ff] lg:w-128 w-full h-16 flex-items-center justify-center my-5 relative p-4">
+        <div className="rounded-full border border-2 border-[#262629ff] lg:w-128 sm:w-96 w-full h-16 flex-items-center justify-center my-5 relative p-4">
           <Image
             src="/svg/search.svg"
             alt="Search Icon"
@@ -48,29 +49,40 @@ const SurahsList = () => {
         </div>
       </div>
 
-      <div className="w-full flex flex-row flex-wrap gap-5 justify-center md:px-24">
+      <div className="w-full flex sm:flex-row flex-col flex-wrap md:gap-8 gap-5 justify-center md:px-8 sm:px-8 px-5 mb-24">
         {filteredSurahs.map((surah: Surah) => (
           <Link href={`/surah/${surah.number}`} key={surah.number}>
-            <div>
-              <div className="w-80 min-h-24 h-auto bg-transparent border border-[#262629ff] rounded-xl p-4 relative hover:-translate-y-2 hover:shadow-[2px] hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400">
-                <div>
-                  <p className="text-lg font-semibold text-white">{surah.englishName}</p>
-                </div>
-                <p className="text-sm absolute left-4 bottom-4">
-                  {surah.englishNameTranslation}
+            <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-transparent border border-[#262629ff] rounded-xl p-4 hover:-translate-y-2 hover:shadow-[2px] hover:shadow-[#262629ff] cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex flex-col justify-between">
+              <div className="flex w-full justify-between text-sm">
+                <p className="text-lg font-semibold text-white">
+                  {surah.englishName}
                 </p>
+                <p>{surah.number}</p>
+              </div>
 
-                <div className="absolute top-4 right-4 text-center">
-                  <p className=" text-sm">{surah.number}</p>
-                </div>
-                <p className="text-sm absolute right-4 bottom-4">
-                  {surah.numberOfAyahs} Ayahs
-                </p>
+              <div className="flex w-full justify-between text-sm">
+                <p>{surah.englishNameTranslation}</p>
+                <p>{surah.numberOfAyahs} Ayahs</p>
               </div>
             </div>
           </Link>
         ))}
       </div>
+
+      <footer className="border-t border-[#262629ff] w-full flex justify-between items-center p-8">
+        <p className="text-xl text-gray-400">
+          {new Date().getFullYear()} - QuranNet
+        </p>
+          <Link href={"https://github.com/s1ddiq/QuranNet"} className="mr-8 text-gray-400">Theme changer is coming soon</Link>
+        <div className="text-xl text-gray-400">
+          <SignedOut>
+              <SignInButton />
+          </SignedOut>
+          <SignedIn>
+              <SignOutButton />
+          </SignedIn>
+        </div>
+      </footer>
     </div>
   );
 };

@@ -1,13 +1,20 @@
 import { Inter, Noto_Sans_Arabic, Codystar, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import { type Metadata } from "next";
+import {
+  ClerkProvider,
+} from "@clerk/nextjs";
 
-const inter = Inter({ subsets: ['latin'] })
-const cody = Codystar({ subsets: ['latin'], weight: "400", variable: '--font-cody' });
-const noto_sans = Noto_Sans_Arabic({subsets: ['arabic']})
-const dm_sans = DM_Sans({subsets: ['latin']})
-
+const inter = Inter({ subsets: ["latin"] });
+const cody = Codystar({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-cody",
+});
+const noto_sans = Noto_Sans_Arabic({ subsets: ["arabic"] });
+const dm_sans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata = {
   title: "QuranNet",
@@ -20,14 +27,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-    <Head>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-    </Head>
-    <body className={`${dm_sans.className}`}>
-      {children}
-      <Toaster />
-    </body>
-  </html>
+    <ClerkProvider>
+      <html lang="en">
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <body className={`${dm_sans.className}`}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
