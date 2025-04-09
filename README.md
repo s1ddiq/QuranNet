@@ -6,8 +6,6 @@ Built with [Next.js](https://nextjs.org), QuranNet is **free, forever**.
 
 ---
 
-## 🚀 
-
 ## ✨Feautures
 - Arabic + English Quran view (more translations coming soon)
 - Scroll-to-verse support with ayah highlight
@@ -19,6 +17,9 @@ Built with [Next.js](https://nextjs.org), QuranNet is **free, forever**.
 ## 🤲 Bismillah
 - Read, reflect and connect with the Quran, anywhere, anytime.
 - Automatic progress saver for logged in users
+
+## 🚀 
+<a href="https://quran-net-five.vercel.app/" style="display: inline-block; background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; border-radius: 5px; text-decoration: none;">Try QuranNet</a>
 
   
 <details>  
