@@ -1,14 +1,20 @@
 'use client';
 
-import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { EclipseIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default function ThemeToggleButton({ classlist }: { classlist?: string }) {
-  const [isDark, setIsDark] = useState(true);
+export default function ThemeToggleButton() {
+  const [isDark, setIsDark] = useState(false); // default false, will update on mount
+
+  useEffect(() => {
+    const isDarkActive = document.documentElement.classList.contains("dark");
+    setIsDark(isDarkActive);
+  }, []);
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    if (!isDark) {
+    const newDarkState = !isDark;
+    setIsDark(newDarkState);
+    if (newDarkState) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
@@ -16,11 +22,15 @@ export default function ThemeToggleButton({ classlist }: { classlist?: string })
   };
 
   return (
-    <button
+    <div
       onClick={toggleTheme}
-      className={cn("px-4 py-2 bg-blue-500 text-white rounded z-999", classlist && `${classlist}`)}
+      className="fixed bottom-8 right-8 text-3xl dark:bg-[#08080aff] bg-white rounded-full 
+        flex justify-center items-center border-px dark:border-white border-gray-400
+        cursor-pointer transition-all duration-300 hover:-translate-y-2 z-[999]"
     >
-      Toggle Theme
-    </button>
+      <p className="pointer-events-none dark:text-white text-black">
+        <EclipseIcon size={48} />
+      </p>
+    </div>
   );
 }

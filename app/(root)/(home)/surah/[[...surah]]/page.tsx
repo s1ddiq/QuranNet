@@ -61,46 +61,53 @@ const Surah = () => {
       toast("Scrolling to requested Ayah");
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
-        element.classList.add("bg-[#1c1c1cff]");
-        element.classList.add("brightness-125");
+        const c = ['dark:bg-[#1c1c1cff]', 'bg-gray-200']
+        element.classList.add(...c);
         
         // Set timeouts
         const a = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
         }, 200);
         
+        const d = setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 400)
         const b = setTimeout(() => {
-          element.classList.remove("brightness-125");
-          element.classList.remove("bg-[#1c1c1cff]");
+          element.classList.remove(...c);
         }, 4000);
 
         // Cleanup timeouts when the effect is cleaned up or ayahParam changes
         return () => {
           clearTimeout(a);
           clearTimeout(b);
+          clearTimeout(d);
         };
       }
     }
   }, [ayahParam, ayahs]);
 
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
+  
+      // Show the header when scrolling up, hide it when scrolling down
       if (currentScrollY < lastScrollY) {
-        setShowHeader(true); // scrolling up
+        setShowHeader(true); // Scrolling up, show header
       } else if (currentScrollY > lastScrollY) {
-        setShowHeader(false); // scrolling down
+        setShowHeader(false); // Scrolling down, hide header
       }
-
+  
+      // Update lastScrollY with the current scroll position
       setLastScrollY(currentScrollY);
     };
+  
+    // Add event listener for scroll events
     window.addEventListener("scroll", handleScroll);
-    setLoading(false);
-
+  
+    // Cleanup event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
+  }, [lastScrollY]); // Dependency on the last scroll position
   if(loading) return <Loader className="text-gray-400 m-8 animate-spin" size={32}/>
   return (
     <section className="w-full flex items-center flex-col dark:bg-[#08080aff] bg-white flex-1 dark:text-white text-black">

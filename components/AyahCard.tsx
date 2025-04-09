@@ -12,13 +12,13 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
   const translation = translatedAyahs?.find(
     (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah
   );
-
+  
   const [clickable, setClickable] = useState(true);
   const [highlighted, setHighlighted] = useState(false);
-
+  
   const handleFetchAudio = async () => {
     if (!clickable) return;
-
+    
     const response = await fetchAyahAudio(surah.number, ayah.numberInSurah);
     // console.log(response);
     if (response && response.data.audio) {
@@ -29,23 +29,21 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
     } else {
     }
   };
-
+  
   const handleAudioEnd = () => {
     setClickable(true);
   };
-
+  
   const handleHighlightAyah = async () => {
     const e = document.getElementById(`ayah-${ayah.numberInSurah}`);
+    const f = ["dark:bg-[#1c1c1cff]","bg-gray-200", "border-l-4", "dark:border-l-white", "border-l-gray-400"]
     // turn into globals.css just class for all these
     if (highlighted) {
-      e?.classList.remove("bg-[#1c1c1cff]");
-      e?.classList.remove("border-l-4");
-      e?.classList.remove("border-l-white");
+      //   @apply dark:bg-[#1c1c1cff] bg-gray-200 border-l-4 dark:border-l-white border-l-gray-400;
+      e?.classList.remove(...f);
       setHighlighted(false);
     } else {
-      e?.classList.add("bg-[#1c1c1cff]");
-      e?.classList.add("border-l-4");
-      e?.classList.add("border-l-white");
+      e?.classList.add(...f);
       setHighlighted(true);
     }
   };
@@ -53,7 +51,7 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
   return (
     <div
       key={ayah.number}
-      className="border-b border-px dark:border-[#262629ff] border-gray-400 p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-500"
+      className="border-b border-px dark:border-[#262629ff] border-gray-400 p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
       id={`ayah-${ayah.numberInSurah}`}
     >
       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
@@ -61,16 +59,16 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
           {params.surah}:{ayah.numberInSurah}
         </p>
 
-       <HighlighterPen onClick={() => handleHighlightAyah()}/>
+        <HighlighterPen onClick={() => handleHighlightAyah()} />
         <DocumentIcon />
-       
-       <PlayIcon onClick={() => handleFetchAudio()}/>
+
+        <PlayIcon onClick={() => handleFetchAudio()} />
       </div>
 
       <div className="text-right sm:order-2 order-1 flex flex-col w-full">
         <p
           className="md:text-3xl lg:text-4xl text-xl font-light tracking-wider arabic-text 
-          sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] hover:text-gray-100 cursor-pointer"
+          sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] hover:opacity-65 cursor-pointer"
           onClick={() => handleFetchAudio()}
         >
           {ayah.text.startsWith("بِسۡمِ")

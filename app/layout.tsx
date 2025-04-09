@@ -35,17 +35,7 @@ export default function RootLayout({
         <body className={`${dm_sans.className} dark:bg-[#08080a] bg-white`}>
           {children}
           {/* <ThemeToggleButton classlist="fixed right-32 bottom-32"/> */}
-          <div
-            className="fixed bottom-8 right-8 text-3xl dark:bg-[#08080aff] bg-white rounded-full 
-          flex justify-center items-center border-px dark:border-white border-gray-400
-          cursor-pointer transition-all duration-300 hover:-translate-y-2"
-          >
-            <ThemeToggleButton classlist="!opacity-0 absolute cursor-pointer" />
-
-            <p className="pointer-events-none dark:text-white text-black">
-              <EclipseIcon size={48} />
-            </p>
-          </div>
+         <ThemeToggleButton />
           <Toaster />
         </body>
       </html>
