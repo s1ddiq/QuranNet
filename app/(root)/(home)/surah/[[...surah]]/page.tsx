@@ -56,7 +56,7 @@ const Surah = () => {
   // Scroll to the selected ayah (if provided via the "ayah" search param)
   useEffect(() => {
     if (ayahParam && !loading) {
-      toast("Scrolling to requested Ayah")
+      toast("Scrolling to requested Ayah");
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
         element.classList.add("bg-[#1c1c1cff]");
