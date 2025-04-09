@@ -13,7 +13,7 @@ const HighlighterPenIcon: React.FC<HighlighterPenIconProps> = ({ onClick, ...pro
     xmlns="http://www.w3.org/2000/svg"
     stroke="currentColor"
     onClick={onClick} // Attach the onClick prop to the SVG
-    className='dark:text-white text-gray-600'
+    className='dark:text-white text-gray-600 cursor-pointer'
     {...props} // Spread any other props to the SVG element
   >
     <g id="SVGRepo_iconCarrier">

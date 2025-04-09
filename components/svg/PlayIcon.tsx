@@ -12,7 +12,7 @@ const PlayIcon: React.FC<PlayIconProps> = ({ onClick, ...props }) => (
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     onClick={onClick}
-    className='dark:text-white text-gray-600'
+    className='dark:text-white text-gray-600 cursor-pointer'
     {...props} // Spread any other passed props to the SVG element
   >
     <g id="SVGRepo_iconCarrier">
