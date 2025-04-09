@@ -124,7 +124,7 @@ const Surah = () => {
       </div>
 
       <div className="flex flex-col w-full gap-16">
-      <div className="flex justify-center w-full md:px-0 px-8">
+      <div className="flex justify-center w-full px-8">
         <Image
           src='/svg/bismillah.svg'
           width={512}
