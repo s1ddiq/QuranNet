@@ -3,16 +3,16 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { fetchAllSurahs, searchQuran } from "@/api/api";
 import { debounce } from "lodash";
 import SearchResultCard from "./SearchResultCard";
 import { cn } from "@/lib/utils";
-import MobileSheet from "./sidebar/MobileSheet";
+import MobileSheet from "./MobileSheet";
 import useScrollHandler from "@/hooks/useScrollHandler";
-import SidebarHeader from "./sidebar/SidebarHeader";
-import SearchInput from "./SearchInput";
+import SidebarHeader from "./SidebarHeader";
 import { toast } from "sonner";
+import SearchInput from "./SearchInput";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -78,7 +78,7 @@ const Sidebar = () => {
     <div>
       <div
         className={cn(
-          "min-h-screen sm:block hidden bg-transparent border-x border-[#262629ff] sticky top-0 z-50 text-white transition-all duration-300 md:w-[350px] scrollable-container",
+          "min-h-screen sm:block hidden bg-transparent border-x dark:border-[#262629ff] border-gray-400 sticky top-0 z-50 dark:text-white text-black transition-all duration-300 md:w-[350px] scrollable-container",
           isCollapsed && "!w-16"
         )}
       >

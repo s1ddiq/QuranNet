@@ -4,7 +4,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Sheet } from "../ui/sheet";
 import router from "next/router";
 import React from "react";
-import SearchResultCard from "../SearchResultCard";
+import SearchResultCard from "./SearchResultCard";
 import { Input } from "../ui/input";
 import {
   SheetTrigger,

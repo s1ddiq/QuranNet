@@ -33,7 +33,7 @@ const SearchResultCard = ({
     return (
       <div
         key={`${result.number}-${index}`}
-        className="text-white w-11/12 bg-transparent border rounded-xl border-[#262629ff] p-4 flex-col justify-between text-base cursor-pointer"
+        className="dark:text-white text-black w-11/12 bg-transparent border rounded-xl dark:border-[#262629ff] border-gray-400 p-4 flex-col justify-between text-base cursor-pointer"
         onClick={() =>
           handleNavigateToSurah({
             surah: result.surah.englishName,

@@ -6,10 +6,11 @@ import Link from "next/link";
 import NavigatorButton from "@/components/NavigatorButton";
 import AyahCard from "@/components/AyahCard";
 import { cn } from "@/lib/utils";
-import { Loader } from "lucide-react";
+import { EclipseIcon, Loader } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { UserButton } from "@clerk/nextjs";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
@@ -102,11 +103,11 @@ const Surah = () => {
 
   if(loading) return <Loader className="text-gray-400 m-8 animate-spin" size={32}/>
   return (
-    <section className="w-full flex items-center flex-col bg-[#08080aff] flex-1 text-white">
+    <section className="w-full flex items-center flex-col dark:bg-[#08080aff] bg-white flex-1 dark:text-white text-black">
       {/* turn into component */}
       <div
         className={cn(
-          "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 bg-[#08080aff] w-full px-6 border-b border-[#262629ff] transition-all duration-400",
+          "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 dark:bg-[#08080aff] bg-white w-full px-6 border-b dark:border-[#262629ff] border-gray-400 transition-all duration-300",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
@@ -118,14 +119,6 @@ const Surah = () => {
         </p>
         <p className="font-bold text-center text-2xl">{surah?.name}</p>
         <UserButton />
-      </div>
-
-      <div
-        className="fixed bottom-8 right-8 text-3xl bg-[#08080aff] p-4 rounded-full 
-          md:flex hidden justify-center items-center border border-px border-[#262629ff]
-          cursor-pointer transition-all duration-300 hover:-translate-y-2 opacity-10"
-      >
-        <p className="pointer-events-none text-[#262629ff]">۞</p>
       </div>
 
       <div className="flex flex-col w-full gap-16">
