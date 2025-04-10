@@ -1,42 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from "react";
 
-const useScrollHandler = (scrollElementIds: string[], targetClass: string, translateClass: string) => {
-  const [lastScrollY, setLastScrollY] = useState(0);
+const useScrollHandler = (
+  scrollElementIds: string[],
+  targetClass: [string, string, string],
+  translateClass: string
+) => {
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const elements = scrollElementIds.map(id => document.getElementById(id));
-    const c = document.querySelectorAll('.hide-on-scroll');
+    if (typeof window === "undefined") return;
+
+    const elements = scrollElementIds.map((id) => document.getElementById(id));
+    const targets = document.querySelectorAll(".hide-on-scroll");
 
     const handleScroll = () => {
       const scrollPositions = elements.map((el) => el?.scrollTop ?? 0);
-      const cy = scrollPositions[0]; // first element scroll position
-      const cx = scrollPositions[1]; // second element scroll position
+      const cy = scrollPositions[0];
+      const cx = scrollPositions[1];
+      const maxY = Math.max(cy, cx);
 
-      // Scroll down (cy or cx increases)
-      if (cy > lastScrollY || cx > lastScrollY) {
-        c.forEach((i: Element) => {
-          i.classList.add(targetClass);
-          i.classList.add(translateClass);
+      if (maxY > lastScrollY.current) {
+        targets.forEach((el) => {
+          el.classList.add(...targetClass, translateClass);
         });
-      }
-      // Scroll up (cy or cx decreases)
-      else if (cy < lastScrollY || cx < lastScrollY) {
-        c.forEach((i: Element) => {
-          i.classList.remove(targetClass);
-          i.classList.remove(translateClass);
+      } else if (maxY < lastScrollY.current) {
+        targets.forEach((el) => {
+          el.classList.remove(...targetClass, translateClass);
         });
       }
 
-      setLastScrollY(Math.max(cy, cx)); // Update lastScrollY to the greater of cy or cx
+      lastScrollY.current = maxY;
     };
 
-    elements.forEach(el => el?.addEventListener('scroll', handleScroll));
+    elements.forEach((el) => el?.addEventListener("scroll", handleScroll));
+
     return () => {
-      elements.forEach(el => el?.removeEventListener('scroll', handleScroll));
+      elements.forEach((el) => el?.removeEventListener("scroll", handleScroll));
     };
-  }, [lastScrollY, scrollElementIds, targetClass, translateClass]);
-
-  return null; // No UI returned from this hook
+  }, [scrollElementIds, targetClass, translateClass]);
 };
 
 export default useScrollHandler;

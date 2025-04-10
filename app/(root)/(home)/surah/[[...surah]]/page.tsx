@@ -1,17 +1,16 @@
 "use client";
 import { fetchSurahById, fetchSurahTranslation } from "@/api/api";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useEffect, useState } from "react";
 import Link from "next/link";
 import NavigatorButton from "@/components/NavigatorButton";
 import AyahCard from "@/components/AyahCard";
 import { cn } from "@/lib/utils";
-import { EclipseIcon, Loader } from "lucide-react";
-import Image from "next/image";
 import { toast } from "sonner";
 import { UserButton } from "@clerk/nextjs";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 import BismillahIcon from "@/components/svg/BismillahIcon";
+import { Loader } from "lucide-react";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
@@ -19,7 +18,6 @@ const Surah = () => {
   const params = useParams();
   const searchParams = useSearchParams();
   const ayahParam = searchParams.get("ayah");
-  const [scrollY, setScrollY] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [loading, setLoading] = useState(true);

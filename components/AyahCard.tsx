@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import { fetchAyahAudio } from "@/api/api";
-import { toast } from "sonner";
 import HighlighterPen from "./svg/HighlighterPenIcon";
 import PlayIcon from "./svg/PlayIcon";
 import DocumentIcon from "./svg/DocumentIcon";

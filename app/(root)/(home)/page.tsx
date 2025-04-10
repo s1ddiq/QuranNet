@@ -1,11 +1,9 @@
 "use client";
 import { fetchAllSurahs } from "@/api/api";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/nextjs";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 import SearchIcon from "@/components/svg/SearchIcon";
 
 const SurahsList = () => {

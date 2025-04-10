@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Sheet } from "../ui/sheet";
-import router from "next/router";
 import React from "react";
 import SearchResultCard from "./SearchResultCard";
 import { Input } from "../ui/input";
@@ -12,7 +11,6 @@ import {
   SheetTitle,
   SheetHeader,
 } from "../ui/sheet";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MenuIcon from "../svg/MenuIcon";
 import SearchIcon from "../svg/SearchIcon";

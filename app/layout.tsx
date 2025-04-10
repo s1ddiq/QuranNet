@@ -1,19 +1,10 @@
-import { Inter, Noto_Sans_Arabic, Codystar, DM_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 import { Toaster } from "@/components/ui/sonner";
-import { type Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
-import { EclipseIcon } from "lucide-react";
 
-const inter = Inter({ subsets: ["latin"] });
-const cody = Codystar({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-cody",
-});
-const noto_sans = Noto_Sans_Arabic({ subsets: ["arabic"] });
 const dm_sans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata = {
@@ -34,7 +25,6 @@ export default function RootLayout({
         </Head>
         <body className={`${dm_sans.className} dark:bg-[#08080a] bg-white`}>
           {children}
-          {/* <ThemeToggleButton classlist="fixed right-32 bottom-32"/> */}
          <ThemeToggleButton />
           <Toaster />
         </body>

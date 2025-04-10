@@ -1,7 +1,6 @@
 import CrossIcon from "../svg/CrossIcon";
 import SearchIcon from "../svg/SearchIcon";
 import { Input } from "../ui/input";
-import Image from "next/image";
 
 const SearchInput = ({
   searchQuery,

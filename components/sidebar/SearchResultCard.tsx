@@ -1,7 +1,7 @@
 'use client'
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 const SearchResultCard = ({
   result,
@@ -13,7 +13,6 @@ const SearchResultCard = ({
 }: SearchResultCardProps) => {
   const surahNavigation = useSurahNavigation();
   const router = useRouter();
-  const pathname = usePathname();
   const handleNavigateToSurah = async ({
     surah,
     number,

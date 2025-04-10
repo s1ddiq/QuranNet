@@ -1,9 +1,7 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Input } from "../ui/input";
 import { fetchAllSurahs, searchQuran } from "@/api/api";
 import { debounce } from "lodash";
 import SearchResultCard from "./SearchResultCard";
@@ -15,7 +13,6 @@ import { toast } from "sonner";
 import SearchInput from "./SearchInput";
 
 const Sidebar = () => {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState([]);
   const [amount, setAmount] = useState(10);
@@ -23,34 +20,31 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [surahs, setSurahs] = useState<Surah[]>([]);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const debouncedSearch = debounce(async (query: string) => {
-    const trimmed = query.trim();
-
-    if (trimmed.length < 1) {
-      setSearchResults([]); // Clear results if query is too short
-      setIsScrolling(false); // Reset scrolling state
-      console.log(isScrolling); // --DEBUG
-      return;
-    }
-
-    try {
-      const response = await searchQuran(trimmed);
-
-      if (response?.data?.matches) {
-        setSearchResults(response.data.matches);
-      } else {
-        console.log("Invalid response structure", response);
+  const debouncedSearch = useMemo(() => 
+    debounce(async (query: string) => {
+      const trimmed = query.trim();
+      if (trimmed.length < 1) {
+        setSearchResults([]);
+        setIsScrolling(false);
+        return;
       }
-    } catch (error) {
-      console.log("Error fetching search results:", error);
-    }
-  }, 300);
+  
+      try {
+        const response = await searchQuran(trimmed);
+        if (response?.data?.matches) {
+          setSearchResults(response.data.matches);
+        }
+      } catch (error) {
+        console.log("Error fetching search results:", error);
+      }
+    }, 300),
+  []);
+  
 
   useEffect(() => {
     const func = async () => {
@@ -58,20 +52,28 @@ const Sidebar = () => {
       setSurahs(response.data);
     };
     func();
+
+    return () => {}; // 👈 cleanup
   }, []);
 
-  useEffect(() => {
-    debouncedSearch(searchQuery); // Call the debounced function
+useEffect(() => {
+  if (searchQuery.length < 1) {
+    setSearchResults([]);
+    return;
+  }
 
-    return () => {
-      debouncedSearch.cancel(); // Cancel debounce on cleanup (when component unmounts)
-    };
-  }, [searchQuery]);
+  debouncedSearch(searchQuery);
+
+  return () => {
+    debouncedSearch.cancel();
+  };
+}, [searchQuery, debouncedSearch]);
+
 
   useScrollHandler(
     ["a-1", "a-2"], // IDs of the elements you want to track scroll for
-    "absolute", // Class to add when scrolling down
-    "-translate-y-64" // Class to add when scrolling down
+    ["fixed", "top-0", '!opacity-0'], // Adjusted to match the expected type
+    "-translate-y-128" // Class to add when scrolling down
   );
 
   return (
