@@ -24,35 +24,25 @@ const Surah = () => {
   // Fetch the surah data (metadata and list of ayahs)
   useEffect(() => {
     const fetchSurahData = async () => {
+      setLoading(true);
       try {
-        const response = await fetchSurahById(Number(params.surah));
-        setSurah(response.data);
-        setAyahs(response.data.ayahs || []);
+        const surahResponse = await fetchSurahById(Number(params.surah));
+        setSurah(surahResponse.data);
+        setAyahs(surahResponse.data.ayahs || []);
+        
+        const translationResponse = await fetchSurahTranslation(Number(params.surah));
+        setEnglishAyahs(translationResponse.ayahs || []);
+        
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching surah data:", error);
+        console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
+  
     fetchSurahData();
   }, [params.surah]);
-
-  // Fetch the entire surah translation in one request
-  useEffect(() => {
-    const fetchTranslations = async () => {
-      if (params.surah) {
-        try {
-          const response = await fetchSurahTranslation(Number(params.surah));
-          // Assume the translation response returns an object and the ayahs array is stored in response.ayahs
-          setEnglishAyahs(response.ayahs || []);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching surah translation:", error);
-          setEnglishAyahs([]);
-        }
-      }
-    };
-    fetchTranslations();
-  }, [params.surah]);
+  
 
   // Scroll to the selected ayah (if provided via the "ayah" search param)
   useEffect(() => {
