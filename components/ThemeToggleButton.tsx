@@ -4,21 +4,20 @@ import { EclipseIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggleButton() {
-  const [isDark, setIsDark] = useState(false); // default false, will update on mount
+  const [isDark, setIsDark] = useState(true); // default to true for dark theme
 
   useEffect(() => {
-    const isDarkActive = document.documentElement.classList.contains("dark");
-    setIsDark(isDarkActive);
-  }, []);
-
-  const toggleTheme = () => {
-    const newDarkState = !isDark;
-    setIsDark(newDarkState);
-    if (newDarkState) {
+    // On initial load, add the 'dark' class to the HTML root element
+    if (isDark) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
+  }, [isDark]);
+
+  const toggleTheme = () => {
+    const newDarkState = !isDark;
+    setIsDark(newDarkState);
   };
 
   return (
