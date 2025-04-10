@@ -11,6 +11,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { UserButton } from "@clerk/nextjs";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
+import BismillahIcon from "@/components/svg/BismillahIcon";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
@@ -32,7 +33,7 @@ const Surah = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching surah data:", error);
-      } 
+      }
     };
     fetchSurahData();
   }, [params.surah]);
@@ -58,20 +59,20 @@ const Surah = () => {
   // Scroll to the selected ayah (if provided via the "ayah" search param)
   useEffect(() => {
     if (ayahParam && !loading) {
-      toast("Scrolling to requested Ayah");
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
-        const c = ['dark:bg-[#1c1c1cff]', 'bg-gray-200']
+        const c = ["dark:bg-[#1c1c1cff]", "bg-gray-200"];
         element.classList.add(...c);
-        
+
         // Set timeouts
         const a = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
+          toast("Scrolling to requested Ayah");
         }, 200);
-        
+
         const d = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 400)
+        }, 400);
         const b = setTimeout(() => {
           element.classList.remove(...c);
         }, 4000);
@@ -82,33 +83,35 @@ const Surah = () => {
           clearTimeout(b);
           clearTimeout(d);
         };
+      } else {
+        toast("Requested ayah was not found");
       }
     }
   }, [ayahParam, ayahs]);
 
-
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-  
+
       // Show the header when scrolling up, hide it when scrolling down
       if (currentScrollY < lastScrollY) {
         setShowHeader(true); // Scrolling up, show header
       } else if (currentScrollY > lastScrollY) {
         setShowHeader(false); // Scrolling down, hide header
       }
-  
+
       // Update lastScrollY with the current scroll position
       setLastScrollY(currentScrollY);
     };
-  
+
     // Add event listener for scroll events
     window.addEventListener("scroll", handleScroll);
-  
+
     // Cleanup event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]); // Dependency on the last scroll position
-  if(loading) return <Loader className="text-gray-400 m-8 animate-spin" size={32}/>
+  if (loading)
+    return <Loader className="text-gray-400 m-8 animate-spin" size={32} />;
   return (
     <section className="w-full flex items-center flex-col dark:bg-[#08080aff] bg-white flex-1 dark:text-white text-black">
       {/* turn into component */}
@@ -125,12 +128,14 @@ const Surah = () => {
           {surah?.englishNameTranslation}
         </p>
         <p className="font-bold text-center text-2xl">{surah?.name}</p>
-        <UserButton />
+        <div className="hidden sm:block">
+          <UserButton />
+        </div>
       </div>
 
       <div className="flex flex-col w-full gap-16">
-      <div className="flex justify-center w-full px-8">
-        <Image
+        <div className="flex justify-center w-full px-8">
+          {/* <Image
           src='/svg/bismillah.svg'
           width={512}
           height={512}
@@ -138,21 +143,23 @@ const Surah = () => {
           className={cn('py-16', loading && 'pt-8')}
           title="In the name of allah, the most merciful"
 
-        />
+        /> */}
+          <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
         </div>
-        {!loading && ayahs.map((ayah: Ayah) => (
-          <AyahCard
-            key={ayah.number}
-            surah={surah}
-            ayah={ayah}
-            params={params}
-            translatedAyahs={englishAyahs} // Pass the entire translations array
-          />
-        ))}
+        {!loading &&
+          ayahs.map((ayah: Ayah) => (
+            <AyahCard
+              key={ayah.number}
+              surah={surah}
+              ayah={ayah}
+              params={params}
+              translatedAyahs={englishAyahs} // Pass the entire translations array
+            />
+          ))}
       </div>
 
       <div className="mb-8 w-full flex justify-center items-center flex-col p-4 sm:p-8">
-        <div className={cn('flex flex-row w-full', loading && 'mt-16')}>
+        <div className={cn("flex flex-row w-full", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
             surahNumber={params.surah ? Number(params.surah) - 1 : 1}

@@ -54,10 +54,16 @@ const SearchResultCard = ({
     return (
       <div
         key={`${result.number}-${index}`}
-        className="w-full bg-transparent border rounded-xl border-[#262629ff] p-4 flex flex-row justify-between scroll-snap-align-center"
+        className="w-full bg-transparent border rounded-xl border-[#262629ff] p-4 flex flex-col justify-between scroll-snap-align-center"
         onClick={() => {setIsOpen?.(!isOpen); handleNavigateToSurah({ surah: result.surah.englishName, number: result.numberInSurah })}}
       >
         <p className=" text-base">{result.text}</p>
+        <div className="flex-rowe pt-4 justify-between text-gray-400">
+          <p>
+            {result.surah.number}:{result.numberInSurah}
+          </p>
+          <p>{result.surah.englishName}</p>
+        </div>
       </div>
     );
   }

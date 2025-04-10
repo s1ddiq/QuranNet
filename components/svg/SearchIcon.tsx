@@ -1,7 +1,7 @@
 // components/svg/SearchIcon.tsx
 import React from "react";
 
-const SearchIcon = () => {
+const SearchIcon = ({...props}) => {
   return (
     <svg
       className="absolute left-4 w-4 h-4 pointer-events-none text-black dark:text-white"  // Tailwind classes for color change
