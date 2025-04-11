@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { fetchAllSurahs, searchQuran } from "@/api/api";

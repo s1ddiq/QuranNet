@@ -62,29 +62,23 @@ const Surah = () => {
         const c = ["dark:bg-[#1c1c1cff]", "bg-gray-200"];
         element.classList.add(...c);
 
-        // Set timeouts
-        const a = setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
           toast("Scrolling to requested Ayah");
-        }, 200);
 
-        const d = setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 400);
         const b = setTimeout(() => {
           element.classList.remove(...c);
         }, 4000);
 
         // Cleanup timeouts when the effect is cleaned up or ayahParam changes
         return () => {
-          clearTimeout(a);
           clearTimeout(b);
-          clearTimeout(d);
         };
       } else {
         toast("Requested ayah was not found");
       }
     }
+
+    return () => {}
   }, [ayahParam, ayahs]);
 
   useEffect(() => {

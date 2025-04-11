@@ -8,10 +8,10 @@ export default function ThemeToggleButton() {
 
   useEffect(() => {
     // On initial load, add the 'dark' class to the HTML root element
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
+    if (!isDark) {
       document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
     }
   }, [isDark]);
 
