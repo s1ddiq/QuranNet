@@ -8,15 +8,17 @@ import { Button } from "../ui/button";
 export default function SignInPopup() {
   const { isSignedIn } = useUser();
   const [showPopup, setShowPopup] = useState(false);
-
+  
   useEffect(() => {
-    if (!isSignedIn) {
+    const hasShown = sessionStorage.getItem('hasSeenSignInPopup');
+    if (!isSignedIn && !hasShown) {
       setShowPopup(true);
+      sessionStorage.setItem('hasSeenSignInPopup', 'true');
     }
   }, [isSignedIn]);
-
+  
   if (!showPopup) return null;
-
+  
   return (
     <div className="fixed inset-0 bg-[#08080aff]/90 z-50 flex items-center justify-center">
       <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm w-full text-center border-2 border-black">
