@@ -20,7 +20,7 @@ export default function SignInPopup() {
   if (!showPopup) return null;
   
   return (
-    <div className="fixed inset-0 bg-[#08080aff]/90 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-[#08080aff]/90 z-50 flex items-center justify-center px-2">
       <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm w-full text-center border-2 border-black">
         <h2 className="text-2xl font-bold mb-2 text-black">Sign in to unlock more 🔓</h2>
         <p className="text-gray-400 mb-4">
