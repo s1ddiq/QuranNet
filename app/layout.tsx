@@ -3,7 +3,6 @@ import "./globals.css";
 import Head from "next/head";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 
 const dm_sans = DM_Sans({ subsets: ["latin"] });
 
@@ -25,7 +24,6 @@ export default function RootLayout({
         </Head>
         <body className={`${dm_sans.className} dark:bg-[#08080a] bg-white`}>
           {children}
-         <ThemeToggleButton />
           <Toaster />
         </body>
       </html>

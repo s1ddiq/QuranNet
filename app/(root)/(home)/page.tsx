@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/nextjs";
 import SearchIcon from "@/components/svg/SearchIcon";
+import SignInPopup from "@/components/popups/SignInPopup";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
 
 const SurahsList = () => {
   const [surahs, setSurahs] = useState<Surah[]>([]);
@@ -43,6 +45,8 @@ const SurahsList = () => {
         </div>
       </div>
 
+      <SignInPopup />
+
       <div className="w-full flex sm:flex-row flex-col flex-wrap md:gap-8 gap-5 justify-center md:px-8 sm:px-8 px-5 mb-12">
         {filteredSurahs.map((surah: Surah) => (
           <Link href={`/surah/${surah.number}`} key={surah.number}>
@@ -67,6 +71,7 @@ const SurahsList = () => {
         <p className="text-xl text-gray-400">
           {new Date().getFullYear()} - QuranNet
         </p>
+        <ThemeToggleButton />
         <div className="text-xl text-gray-400">
           <SignedOut>
               <SignInButton />

@@ -1,32 +1,38 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchAyahAudio } from "@/api/api";
 import HighlighterPen from "./svg/HighlighterPenIcon";
 import PlayIcon from "./svg/PlayIcon";
 import DocumentIcon from "./svg/DocumentIcon";
+import SignInPopup from "./popups/SignInPopup";
 
-const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
+const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
   // Find the translation for this ayah based on its number in the surah.
-  const translation = translatedAyahs?.find(
-    (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah
-  );
-  
   const [clickable, setClickable] = useState(true);
   const [highlighted, setHighlighted] = useState(false);
-  
-  const handleFetchAudio = async () => {
-    if (!clickable) return;
-    
-    const response = await fetchAyahAudio(surah.number, ayah.numberInSurah);
-    // console.log(response);
-    if (response && response.data.audio) {
-      const audio = new Audio(response.data.audio);
-      audio.play();
-      audio.addEventListener("ended", handleAudioEnd);
-      setClickable(false);
-    } else {
+  const [preloadedAudio, setPreloadedAudio] = useState<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    const preload = async () => {
+      const response = await fetchAyahAudio(surah.number, ayah.numberInSurah)
+      if (response && response.data.audio) {
+        const audio = new Audio(response.data.audio)
+        audio.preload = "auto"
+        setPreloadedAudio(audio)
+      }
     }
-  };
+  
+    preload()
+  }, [surah.number, ayah.numberInSurah])
+  
+  const handleFetchAudio = () => {
+    if (!clickable || !preloadedAudio) return;
+
+    preloadedAudio.play()
+    preloadedAudio.addEventListener("ended", handleAudioEnd)
+    setClickable(false)
+  }
+  
   
   const handleAudioEnd = () => {
     setClickable(true);
@@ -34,7 +40,13 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
   
   const handleHighlightAyah = async () => {
     const e = document.getElementById(`ayah-${ayah.numberInSurah}`);
-    const f = ["dark:bg-[#1c1c1cff]","bg-gray-200", "border-l-4", "dark:border-l-white", "border-l-gray-400"]
+    const f = [
+      "dark:bg-[#1c1c1cff]",
+      "bg-gray-200",
+      "border-l-4",
+      "dark:border-l-white",
+      "border-l-gray-400",
+    ];
     // turn into globals.css just class for all these
     if (highlighted) {
       //   @apply dark:bg-[#1c1c1cff] bg-gray-200 border-l-4 dark:border-l-white border-l-gray-400;
@@ -45,12 +57,12 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
       setHighlighted(true);
     }
   };
-
+  
   return (
     <div
-      key={ayah.number}
-      className="border-b border-px dark:border-[#262629ff] border-gray-400 p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
-      id={`ayah-${ayah.numberInSurah}`}
+    key={ayah.number}
+    className="border-b border-px dark:border-[#262629ff] border-gray-400 p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
+    id={`ayah-${ayah.numberInSurah}`}
     >
       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
         <p className="text-lg font-light text-gray-600 dark:text-gray-400 ">
@@ -75,7 +87,7 @@ const AyahCard = ({ surah, ayah, params, translatedAyahs }: AyahCardProps) => {
         </p>
         <div>
           <p className="dark:text-gray-400 text-gray-600 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-1/2 md:w-4/6">
-            {translation?.text}
+            {ayah.translation}
           </p>
         </div>
       </div>

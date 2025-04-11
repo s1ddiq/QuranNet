@@ -80,8 +80,7 @@ interface SurahNavigationProps {
 interface AyahCardProps {
   surah: Surah;
   params: any; // REPLACE LATER WITH PROPER TYPES.
-  ayah: Ayah;
-  translatedAyahs: any[]; // REPLACE LATER WITH PROPER TYPES.
+  ayah: Ayah & { translation?: string }; // REPLACE LATER WITH PROPER TYPES.
 }
 
 interface MobileSheetProps {

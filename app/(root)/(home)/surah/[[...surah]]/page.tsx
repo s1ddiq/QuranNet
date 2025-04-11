@@ -1,8 +1,7 @@
 "use client";
 import { fetchSurahById, fetchSurahTranslation } from "@/api/api";
 import { useParams, useSearchParams } from "next/navigation";
-import React, {
-  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import NavigatorButton from "@/components/NavigatorButton";
 import AyahCard from "@/components/AyahCard";
@@ -11,6 +10,8 @@ import { toast } from "sonner";
 import { UserButton } from "@clerk/nextjs";
 import BismillahIcon from "@/components/svg/BismillahIcon";
 import { Loader } from "lucide-react";
+import SignInPopup from "@/components/popups/SignInPopup";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
@@ -27,22 +28,32 @@ const Surah = () => {
       setLoading(true);
       try {
         const surahResponse = await fetchSurahById(Number(params.surah));
+        const translationResponse = await fetchSurahTranslation(
+          Number(params.surah)
+        );
+
         setSurah(surahResponse.data);
-        setAyahs(surahResponse.data.ayahs || []);
-        
-        const translationResponse = await fetchSurahTranslation(Number(params.surah));
-        setEnglishAyahs(translationResponse.ayahs || []);
-        
+
+        const combinedAyahs = surahResponse.data.ayahs.map((ayah: Ayah) => {
+          const translated = translationResponse.ayahs.find(
+            (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah
+          );
+          return {
+            ...ayah,
+            translation: translated?.text || "", // Merge translation directly into the ayah
+          };
+        });
+
+        setAyahs(combinedAyahs); // Now ayahs[] has both Arabic + English
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
-  
+
     fetchSurahData();
   }, [params.surah]);
-  
 
   // Scroll to the selected ayah (if provided via the "ayah" search param)
   useEffect(() => {
@@ -103,6 +114,7 @@ const Surah = () => {
   return (
     <section className="w-full flex items-center flex-col dark:bg-[#08080aff] bg-white flex-1 dark:text-white text-black">
       {/* turn into component */}
+      <SignInPopup />
       <div
         className={cn(
           "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 dark:bg-[#08080aff] bg-white w-full px-6 border-b dark:border-[#262629ff] border-gray-400 transition-all duration-300",
@@ -135,13 +147,12 @@ const Surah = () => {
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
         </div>
         {!loading &&
-          ayahs.map((ayah: Ayah) => (
+          ayahs.map((ayah) => (
             <AyahCard
               key={ayah.number}
               surah={surah}
               ayah={ayah}
               params={params}
-              translatedAyahs={englishAyahs} // Pass the entire translations array
             />
           ))}
       </div>
@@ -164,6 +175,7 @@ const Surah = () => {
           <p className="text-sm font-bold tracking-widest text-gray-400">
             QuranNet
           </p>
+          <ThemeToggleButton />
           <p className="text-sm font-bold tracking-widest text-gray-400">
             {new Date().getFullYear()}
           </p>

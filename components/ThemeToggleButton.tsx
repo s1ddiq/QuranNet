@@ -23,12 +23,12 @@ export default function ThemeToggleButton() {
   return (
     <div
       onClick={toggleTheme}
-      className="fixed bottom-8 right-8 text-3xl dark:bg-[#08080aff] bg-white rounded-full 
+      className="text-3xl dark:bg-[#08080aff] bg-white rounded-full 
         flex justify-center items-center border-px dark:border-white border-gray-400
         cursor-pointer transition-all duration-300 hover:-translate-y-2 z-[999]"
     >
       <p className="pointer-events-none dark:text-white text-black">
-        <EclipseIcon size={48} />
+        <EclipseIcon size={32} />
       </p>
     </div>
   );
