@@ -15,7 +15,6 @@ import ThemeToggleButton from "@/components/ThemeToggleButton";
 const Surah = () => {
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
-  const [englishAyahs, setEnglishAyahs] = useState<EnglishAyah[]>([]);
   const params = useParams();
   const searchParams = useSearchParams();
   const ayahParam = searchParams.get("ayah");
