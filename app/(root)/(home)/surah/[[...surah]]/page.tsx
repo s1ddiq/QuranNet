@@ -62,7 +62,7 @@ const Surah = () => {
         const c = ["dark:bg-[#1c1c1cff]", "bg-gray-200"];
         element.classList.add(...c);
 
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          element.scrollIntoView({ behavior: "auto", block: "center" });
           toast("Scrolling to requested Ayah");
 
         const b = setTimeout(() => {
