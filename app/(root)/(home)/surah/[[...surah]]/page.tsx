@@ -25,7 +25,7 @@ const Surah = () => {
   const pathname = usePathname();
   useEffect(() => {
     const fetchSurahData = async () => {
-      if(!params.surah) return;
+      if (!params.surah) return;
       try {
         const surahResponse = await fetchSurahById(Number(params.surah));
         const translationResponse = await fetchSurahTranslation(
@@ -59,11 +59,11 @@ const Surah = () => {
     if (ayahParam && !loading) {
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
+        toast("Scrolling to requested Ayah");
         const c = ["dark:bg-[#1c1c1cff]", "bg-gray-200"];
         element.classList.add(...c);
 
-          element.scrollIntoView({ behavior: "auto", block: "center" });
-          toast("Scrolling to requested Ayah");
+        element.scrollIntoView({ behavior: "auto", block: "center" }); // maybe make this smooth
 
         const b = setTimeout(() => {
           element.classList.remove(...c);
@@ -77,8 +77,6 @@ const Surah = () => {
         toast("Requested ayah was not found");
       }
     }
-
-    return () => {}
   }, [ayahParam, ayahs]);
 
   useEffect(() => {
