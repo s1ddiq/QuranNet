@@ -1,6 +1,6 @@
 "use client";
 import { fetchSurahById, fetchSurahTranslation } from "@/api/api";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import NavigatorButton from "@/components/NavigatorButton";
@@ -22,9 +22,10 @@ const Surah = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [loading, setLoading] = useState(true);
   // Fetch the surah data (metadata and list of ayahs)
+  const pathname = usePathname();
   useEffect(() => {
     const fetchSurahData = async () => {
-      setLoading(true);
+      if(!params.surah) return;
       try {
         const surahResponse = await fetchSurahById(Number(params.surah));
         const translationResponse = await fetchSurahTranslation(
@@ -44,11 +45,10 @@ const Surah = () => {
         });
 
         setAyahs(combinedAyahs); // Now ayahs[] has both Arabic + English
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchSurahData();

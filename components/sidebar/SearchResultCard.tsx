@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -13,19 +13,26 @@ const SearchResultCard = ({
 }: SearchResultCardProps) => {
   const surahNavigation = useSurahNavigation();
   const router = useRouter();
+  const currentSurah = usePathname();
+  const surahNumber = surahNavigation.getSurahNumber(result.surah.englishName);
+  const isOnSurah = currentSurah.includes(String(surahNumber)); // checks if pathname includes the number of the surah currently. could be buggy if the ayah param also includes that number
+
   const handleNavigateToSurah = async ({
     surah,
     number,
   }: SurahNavigationProps) => {
-    const surahNumber = surahNavigation.getSurahNumber(surah);
     if (surahNumber) {
       surahNavigation.goToSurah(surah); // Update the state
-      // console.log(`Navigating to Surah ${surah}, Verse ${number}`);
-      // console.log(pathname);
-      router.push(`/surah/${surahNumber}?ayah=${number}`); // Navigate to the new URL
+      if (isOnSurah) {
+        router.replace(`?ayah=${number}`, {scroll: false});
+      } else {
+        router.push(`/surah/${surahNumber}?ayah=${number}`); // Navigate to the new URL
+      }
     } else {
       console.log(`Surah wasn't found!`);
     }
+
+    return () => {};
   };
 
   if (type === "desktop") {
@@ -54,7 +61,13 @@ const SearchResultCard = ({
       <div
         key={`${result.number}-${index}`}
         className="w-full bg-transparent border rounded-xl border-[#262629ff] p-4 flex flex-col justify-between scroll-snap-align-center"
-        onClick={() => {setIsOpen?.(!isOpen); handleNavigateToSurah({ surah: result.surah.englishName, number: result.numberInSurah })}}
+        onClick={() => {
+          setIsOpen?.(!isOpen);
+          handleNavigateToSurah({
+            surah: String(surahNumber),
+            number: result.numberInSurah,
+          });
+        }}
       >
         <p className=" text-base">{result.text}</p>
         <div className="flex-rowe pt-4 justify-between text-gray-400">
