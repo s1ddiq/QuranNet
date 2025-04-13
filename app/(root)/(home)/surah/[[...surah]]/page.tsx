@@ -45,6 +45,7 @@ const Surah = () => {
         });
 
         setAyahs(combinedAyahs); // Now ayahs[] has both Arabic + English
+        localStorage.setItem(`recent`, JSON.stringify(surahResponse.data))
       } catch (error) {
         console.error("Error fetching data:", error);
       }

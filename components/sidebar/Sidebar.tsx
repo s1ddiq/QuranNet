@@ -20,7 +20,7 @@ const Sidebar = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [activeTab, setActiveTab] = useState<"overview" | "search" | "browse">(
-    "overview"
+    "browse"
   );
 
   const toggleSidebar = () => {
