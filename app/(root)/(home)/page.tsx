@@ -13,7 +13,6 @@ import {
 import SearchIcon from "@/components/svg/SearchIcon";
 import SignInPopup from "@/components/popups/SignInPopup";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
-import { PinIcon } from "lucide-react";
 
 const SurahsList = () => {
   const [surahs, setSurahs] = useState<Surah[]>([]);
@@ -63,14 +62,14 @@ const SurahsList = () => {
       </div>
 
       {isSignedIn && recent ? (
-        <div className="mb-8">
+        <div className="mb-8 w-full px-2">
           {/* <Link href={`/`}>{localStorage.getItem("recent") ?? 'No recently read'}</Link> */}
           {/* <p>{localStorage.getItem('recent') ? JSON.parse(localStorage.getItem('recent')!) : 'No recently read'}</p> */}
           <p className="text-white text-2xl py-4 text-center">
-            Recent Surah <PinIcon className="inline"/>
+            Continue Reading
           </p>
           <Link href={`/surah/${recent.number}`} key={recent.number}>
-          <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-black border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex flex-col justify-between">
+          <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-black border-2 dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex flex-col justify-between">
               <div className="flex w-full justify-between text-sm">
                 <p className="text-lg font-semibold dark:text-white text-black">
                   {recent.englishName}
@@ -87,7 +86,7 @@ const SurahsList = () => {
         </div>
       ) : (
         <div className="text-center text-gray-200">
-          <p><Link href='/sign-in' className="text-blue-500">Sign in</Link> to unlock recently read!</p>
+          <p><Link href={isSignedIn ? '/surah/1' : '/sign-in'} className="text-blue-500">{isSignedIn ? 'Visit a surah' : 'Sign in'}</Link> to unlock recently read!</p>
         </div>
       )}
       <SignInPopup />
