@@ -81,24 +81,24 @@ const Surah = () => {
 
   useEffect(() => {
     let lastY = window.scrollY;
-  
+
     const handleScroll = () => {
       const currentY = window.scrollY;
-  
+
       if (currentY < lastY) {
         setShowHeader(true);
       } else if (currentY > lastY) {
         setShowHeader(false);
       }
-  
+
       lastY = currentY;
     };
-  
+
     window.addEventListener("scroll", handleScroll);
-  
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []); // <-- No dependencies
-  
+
   if (loading)
     return <Loader className="text-gray-400 m-8 animate-spin" size={32} />;
   return (
