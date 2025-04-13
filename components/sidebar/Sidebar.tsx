@@ -6,7 +6,6 @@ import { debounce } from "lodash";
 import SearchResultCard from "./SearchResultCard";
 import { cn } from "@/lib/utils";
 import MobileSheet from "./MobileSheet";
-import useScrollHandler from "@/hooks/useScrollHandler";
 import SidebarHeader from "./SidebarHeader";
 import { toast } from "sonner";
 import SearchInput from "./SearchInput";
@@ -68,12 +67,6 @@ useEffect(() => {
   };
 }, [searchQuery, debouncedSearch]);
 
-
-  useScrollHandler(
-    ["a-1", "a-2"], // IDs of the elements you want to track scroll for
-    ["fixed", "top-0", '!opacity-0'], // Adjusted to match the expected type
-    "-translate-y-128" // Class to add when scrolling down
-  );
 
   return (
     <div>
@@ -152,6 +145,7 @@ useEffect(() => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         amount={amount}
+        surahs={surahs}
       />
     </div>
   );

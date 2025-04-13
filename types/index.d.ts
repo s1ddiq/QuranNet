@@ -49,7 +49,15 @@ interface EnglishAyah {
 }
 
 interface SearchResult {
-  edition: Object;
+  edition: {
+    identifier: string;
+    language: string;
+    name: string;
+    englishName: string;
+    format: string;
+    type: string;
+    direction: string;
+  };
   number: number;
   numberInSurah: number;
   surah: {
@@ -87,11 +95,12 @@ interface MobileSheetProps {
   isOpen: boolean; // Boolean state for whether the sheet is open or not
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>; // Set state function to toggle the open state
   isScrolling: boolean; // Boolean state to check if the sheet is scrolling
-  setIsScrolling: React.Dispatch<React.SetStateAction<boolean>>; // Set state function for scrolling state
-  searchResults: SearchResult[]; // Array of search results of type `SearchResult`
+  setIsScrolling?: React.Dispatch<React.SetStateAction<boolean>>; // Set state function for scrolling state
+  searchResults?: SearchResult[]; // Array of search results of type `SearchResult`
   searchQuery: string; // Search query string to filter the results
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   amount: number;
+  surahs?: Surah[];
 }
 
 interface SidebarHeaderProps {

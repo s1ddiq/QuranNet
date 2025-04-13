@@ -80,26 +80,25 @@ const Surah = () => {
   }, [ayahParam, ayahs]);
 
   useEffect(() => {
+    let lastY = window.scrollY;
+  
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show the header when scrolling up, hide it when scrolling down
-      if (currentScrollY < lastScrollY) {
-        setShowHeader(true); // Scrolling up, show header
-      } else if (currentScrollY > lastScrollY) {
-        setShowHeader(false); // Scrolling down, hide header
+      const currentY = window.scrollY;
+  
+      if (currentY < lastY) {
+        setShowHeader(true);
+      } else if (currentY > lastY) {
+        setShowHeader(false);
       }
-
-      // Update lastScrollY with the current scroll position
-      setLastScrollY(currentScrollY);
+  
+      lastY = currentY;
     };
-
-    // Add event listener for scroll events
+  
     window.addEventListener("scroll", handleScroll);
-
-    // Cleanup event listener on component unmount
+  
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]); // Dependency on the last scroll position
+  }, []); // <-- No dependencies
+  
   if (loading)
     return <Loader className="text-gray-400 m-8 animate-spin" size={32} />;
   return (
@@ -125,7 +124,7 @@ const Surah = () => {
       </div>
 
       <div className="flex flex-col w-full gap-16">
-        <div className="flex justify-center w-full px-8">
+        <div className="flex justify-center text-center w-full">
           {/* <Image
           src='/svg/bismillah.svg'
           width={512}

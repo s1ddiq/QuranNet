@@ -142,7 +142,7 @@
 
 .scrollable-container {
   overflow-y: auto;
-  max-height: calc(100vh - 160px);
+  max-height: calc(100vh - 20px);
 }
 
 /* Scrollbar styles */
