@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface CrossIconProps {
-  className: string;
+  className?: string;
   onClick?: () => void; // Optional onClick prop
 }
 

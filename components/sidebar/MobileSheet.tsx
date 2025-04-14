@@ -133,7 +133,7 @@ const MobileSheet = ({
                     searchQuery.length > 0 ? "block" : "hidden"
                   )}
                 >
-                  <CrossIcon onClick={() => setSearchQuery("")} />
+                  <CrossIcon onClick={() => setSearchQuery("")} className={`${searchQuery.length > 0 ? 'block' : 'hidden'}`}/>
                 </span>
               </div>
             </div>
