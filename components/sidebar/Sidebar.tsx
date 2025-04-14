@@ -14,7 +14,7 @@ import { BookOpen, Contact, Settings } from "lucide-react";
 const Sidebar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState([]);
-  const [amount, setAmount] = useState(10);
+  const [amount, setAmount] = useState(25);
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -92,7 +92,7 @@ const Sidebar = () => {
           toggleSidebar={toggleSidebar}
           isCollapsed={isCollapsed}
         />
-        <div className="w-full flex items-center justify-center">
+        <div className={cn("w-full items-center justify-center", isCollapsed ? 'hidden' : 'flex')}>
           <div className="flex w-full justify-center items-center gap-4 pt-[12px] border-b border-[#262629ff] pb-2">
             <p
               onClick={() => setActiveTab("search")}
@@ -124,7 +124,7 @@ const Sidebar = () => {
         {activeTab === "search" && (
           <div
             className={cn(
-              "flex flex-col gap-3 mt-4 px-4",
+              "flex flex-col gap-3 px-2 pt-2",
               isCollapsed && "hidden"
             )}
           >
@@ -136,7 +136,6 @@ const Sidebar = () => {
               className="
               flex flex-col gap-8 items-center scrollable-container
             "
-              id="a-1"
             >
               {searchResults.length > 0 ? (
                 searchResults
@@ -162,9 +161,7 @@ const Sidebar = () => {
 
         {activeTab === "browse" && (
           <div
-            className="
-          flex flex-col gap-8 scrollable-container px-4 pt-8"
-            id="a-2"
+          className={cn('flex-col gap-8 scrollable-container px-4 py-4', isCollapsed ? 'hidden' : 'flex')}
           >
              {/* seperator */}
             {surahs.map((surah: Surah) => (
@@ -184,23 +181,11 @@ const Sidebar = () => {
         )}
         {/* turn into components */}
         {activeTab === "overview" && (
-          <div className="flex flex-col justify-between gap-4 p-4 text-white">
-            <p className="text-center text-gray-400 text-lg">Purely visual only settings, check back later!</p>
-            <div className="w-full h-px bg-[#262629ff] rounded-full"></div>{" "}
-            {/* seperator */}
-            <>
-              <div className="flex justify-between">
-                <p className="text-xl">Manage appearance</p>
-                <Settings size={26} />
-              </div>
-              <div className="flex flex-col text-gray-400">
-                <p>Font Size</p>
-                <p>Reciter</p>
-                <p>...More coming soon</p>
-              </div>
-            </>
-            <div className="w-full h-px bg-[#262629ff] rounded-full"></div>{" "}
-            {/* seperator */}
+          <div className={cn("flex-col justify-between gap-4 p-4 text-white", isCollapsed ? 'hidden' : 'flex')}>
+            {/* <p className="text-center text-gray-400 text-lg">Purely visual only settings, check back later!</p> */}
+            
+     
+       
             <>
               <div className="flex flex-col w-full gap-5">
                 <div className="flex justify-between">
@@ -214,7 +199,6 @@ const Sidebar = () => {
               </div>
             </>
             <>
-              <div className="w-full h-px bg-[#262629ff] rounded-full"></div>{" "}
               <div className="flex justify-between">
                 <p className="text-xl">Open Source Projects</p>
                 <BookOpen size={26} />
@@ -228,14 +212,16 @@ const Sidebar = () => {
                 </Link>
               </div>
             </>
-            <div className="w-full h-px bg-[#262629ff] rounded-full"></div>{" "}
-            {/* seperator */}
+           
             <div className="flex flex-col w-full gap-5">
               <p className="text-xl text-blue-500">Donate</p>
             </div>
           </div>
         )}
       </div>
+
+      {/*  <div className="w-full h-px bg-[#262629ff] rounded-full"></div>{" "}
+            {/* seperator */}
 
       {/* MOBILE */}
       <MobileSheet
@@ -254,3 +240,16 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+
+       {/* <>
+              <div className="flex justify-between">
+                <p className="text-xl">Manage appearance</p>
+                <Settings size={26} />
+              </div>
+              <div className="flex flex-col text-gray-400">
+                <p>Font Size</p>
+                <p>Reciter</p>
+                <p>...More coming soon</p>
+              </div>
+            </> */}

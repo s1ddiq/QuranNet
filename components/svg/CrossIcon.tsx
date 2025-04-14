@@ -1,10 +1,11 @@
 import React from 'react';
 
 interface CrossIconProps {
+  className: string;
   onClick?: () => void; // Optional onClick prop
 }
 
-const CrossIcon: React.FC<CrossIconProps> = ({ onClick }) => (
+const CrossIcon: React.FC<CrossIconProps> = ({ className, onClick }) => (
   <svg
     width="22"
     height="22"
@@ -13,7 +14,7 @@ const CrossIcon: React.FC<CrossIconProps> = ({ onClick }) => (
     fill="currentColor"
     onClick={onClick} // Attach onClick event handler
     style={{ cursor: 'pointer' }} // Make the cursor a pointer to indicate it's clickable
-    className='mr-2 dark:text-white text-black'
+    className={'mr-2 dark:text-white text-black ' + className}
   >
     <g id="SVGRepo_bgCarrier" strokeWidth="0" />
     <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />

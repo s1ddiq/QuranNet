@@ -45,7 +45,7 @@ const SurahsList = () => {
 
   return (
     <div className="w-full flex-items-center flex-col flex-1 pt-16 gap-4 text-white">
-      <div className="w-full px-6 flex-col flex-center">
+      <div className="w-full px-2 flex-col flex-center">
         <h1 className="md:text-6xl text-4xl font-bold text-center dark:text-white font-open-sans">
           QuranNet
         </h1>
@@ -62,7 +62,7 @@ const SurahsList = () => {
       </div>
 
       {isSignedIn && recent ? (
-        <div className="mb-8 w-full px-2">
+        <div className="mb-8 w-full px-2 flex flex-col items-center gap-3">
           {/* <Link href={`/`}>{localStorage.getItem("recent") ?? 'No recently read'}</Link> */}
           {/* <p>{localStorage.getItem('recent') ? JSON.parse(localStorage.getItem('recent')!) : 'No recently read'}</p> */}
           <p className="text-white text-2xl py-4 text-center">

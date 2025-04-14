@@ -5,6 +5,8 @@ import HighlighterPen from "./svg/HighlighterPenIcon";
 import PlayIcon from "./svg/PlayIcon";
 import DocumentIcon from "./svg/DocumentIcon";
 import SignInPopup from "./popups/SignInPopup";
+import { toast } from "sonner";
+import CopyIcon from "./svg/CopyIcon";
 
 const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
   // Find the translation for this ayah based on its number in the surah.
@@ -57,11 +59,18 @@ const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
       setHighlighted(true);
     }
   };
+  const handleCopyAyah = async () => {
+    let copyText = ayah.translation?.toString();
+    if (copyText !== undefined) {
+      navigator.clipboard.writeText(copyText);
+      toast("Copied text", { description: `${copyText}` });
+    }
+  };
   
   return (
     <div
     key={ayah.number}
-    className="border-b border-px dark:border-[#262629ff] border-gray-400 p-4 md:p-8 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
+    className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-6 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
     id={`ayah-${ayah.numberInSurah}`}
     >
       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
@@ -69,9 +78,9 @@ const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
           {params.surah}:{ayah.numberInSurah}
         </p>
 
+        <CopyIcon onClick={() => handleCopyAyah()}/>
         <HighlighterPen onClick={() => handleHighlightAyah()} />
         <DocumentIcon />
-
         <PlayIcon onClick={() => handleFetchAudio()} />
       </div>
 

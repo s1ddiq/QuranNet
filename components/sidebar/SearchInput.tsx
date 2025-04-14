@@ -18,7 +18,7 @@ const SearchInput = ({
         placeholder="Search the Quran"
         className="border-0 ml-4 focus-visible:ring-0 h-full pl-6 !bg-transparent !shadow-none"
       />
-      <CrossIcon onClick={() => setSearchQuery("")}/>
+      <CrossIcon className={`${searchQuery.length > 0 ? 'block' : 'hidden'}`} onClick={() => setSearchQuery("")} />
     </div>
   );
 };
