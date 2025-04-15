@@ -21,7 +21,7 @@ const Surah = () => {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [loading, setLoading] = useState(true);
-  // Fetch the surah data (metadata and list of ayahs)
+  // Fetch the surah data (metadata and list of ayahs!)
   const pathname = usePathname();
   useEffect(() => {
     const fetchSurahData = async () => {
