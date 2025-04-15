@@ -69,7 +69,6 @@ const MobileSheet = ({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger
         className="fixed w-full sm:hidden flex justify-between items-center p-2 top-0 dark:bg-[#08080a] bg-white border-b border-[#262629ff] min-h-16"
-        onClick={() => setIsOpen(true)}
       >
         <MenuIcon
           onClick={() => setIsOpen(true)}
