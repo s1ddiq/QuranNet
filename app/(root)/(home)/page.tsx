@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   SignedIn,
   SignedOut,
-  SignInButton,
   SignOutButton,
   useClerk,
   UserButton,
@@ -22,15 +21,12 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import SearchInput from "@/components/sidebar/SearchInput";
 import MenuIcon from "@/components/svg/MenuIcon";
-import Dill from "@/components/svg/illustrations/SingleHill";
 import Hills from "@/components/svg/illustrations/Hills";
 import SingleHill from "@/components/svg/illustrations/SingleHill";
 import ScrollingAyah from "@/components/ScrollingAyahs";
-import { cn } from "@/lib/utils";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const SurahsList = () => {
@@ -90,34 +86,11 @@ const SurahsList = () => {
     const debounceTimer = setTimeout(fetchSearchResults, 300); // debounce 300ms
     return () => clearTimeout(debounceTimer);
   }, [searchQuery]);
-  const ayahs = [
-    "﴿ إِنَّ مَعَ الْعُسْرِ يُسْرًا ﴾ — Indeed, with hardship [will be] ease. (94:6)",
-    "﴿ إِنَّ اللّهَ مَعَ الصَّابِرِينَ ﴾ — Indeed, Allah is with the patient. (2:153)",
-    "﴿ فَاذْكُرُونِي أَذْكُرْكُمْ ﴾ — So remember Me; I will remember you. (2:152)",
-    "﴿ وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ ﴾ — My success is only by Allah. (11:88)",
-    "﴿ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ ﴾ — Do not despair of the mercy of Allah. (39:53)",
-    "﴿ إِنَّ رَبِّي قَرِيبٌ مُّجِيبٌ ﴾ — Indeed, my Lord is near and responsive. (11:61)",
-    "﴿ وَاللَّهُ خَيْرُ الرَّازِقِينَ ﴾ — And Allah is the best of providers. (62:11)",
-    "﴿ وَمَا تَفْعَلُوا مِنْ خَيْرٍ فَإِنَّ اللَّهَ بِهِ عَلِيمٌ ﴾ — And whatever good you do — Allah is All-Knowing of it. (2:215)",
-    "﴿ وَاللَّهُ يُحِبُّ الصَّابِرِينَ ﴾ — And Allah loves the patient. (3:146)",
-    "﴿ وَاللَّهُ غَفُورٌ رَّحِيمٌ ﴾ — And Allah is Forgiving and Merciful. (2:173)",
-    "﴿ وَرَحْمَتِي وَسِعَتْ كُلَّ شَيْءٍ ﴾ — My mercy encompasses all things. (7:156)",
-    "﴿ نَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ ﴾ — We are closer to him than [his] jugular vein. (50:16)",
-    "﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾ — And say, 'My Lord, increase me in knowledge.' (20:114)",
-    "﴿ وَاللَّهُ عَلِيمٌ حَكِيمٌ ﴾ — And Allah is Knowing and Wise. (4:17)",
-    "﴿ إِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ ﴾ — Allah does not waste the reward of the doers of good. (9:120)",
-    "﴿ وَتَوَكَّلْ عَلَى اللَّهِ ﴾ — And rely upon Allah. (3:159)",
-    "﴿ إِنَّهُ كَانَ بِكُمْ رَحِيمًا ﴾ — Indeed, He is ever Merciful to you. (57:9)",
-    "﴿ إِنَّ اللَّهَ يُحِبُّ الْمُتَوَكِّلِينَ ﴾ — Indeed, Allah loves those who rely [upon Him]. (3:159)",
-    "﴿ مَا عِندَ اللَّهِ خَيْرٌ ﴾ — What is with Allah is better. (62:11)",
-    "﴿ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ ﴾ — And He is over all things competent. (5:120)",
-  ];
 
   return (
     <>
       <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] flex items-center justify-between px-4">
         <LogoIcon className="text-white hidden md:block" />
-
         {/* Menu Icon for small screens */}
         <div className="sm:hidden flex items-center">
           <MenuIcon
@@ -230,12 +203,24 @@ const SurahsList = () => {
         </nav>
 
         {/* Support Us Button */}
-        <Link
+        {/* <Link
           href="/support"
           className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
-        >
+          >
           Support Us ♥
-        </Link>
+          </Link> */}
+
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
+          <Link
+            href="/sign-up"
+            className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+          >
+            Sign in
+          </Link>
+        </SignedOut>
       </div>
 
       <div className="w-full flex-items-center flex-col flex-1 text-white ">
@@ -284,16 +269,14 @@ const SurahsList = () => {
         {/* seperator */}
         <div className="w-full flex sm:flex-row flex-col flex-wrap md:gap-6 gap-5 justify-center px-4 mb-12 bg-[#0F0F0F] pb-12 rounded-b-3xl border-b-4 border-gray-600">
           {isSignedIn && recent ? (
-            <div className="mb-8 w-full px-2 flex flex-col gap-3 items-center">
-              {/* <Link href={`/`}>{localStorage.getItem("recent") ?? 'No recently read'}</Link> */}
-              {/* <p>{localStorage.getItem('recent') ? JSON.parse(localStorage.getItem('recent')!) : 'No recently read'}</p> */}
-              <p className="text-white text-2xl py-4 text-left font-open-sans">
-                Continue Reading
-              </p>
-              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-black border-2 dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex flex-col justify-between">
+            <div className="mb-8 w-full flex flex-col gap-3 items-center">
+              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex flex-col justify-between text-white">
+                <p className="text-white text-2xl pb-2 text-left font-open-sans">
+                  Continue Reading
+                </p>
                 <Link href={`/surah/${recent.number}`} key={recent.number}>
                   <div className="flex w-full justify-between text-sm">
-                    <p className="text-lg font-semibold dark:text-white text-black">
+                    <p className="text-lg font-semibold">
                       {recent.englishName}
                     </p>
                     <p>{recent.number}</p>
@@ -307,7 +290,7 @@ const SurahsList = () => {
               </div>
             </div>
           ) : (
-            <div className="text-center text-gray-200">
+            <div className="text-center text-xl bg-black rounded-xl text-gray-200 w-full">
               <p>
                 <Link
                   href={isSignedIn ? "/surah/1" : "/sign-in"}
@@ -315,15 +298,15 @@ const SurahsList = () => {
                 >
                   {isSignedIn ? "Visit a surah" : "Sign in"}
                 </Link>{" "}
-                to unlock recently read!
+                to unlock your reading history.
               </p>
             </div>
           )}
           {surahs.map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="lg:w-116 md:w-96 sm:w-64 w-full min-h-24 h-auto bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex hover:brightness-135">
-                <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 shadow-sm w-full">
-                  <div className="w-10 h-10 rounded-xl bg-black/45 flex justify-center items-center rotate-45">
+              <div className="group lg:w-116 md:w-96 sm:w-64 w-full min-h-24 h-auto bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 border rounded-lg text-gray-400 flex hover:brightness-110">
+                <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
+                  <div className="group-hover:bg-blue-500 w-10 h-10 rounded-xl bg-black/45 flex justify-center items-center rotate-45 transition-all duration-100">
                     <p className="-rotate-45 text-white text-sm font-bold">
                       {surah.number}
                     </p>
@@ -366,6 +349,9 @@ const SurahsList = () => {
                 QuranNet is providing free, easy, and ad-free access to the Holy
                 Quran — beautifully designed, always available, and built with
                 love for every heart.
+              </p>
+              <p className="text-xl">
+                <SignOutButton />
               </p>
             </div>
 
