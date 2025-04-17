@@ -28,6 +28,7 @@ import Hills from "@/components/svg/illustrations/Hills";
 import SingleHill from "@/components/svg/illustrations/SingleHill";
 import ScrollingAyah from "@/components/ScrollingAyahs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { cn } from "@/lib/utils";
 
 const SurahsList = () => {
   const [surahs, setSurahs] = useState<Surah[]>([]);
@@ -39,7 +40,12 @@ const SurahsList = () => {
   const router = useRouter();
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "search">("overview");
+  const [activeSidebarTab, setActiveSidebarTab] = useState<
+    "overview" | "search"
+  >("search");
+  const [activeSection, setActiveSection] = useState<
+    "Last Read" | "Saved" | "Collections"
+  >("Last Read");
 
   useEffect(() => {
     const func = async () => {
@@ -109,18 +115,22 @@ const SurahsList = () => {
             <div className="w-full flex items-center justify-center">
               <div className="flex w-full justify-center items-center gap-4 pt-6 border-b border-[#262629ff] pb-2">
                 <p
-                  onClick={() => setActiveTab("search")}
+                  onClick={() => setActiveSidebarTab("search")}
                   className={`cursor-pointer ${
-                    activeTab === "search" ? "text-white" : "text-gray-500"
+                    activeSidebarTab === "search"
+                      ? "text-white"
+                      : "text-gray-500"
                   }`}
                 >
                   Search
                 </p>
 
                 <p
-                  onClick={() => setActiveTab("overview")}
+                  onClick={() => setActiveSidebarTab("overview")}
                   className={`cursor-pointer ${
-                    activeTab === "overview" ? "text-white" : "text-gray-500"
+                    activeSidebarTab === "overview"
+                      ? "text-white"
+                      : "text-gray-500"
                   }`}
                 >
                   Overview
@@ -128,7 +138,7 @@ const SurahsList = () => {
               </div>
             </div>
 
-            {activeTab === "search" && (
+            {activeSidebarTab === "search" && (
               <>
                 <SearchInput
                   searchQuery={searchQuery}
@@ -157,7 +167,7 @@ const SurahsList = () => {
               </>
             )}
 
-            {activeTab === "overview" && (
+            {activeSidebarTab === "overview" && (
               <Link
                 href="/support"
                 className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
@@ -194,7 +204,7 @@ const SurahsList = () => {
           <span
             className="cursor-pointer hover:text-gray-300 transition"
             onClick={() => {
-              setActiveTab("overview");
+              setActiveSidebarTab("overview");
               setIsOpen(true);
             }}
           >
@@ -202,7 +212,6 @@ const SurahsList = () => {
           </span>
         </nav>
 
-        {/* Support Us Button */}
         {/* <Link
           href="/support"
           className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
@@ -267,13 +276,48 @@ const SurahsList = () => {
         <SignInPopup />
 
         {/* seperator */}
-        <div className="w-full flex sm:flex-row flex-col flex-wrap md:gap-6 gap-5 justify-center px-4 mb-12 bg-[#0F0F0F] pb-12 rounded-b-3xl border-b-4 border-gray-600">
-          {isSignedIn && recent ? (
-            <div className="mb-8 w-full flex flex-col gap-3 items-center">
-              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-300 border rounded-lg text-gray-400 flex flex-col justify-between text-white">
-                <p className="text-white text-2xl pb-2 text-left font-open-sans">
-                  Continue Reading
+        {/* w-full flex sm:flex-row flex-col flex-wrap md:gap-6 gap-5 justify-center px-4 mb-12 bg-[#0F0F0F] pb-12 rounded-b-3xl border-b-4 border-gray-600 */}
+
+        <div className="w-full xl:px-32 lg:px-24 px-4 bg-[#0F0F0F] pb-24">
+          <div className="text-base flex md:flex-row flex-col gap-4 justify-between">
+            <p
+              className="text-white text-2xl pb-2 text-left font-open-sans cursor-pointer"
+              onClick={!isSignedIn ? () => router.push("/sign-in") : () => {}}
+            >
+              {!isSignedIn
+                ? "Sign in to unlock this feature 🔒"
+                : activeSection === "Last Read"
+                ? "Continue Reading"
+                : activeSection === "Saved"
+                ? "Your saved"
+                : activeSection === "Collections"
+                ? "Your Collections"
+                : ""}
+            </p>
+
+            <div className="bg-zinc-900 flex rounded-full p-2 md:text-base text-sm mb-6">
+              {["Last Read", "Saved", "Collections"].map((section) => (
+                <p
+                  key={section}
+                  onClick={() =>
+                    setActiveSection(section as typeof activeSection)
+                  }
+                  className={cn(
+                    "cursor-pointer py-2 md:w-auto md:px-6 text-center w-1/3 rounded-full",
+                    activeSection === section
+                      ? "text-blue-500 bg-black/45"
+                      : "text-white"
+                  )}
+                >
+                  {section}
                 </p>
+              ))}
+            </div>
+          </div>
+
+          <div className="lg:min-h-48 min-h-32">
+            {isSignedIn && activeSection === "Last Read" && (
+              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer text-gray-400 flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
                 <Link href={`/surah/${recent.number}`} key={recent.number}>
                   <div className="flex w-full justify-between text-sm">
                     <p className="text-lg font-semibold">
@@ -288,23 +332,47 @@ const SurahsList = () => {
                   </div>
                 </Link>
               </div>
-            </div>
-          ) : (
-            <div className="text-center text-xl bg-black rounded-xl text-gray-200 w-full">
-              <p>
-                <Link
-                  href={isSignedIn ? "/surah/1" : "/sign-in"}
-                  className="text-blue-500"
-                >
-                  {isSignedIn ? "Visit a surah" : "Sign in"}
-                </Link>{" "}
-                to unlock your reading history.
-              </p>
-            </div>
-          )}
+            )}
+
+            {isSignedIn && activeSection === "Saved" && (
+              <div>
+                <p className="text-xl">😢</p>
+                <p className="text-gray-200 hover:text-gray-100">
+                  We're sorry, but saving surahs is currently unavailable. We're
+                  actively working to bring this feature to you as soon as
+                  possible.{" "}
+                  <Link
+                    href="https://github.com/s1ddiq/QuranNet"
+                    className="text-blue-500 text-lg"
+                  >
+                    Learn More
+                  </Link>
+                </p>
+              </div>
+            )}
+
+            {isSignedIn && activeSection === "Collections" && (
+              <div>
+                <p className="text-xl">😢</p>
+                <p className="text-gray-200 hover:text-gray-100">
+                  We're sorry, but the Collections is currently unavailable.
+                  We're actively working to bring this feature to you as soon as
+                  possible.{" "}
+                  <Link
+                    href="https://github.com/s1ddiq/QuranNet"
+                    className="text-blue-500 text-lg"
+                  >
+                    Learn More
+                  </Link>
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-6 xl:px-32 lg:px-24 px-4">
           {surahs.map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="group lg:w-116 md:w-96 sm:w-64 w-full min-h-24 h-auto bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 border rounded-lg text-gray-400 flex hover:brightness-110">
+              <div className="group min-h-24 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 border rounded-lg text-gray-400 flex hover:brightness-110">
                 <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
                   <div className="group-hover:bg-blue-500 w-10 h-10 rounded-xl bg-black/45 flex justify-center items-center rotate-45 transition-all duration-100">
                     <p className="-rotate-45 text-white text-sm font-bold">
