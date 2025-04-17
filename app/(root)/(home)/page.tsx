@@ -51,11 +51,7 @@ const SurahsList = () => {
     const func = async () => {
       const resA = await fetchAllSurahs();
       setSurahs(resA.data);
-      {
-        /* console.log(response.data) */
-      }
       const resB = localStorage.getItem("recent");
-      // setRecent(resB ? JSON.parse(resB));
       if (resB) {
         const parsedRecent = JSON.parse(resB);
         setRecent(parsedRecent);
@@ -95,7 +91,7 @@ const SurahsList = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] flex items-center justify-between px-4">
+      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] flex items-center justify-between xl:px-32 lg:px-24 px-4">
         <LogoIcon className="text-white hidden md:block" />
         {/* Menu Icon for small screens */}
         <div className="sm:hidden flex items-center">
@@ -146,16 +142,14 @@ const SurahsList = () => {
                 />
                 <div className="flex flex-col gap-8 items-center scrollable-container">
                   {searchResults.length > 0 ? (
-                    searchResults
-                      .slice(0)
-                      .map((result: SearchResult, index) => (
-                        <SearchResultCard
-                          key={`${result.number}-${index}`}
-                          result={result}
-                          searchQuery={searchQuery}
-                          type="desktop"
-                        />
-                      ))
+                    searchResults.map((result: SearchResult, index) => (
+                      <SearchResultCard
+                        key={`${result.number}-${index}`}
+                        result={result}
+                        searchQuery={searchQuery}
+                        type="desktop"
+                      />
+                    ))
                   ) : (
                     <p className="text-sm font-light ml-2 text-gray-400 pointer-events-none">
                       {searchQuery.length > 3 && searchResults.length === 0
@@ -316,7 +310,7 @@ const SurahsList = () => {
           </div>
 
           <div className="lg:min-h-48 min-h-32">
-            {isSignedIn && activeSection === "Last Read" && (
+            {isSignedIn && activeSection === "Last Read" && recent && (
               <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer text-gray-400 flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
                 <Link href={`/surah/${recent.number}`} key={recent.number}>
                   <div className="flex w-full justify-between text-sm">
@@ -372,7 +366,7 @@ const SurahsList = () => {
         <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-6 xl:px-32 lg:px-24 px-4">
           {surahs.map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="group min-h-24 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 border rounded-lg text-gray-400 flex hover:brightness-110">
+              <div className="group min-h-24 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 text-gray-400 flex hover:brightness-110">
                 <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
                   <div className="group-hover:bg-blue-500 w-10 h-10 rounded-xl bg-black/45 flex justify-center items-center rotate-45 transition-all duration-100">
                     <p className="-rotate-45 text-white text-sm font-bold">
