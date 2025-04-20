@@ -68,7 +68,7 @@ const MobileSheet = ({
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger
-        className="fixed w-full sm:hidden flex justify-between items-center p-2 top-0 dark:bg-[#08080a] bg-white border-b border-[#262629ff] min-h-16"
+        className="fixed w-full sm:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] min-h-16"
       >
         <MenuIcon
           onClick={() => setIsOpen(true)}
@@ -162,6 +162,12 @@ const MobileSheet = ({
 
         {activeTab === "overview" && ( // maybe make into info
           <div>
+              <Link
+                href="/support"
+                className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+              >
+                Support Us ♥
+              </Link>
             {surahInfo ? (
               <>
                 <div className="bg-black flex flex-col gap-5 rounded-xl px-2 py-5">

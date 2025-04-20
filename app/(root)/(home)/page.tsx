@@ -29,10 +29,13 @@ import SingleHill from "@/components/svg/illustrations/SingleHill";
 import ScrollingAyah from "@/components/ScrollingAyahs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
+import { ArrowDown, Trash, User, X } from "lucide-react";
+import useSurahNavigation from "@/hooks/useSurahNavigation";
 
 const SurahsList = () => {
+  // organize later
   const [surahs, setSurahs] = useState<Surah[]>([]);
-  const [recent, setRecent] = useState<any>();
+  const [recent, setRecent] = useState<any>(); // ‼ ☹
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { isSignedIn } = useUser();
   const [isOpen, setIsOpen] = useState(false);
@@ -46,15 +49,22 @@ const SurahsList = () => {
   const [activeSection, setActiveSection] = useState<
     "Last Read" | "Saved" | "Collections"
   >("Last Read");
+  const [amount, setAmount] = useState(21);
+  const [deletedAyah, setDeletedAyah] = useState<Ayah>()
+  const [savedAyahs, setSavedAyahs] = useState<any>(); // ‼ ☹
+  const {getSurahNumber} = useSurahNavigation();
 
   useEffect(() => {
     const func = async () => {
       const resA = await fetchAllSurahs();
       setSurahs(resA.data);
       const resB = localStorage.getItem("recent");
-      if (resB) {
+      const resC = localStorage.getItem("saved-ayahs");
+      if (resB && resC) {
         const parsedRecent = JSON.parse(resB);
+        const parsedSaved = JSON.parse(resC);
         setRecent(parsedRecent);
+        setSavedAyahs(parsedSaved);
       } else {
         console.log("No recent data found");
       }
@@ -88,6 +98,16 @@ const SurahsList = () => {
     const debounceTimer = setTimeout(fetchSearchResults, 300); // debounce 300ms
     return () => clearTimeout(debounceTimer);
   }, [searchQuery]);
+
+  const handleRemoveSavedAyah = (ayah: Ayah) => {
+    const saved = savedAyahs ?? []; // use current state, fallback if needed
+    const updated = saved.filter((a: Ayah) => a.number !== ayah.number);
+  
+    localStorage.setItem("saved-ayahs", JSON.stringify(updated));
+    setSavedAyahs(updated); // <- update the state too
+    setDeletedAyah(ayah);
+  };
+  
 
   return (
     <>
@@ -218,7 +238,7 @@ const SurahsList = () => {
         </SignedIn>
         <SignedOut>
           <Link
-            href="/sign-up"
+            href="/sign-in"
             className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
           >
             Sign in
@@ -250,10 +270,10 @@ const SurahsList = () => {
                 sm:flex-row flex-col items-stretch mt-4 px-4"
             >
               {["Al-Mulk", "Al-Baqara", "An-Nisaa", "Al-Faatiha"].map(
-                (sura) => (
+                (sura) => ( // rename to surah
                   <Link
                     key={sura}
-                    href="surah/1"
+                    href={`/surah/${getSurahNumber(sura)}`}// map to surah name later
                     className="bg-[#18181B] text-center rounded-full px-4 py-2 flex justify-center items-center"
                   >
                     {sura}
@@ -329,19 +349,69 @@ const SurahsList = () => {
             )}
 
             {isSignedIn && activeSection === "Saved" && (
-              <div>
-                <p className="text-xl">😢</p>
-                <p className="text-gray-200 hover:text-gray-100">
-                  We're sorry, but saving surahs is currently unavailable. We're
-                  actively working to bring this feature to you as soon as
-                  possible.{" "}
+              // <div>
+              //   <p className="text-xl">😢</p>
+              //   <p className="text-gray-200 hover:text-gray-100">
+              //     We're sorry, but saving surahs is currently unavailable. We're
+              //     actively working to bring this feature to you as soon as
+              //     possible.{" "}
+              //     <Link
+              //       href="https://github.com/s1ddiq/QuranNet"
+              //       className="text-blue-500 text-lg"
+              //     >
+              //       Learn More
+              //     </Link>
+              //   </p>
+              // </div>
+              <div className="flex flex-wrap w-full gap-5">
+                {savedAyahs.length > 0 ? savedAyahs.map(
+                  (
+                    ayah: Ayah // destructure later
+                  ) => (
+                    <div
+                      key={ayah.number}
+                      className={cn('min-h-12 w-fit rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative', deletedAyah?.number === ayah.number ? 'hidden' : '')}
+                    >
+                      <Link
+                        href={`surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
+                      >
+                        <p className="text-lg">{ayah.text}</p>
+                        <p className="text-gray-400">{ayah.translation}</p>
+                        <div className="flex justify-between">
+                          <div className="bg-black/45 p-[8px] rounded-full w-fit">
+                            {ayah.surahNumber}:{ayah.numberInSurah}
+                          </div>
+                        </div>
+                      </Link>
+                      <X
+                        className="text-blue-500 cursor-pointer absolute right-4 top-4"
+                        onClick={() => handleRemoveSavedAyah(ayah)}
+                        size={24}
+                      />
+                    </div>
+                  )
+                ) : (
+                  <div>
+                  <p className="text-xl text-gray-200 hover:text-gray-100 text-center">
+                   No saved ayahs
+                    <Link
+                      href="/surah/1"
+                      className="text-blue-500 text-lg"
+                    >
+                      &nbsp;Start Reading
+                    </Link>
+                  </p>
+                </div>
+                )}
+
+                <div className="w-full rounded-full p-2 flex justify-center items-center">
                   <Link
-                    href="https://github.com/s1ddiq/QuranNet"
-                    className="text-blue-500 text-lg"
+                    href="/saved"
+                    className="bg-zinc-900 border border-gray-400 text-white rounded-full px-8 py-2 w-44 text-center flex justify-center items-center"
                   >
-                    Learn More
+                    View Saved
                   </Link>
-                </p>
+                </div>
               </div>
             )}
 
@@ -363,8 +433,8 @@ const SurahsList = () => {
             )}
           </div>
         </div>
-        <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-6 xl:px-32 lg:px-24 px-4">
-          {surahs.map((surah: Surah) => (
+        <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-6 xl:px-32 lg:px-24 px-4 lg:pt-24">
+          {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
               <div className="group min-h-24 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 text-gray-400 flex hover:brightness-110">
                 <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
@@ -391,6 +461,16 @@ const SurahsList = () => {
             </Link>
           ))}
         </div>
+        <div className="w-full flex-center pt-8">
+          <div className="bg-zinc-900 w-44 min-h-8 flex-center rounded-full py-2">
+            <button
+              className="text-white bg-black/45 rounded-full py-2 px-8"
+              onClick={() => (amount < 22 ? setAmount(114) : setAmount(21))}
+            >
+              {amount < 22 ? "Show More ⬇" : "Show Less ⬆"}
+            </button>
+          </div>
+        </div>
         {/* move up later */}
 
         <Hills />
@@ -412,9 +492,7 @@ const SurahsList = () => {
                 Quran — beautifully designed, always available, and built with
                 love for every heart.
               </p>
-              <p className="text-xl">
-                <SignOutButton />
-              </p>
+                <UserButton />
             </div>
 
             {/* Column 2 */}

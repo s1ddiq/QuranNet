@@ -17,6 +17,8 @@ interface Ayah {
   ruku: number;
   hizbQuarter: number;
   sajda: boolean;
+  translation: any;
+  surahNumber?: number;
 }
 
 interface EnglishAyah {
@@ -89,6 +91,8 @@ interface AyahCardProps {
   surah: Surah;
   params: any; // REPLACE LATER WITH PROPER TYPES.
   ayah: Ayah & { translation?: string }; // REPLACE LATER WITH PROPER TYPES.
+  currentAudio: HTMLAudioElement | null;
+  setCurrentAudio: (audio: HTMLAudioElement | null) => void;
 }
 
 interface MobileSheetProps {
@@ -112,3 +116,10 @@ interface SearchInputProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>
 }
+
+interface ActionButtonProps {
+  text: string;
+  onClick?: () => void; // make unoptional;
+}
+
+// REWRITE ENTIRE PROPS AND ORANGIZE WITH STARS

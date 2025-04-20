@@ -181,42 +181,12 @@ const Sidebar = () => {
         )}
         {/* turn into components */}
         {activeTab === "overview" && (
-          <div className={cn("flex-col justify-between gap-4 p-4 text-white", isCollapsed ? 'hidden' : 'flex')}>
-            {/* <p className="text-center text-gray-400 text-lg">Purely visual only settings, check back later!</p> */}
-            
-     
-       
-            <>
-              <div className="flex flex-col w-full gap-5">
-                <div className="flex justify-between">
-                  <p className="text-xl">Contact</p>
-                  <Contact size={26} />
-                </div>
-                <div className="flex flex-col text-gray-400">
-                  <p className="text-blue-500">bruhs1ddiq@gmail.com</p>
-                  <p>...More coming soon</p>
-                </div>
-              </div>
-            </>
-            <>
-              <div className="flex justify-between">
-                <p className="text-xl">Open Source Projects</p>
-                <BookOpen size={26} />
-              </div>
-              <div className="flex flex-col text-blue-500">
-                <Link href="https://github.com/s1ddiq">
-                  https://github.com/s1ddiq
-                </Link>
-                <Link href="https://github.com/s1ddiq/QuranNet">
-                  https://github.com/s1ddiq/QuranNet
-                </Link>
-              </div>
-            </>
-           
-            <div className="flex flex-col w-full gap-5">
-              <p className="text-xl text-blue-500">Donate</p>
-            </div>
-          </div>
+            <Link
+            href="/support"
+            className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition w-full"
+          >
+            Support Us ♥
+          </Link>
         )}
       </div>
 

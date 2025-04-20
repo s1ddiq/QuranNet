@@ -145,29 +145,21 @@
   max-height: calc(100vh - 180px) !important;
 }
 
-/* Scrollbar styles */
+/* Hide scrollbar background */
 .scrollable-container::-webkit-scrollbar {
   width: 3px;
+  background-color: transparent; /* hide the base scrollbar */
 }
 
+/* Hide the track (the rail behind the thumb) */
 .scrollable-container::-webkit-scrollbar-track {
-  background: transparent;
+  background-color: transparent;
 }
 
+/* Style the thumb */
 .scrollable-container::-webkit-scrollbar-thumb {
-  background-color: #9ca3af; /* gray-400 */
-  border-radius: 9999px;
+  background-color: #888; /* or any color you want */
 }
-
-/* Dark mode support */
-.dark .scrollable-container::-webkit-scrollbar-track {
-  background-color: #374151; /* neutral-700 */
-}
-
-.dark .scrollable-container::-webkit-scrollbar-thumb {
-  background-color: #6b7280; /* neutral-500 */
-}
-
 
 
 /* globals.css */

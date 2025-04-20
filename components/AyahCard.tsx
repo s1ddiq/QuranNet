@@ -4,13 +4,13 @@ import { fetchAyahAudio } from "@/api/api";
 import HighlighterPen from "./svg/HighlighterPenIcon";
 import PlayIcon from "./svg/PlayIcon";
 import DocumentIcon from "./svg/DocumentIcon";
-import SignInPopup from "./popups/SignInPopup";
 import { toast } from "sonner";
 import CopyIcon from "./svg/CopyIcon";
+import { PauseIcon } from "lucide-react";
 
-const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
+const AyahCard = ({ surah, ayah, params, currentAudio, setCurrentAudio }: AyahCardProps) => {
   // Find the translation for this ayah based on its number in the surah.
-  const [clickable, setClickable] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
   const [preloadedAudio, setPreloadedAudio] = useState<HTMLAudioElement | null>(null)
 
@@ -28,17 +28,42 @@ const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
   }, [surah.number, ayah.numberInSurah])
   
   const handleFetchAudio = () => {
-    if (!clickable || !preloadedAudio) return;
-
-    preloadedAudio.play()
-    preloadedAudio.addEventListener("ended", handleAudioEnd)
-    setClickable(false)
-  }
+    if (!preloadedAudio || preloadedAudio.src === "") {
+      toast.error("Audio not ready.");
+      return;
+    }
   
+    if (playing) {
+      preloadedAudio.pause();
+      setPlaying(false);
+      return;
+    }
   
-  const handleAudioEnd = () => {
-    setClickable(true);
+    // Stop other audio
+    if (currentAudio && currentAudio !== preloadedAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+  
+    preloadedAudio
+      .play()
+      .then(() => {
+        setPlaying(true);
+        setCurrentAudio(preloadedAudio);
+  
+        preloadedAudio.onended = () => {
+          setPlaying(false);
+          setCurrentAudio(null);
+        };
+      })
+      .catch((err) => {
+        console.error("Playback failed", err);
+        toast.error("Playback failed.");
+        setPlaying(false);
+      });
   };
+  
+  
   
   const handleHighlightAyah = async () => {
     const e = document.getElementById(`ayah-${ayah.numberInSurah}`);
@@ -81,13 +106,14 @@ const AyahCard = ({ surah, ayah, params }: AyahCardProps) => {
         <CopyIcon onClick={() => handleCopyAyah()}/>
         <HighlighterPen onClick={() => handleHighlightAyah()} />
         <DocumentIcon />
-        <PlayIcon onClick={() => handleFetchAudio()} />
+        {/* <PlayIcon onClick={() => handleFetchAudio()} /> */}
+          {playing ? <PauseIcon fill="white" onClick={() => handleFetchAudio()} /> : <PlayIcon onClick={() => handleFetchAudio()} />}
       </div>
 
       <div className="text-right sm:order-2 order-1 flex flex-col w-full">
         <p
           className="md:text-3xl lg:text-4xl text-xl font-light tracking-wider arabic-text 
-          sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] hover:opacity-65 cursor-pointer"
+          sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] cursor-pointer"
           onClick={() => handleFetchAudio()}
         >
           {ayah.text.startsWith("بِسۡمِ")
