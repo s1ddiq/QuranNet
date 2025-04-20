@@ -364,7 +364,7 @@ const SurahsList = () => {
               //   </p>
               // </div>
               <div className="flex flex-wrap w-full gap-5">
-                {savedAyahs.length > 0 ? savedAyahs.map(
+                {savedAyahs && savedAyahs.length > 0 ? savedAyahs.map(
                   (
                     ayah: Ayah // destructure later
                   ) => (
