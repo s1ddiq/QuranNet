@@ -37,6 +37,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ActionButton from "@/components/ActionButton";
+import SurahPlayer from "@/components/SurahPlayer";
 // SHADCN UI END
 
 const Surah = () => {
@@ -268,7 +269,7 @@ const Surah = () => {
       <SignInPopup />
       <div
         className={cn(
-          "flex flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] w-full px-6 transition-all duration-300",
+          "md:flex hidden flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] w-full px-6 transition-all duration-300",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
@@ -281,7 +282,7 @@ const Surah = () => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-16">
+      <div className="flex flex-col w-full gap-14">
         <div className="flex justify-center text-center w-full">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
         </div>
@@ -289,7 +290,7 @@ const Surah = () => {
           ayahs.map((ayah) => (
             <div
               key={ayah.number}
-              className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-6 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
+              className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-4 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
@@ -358,9 +359,10 @@ const Surah = () => {
               </div>
             </div>
           ))}
+
       </div>
 
-      <div className="mb-8 w-full flex justify-center items-center flex-col p-4 sm:p-8">
+      <div className="mb-8 lg:w-5/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
         <div className={cn("flex flex-row w-full", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
@@ -374,16 +376,18 @@ const Surah = () => {
             surahNumber={params.surah ? surahNumber + 1 : 1}
           />
         </div>
-        <div className="flex justify-between w-full pt-2 sm:pt-8">
+        {/* <div className="flex justify-between w-full pt-2 sm:pt-8">
           <p className="text-sm font-bold tracking-widest text-gray-400">
             QuranNet
           </p>
-          <ThemeToggleButton />
           <p className="text-sm font-bold tracking-widest text-gray-400">
             {new Date().getFullYear()}
           </p>
-        </div>
+        </div> */}
       </div>
+      <div className="sticky bottom-0 bg-transparent p-4 w-full flex justify-center items-center">
+      <SurahPlayer surahNumber={surahNumber} />
+    </div>
     </section>
   );
 };
