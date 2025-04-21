@@ -269,7 +269,7 @@ const Surah = () => {
       <SignInPopup />
       <div
         className={cn(
-          "md:flex hidden flex-row justify-between items-center w-1/3 mb-2 min-h-16 md:sticky top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] w-full px-6 transition-all duration-300",
+          "md:flex hidden flex-row justify-between items-center w-1/3 mb-2 min-h-14 md:sticky top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] w-full px-6 transition-all duration-300",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >

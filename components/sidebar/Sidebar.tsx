@@ -1,208 +1,151 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { fetchAllSurahs, searchQuran } from "@/api/api";
-import { debounce } from "lodash";
-import SearchResultCard from "./SearchResultCard";
 import { cn } from "@/lib/utils";
-import MobileSheet from "./MobileSheet";
 import SidebarHeader from "./SidebarHeader";
+import MobileSheet from "./MobileSheet";
 import { toast } from "sonner";
-import SearchInput from "./SearchInput";
-import { BookOpen, Contact, Settings } from "lucide-react";
+import { fetchAllSurahs } from "@/api/api";
+import JuzList from "../JuzList";
+
+type TabKey = "surah" | "juz" | "page";
+const tabs: { key: TabKey; label: string }[] = [
+  { key: "surah", label: "Surah" },
+  { key: "juz", label: "Juz" },
+  { key: "page", label: "Page" },
+];
 
 const Sidebar = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [amount, setAmount] = useState(25);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabKey>("surah");
   const [surahs, setSurahs] = useState<Surah[]>([]);
-  const [activeTab, setActiveTab] = useState<"overview" | "search" | "browse">(
-    "browse"
-  );
 
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const debouncedSearch = useMemo(
-    () =>
-      debounce(async (query: string) => {
-        const trimmed = query.trim();
-        if (trimmed.length < 1) {
-          setSearchResults([]);
-          setIsScrolling(false);
-          return;
-        }
-
-        try {
-          const response = await searchQuran(trimmed);
-          if (response?.data?.matches) {
-            setSearchResults(response.data.matches);
-          }
-        } catch (error) {
-          console.log("Error fetching search results:", error);
-        }
-      }, 300),
-    []
-  );
-
+  // Load all surahs for the Surah panel
   useEffect(() => {
-    const func = async () => {
-      const response = await fetchAllSurahs();
-      setSurahs(response.data);
+    const load = async () => {
+      const res = await fetchAllSurahs();
+      setSurahs(res.data);
     };
-    func();
-
-    return () => {}; // 👈 cleanup
+    load();
   }, []);
 
-  useEffect(() => {
-    if (searchQuery.length < 1) {
-      setSearchResults([]);
-      return;
-    }
-
-    debouncedSearch(searchQuery);
-
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [searchQuery, debouncedSearch]);
-
-  useEffect(() => {
-    if (activeTab === "overview") {
-      const fetchSurahInfo = async () => {};
-    }
-
-    return () => {};
-  }, [activeTab]);
+  const toggleSidebar = () => setIsCollapsed((c) => !c);
+  const filteredSurahs = surahs.filter(surah => surah.englishName.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Compute pill position & size (three tabs)
+  const idx = tabs.findIndex((t) => t.key === activeTab);
+  const pillPct = 100 / tabs.length;
+  const pillLeft = `${idx * pillPct}%`;
+  const pillW = `${pillPct}%`;
 
   return (
     <div>
       <div
         className={cn(
-          "min-h-screen sm:block hidden bg-transparent border-x dark:border-[#262629ff] border-gray-400 sticky top-0 z-50 dark:text-white text-black transition-all duration-300 md:w-[350px]",
-          isCollapsed && "!w-16"
+          "min-h-screen md:block hidden sticky top-0 z-50 bg-transparent border-x border-[#262629ff] text-white transition-all duration-300",
+          isCollapsed ? "w-16" : "md:w-[350px]" // fix mobilesheet hiding before MD (yk)
         )}
       >
-        <SidebarHeader
-          toggleSidebar={toggleSidebar}
-          isCollapsed={isCollapsed}
-        />
-        <div className={cn("w-full items-center justify-center", isCollapsed ? 'hidden' : 'flex')}>
-          <div className="flex w-full justify-center items-center gap-4 pt-[12px] border-b border-[#262629ff] pb-2">
-            <p
-              onClick={() => setActiveTab("search")}
-              className={`cursor-pointer ${
-                activeTab === "search" ? "text-white" : "text-gray-500"
-              }`}
-            >
-              Search
-            </p>
-            <p
-              onClick={() => setActiveTab("browse")}
-              className={`cursor-pointer ${
-                activeTab === "browse" ? "text-white" : "text-gray-500"
-              }`}
-            >
-              Browse
-            </p>
-            <p
-              onClick={() => setActiveTab("overview")}
-              className={`cursor-pointer ${
-                activeTab === "overview" ? "text-white" : "text-gray-500"
-              }`}
-            >
-              Overview
-            </p>
-          </div>
-        </div>
+        {/* Header with collapse button */}
+        <SidebarHeader toggleSidebar={toggleSidebar} isCollapsed={isCollapsed} />
 
-        {activeTab === "search" && (
-          <div
-            className={cn(
-              "flex flex-col gap-3 px-2 pt-2",
-              isCollapsed && "hidden"
-            )}
-          >
-            <SearchInput
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-            />
+        {/* Tab Switcher */}
+        {!isCollapsed && (
+          <div className="relative mt-4 mx-4">
+            {/* Sliding pill */}
             <div
-              className="
-              flex flex-col gap-8 items-center scrollable-container
-            "
-            >
-              {searchResults.length > 0 ? (
-                searchResults
-                  .slice(0, amount)
-                  .map((result: SearchResult, index) => (
-                    <SearchResultCard
-                      key={`${result.number}-${index}`}
-                      result={result}
-                      searchQuery={searchQuery}
-                      type="desktop"
-                    />
-                  ))
-              ) : (
-                <p className="text-sm font-light ml-2 text-gray-400 pointer-events-none">
-                  {searchQuery.length > 3 && searchResults.length === 0
-                    ? `No results found for "${searchQuery}"`
-                    : null}
-                </p>
-              )}
+              className="absolute top-0 fatranslate-y-[6px] left-0 h-12 bg-blue-500 rounded-full transition-all duration-300 px-2"
+              style={{ width: pillW, left: pillLeft }}
+            />
+            <div className="relative flex bg-[#18181B] p-1 rounded-full">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={cn(
+                    "flex-1 text-center text-sm font-medium py-2 transition-colors",
+                    activeTab === tab.key
+                      ? "text-white"
+                      : "text-white hover:text-gray-400"
+                  )}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
         )}
 
-        {activeTab === "browse" && (
-          <div
-          className={cn('flex-col gap-8 scrollable-container px-4 py-4', isCollapsed ? 'hidden' : 'flex')}
-          >
-             {/* seperator */}
-            {surahs.map((surah: Surah) => (
+        {/* Search Input */}
+        {!isCollapsed && (
+          <div className="mt-4 mx-4">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={`Search by ${tabs.find((tab) => tab.key === activeTab)?.label}`}
+              className="w-full p-2 bg-[#18181B] text-white rounded-md"
+            />
+          </div>
+        )}
+
+        {/* Surah Panel */}
+        {!isCollapsed && activeTab === "surah" && (
+          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+            {filteredSurahs.map((surah) => (
               <Link
-                href={`/surah/${surah.number}`}
                 key={surah.number}
-                title={`${surah.englishName} - ${surah.englishNameTranslation}`}
+                href={`/surah/${surah.number}`}
+                title={`${surah.englishName} — ${surah.englishNameTranslation}`}
                 onClick={() => toast("Navigating to surah")}
+                className="block rounded-md p-2 hover:bg-white/10 transition flex items-center gap-3"
               >
-                <div className="flex gap-5">
-                  <p className="text-gray-400">{surah.number}</p>
-                  <p>{surah.englishName}</p>
-                </div>
+                <span className="text-gray-400">{surah.number}.</span>
+                <span className="flex-1">{surah.englishName}</span>
               </Link>
             ))}
           </div>
         )}
-        {/* turn into components */}
-        {activeTab === "overview" && (
-            <Link
-            href="/support"
-            className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition w-full"
-          >
-            Support Us ♥
-          </Link>
+
+        {/* Juz Panel */}
+        {!isCollapsed && activeTab === "juz" && (
+          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+            {/* Example Juz Content */}
+            {/* <h2 className="text-lg font-semibold">Juz Content</h2>
+            <p className="text-gray-400">Display Juz related content here</p> */}
+            <JuzList searchQuery={searchQuery} />
+          </div>
         )}
+
+        {/* Page Panel */}
+        {!isCollapsed && activeTab === "page" && (
+          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+            {/* Example Page Content */}
+            <h2 className="text-lg font-semibold">Page Content</h2>
+            <p className="text-gray-400">Surah Pages will be displayed here</p>
+          </div>
+        )}
+{/* 
+        {!isCollapsed && activeTab === "settings" && (
+          <div className="px-5 py-4">
+            <Link
+              href="/support"
+              className="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition"
+            >
+              Support Us ♥
+            </Link>
+          </div>
+        )} */}
       </div>
 
-      {/*  <div className="w-full h-px bg-[#262629ff] rounded-full"></div>{" "}
-            {/* seperator */}
-
-      {/* MOBILE */}
+      {/* Mobile version */}
       <MobileSheet
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        isScrolling={isScrolling}
-        setIsScrolling={setIsScrolling}
-        searchResults={searchResults}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        amount={amount}
         surahs={surahs}
       />
     </div>
@@ -210,16 +153,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-
-       {/* <>
-              <div className="flex justify-between">
-                <p className="text-xl">Manage appearance</p>
-                <Settings size={26} />
-              </div>
-              <div className="flex flex-col text-gray-400">
-                <p>Font Size</p>
-                <p>Reciter</p>
-                <p>...More coming soon</p>
-              </div>
-            </> */}

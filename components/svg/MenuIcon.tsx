@@ -6,8 +6,8 @@ interface MenuIconProps extends React.SVGProps<SVGSVGElement> {
 
 const MenuIcon: React.FC<MenuIconProps> = ({ onClick, ...props }) => (
   <svg
-    width="32"
-    height="32"
+    width="28"
+    height="28"
     viewBox="0 0 24 24"
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"

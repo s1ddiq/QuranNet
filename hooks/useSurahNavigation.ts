@@ -120,8 +120,10 @@ const surahMap: { [key: string]: number } = {
 const useSurahNavigation = () => {
   const [currentSurah, setCurrentSurah] = useState<number | null>(null);
   const getSurahNumber = (surahName: string) => {
-    return surahMap[surahName] || null;
+    const cleanName = surahName.replace(/\s*\(.*?\)/g, "").trim(); // removes "(part)" or any parentheses
+    return surahMap[cleanName] || null;
   };
+  
 
   const goToSurah = (surahName: string) => {
     const surahNumber = getSurahNumber(surahName);

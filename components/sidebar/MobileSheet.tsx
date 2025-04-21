@@ -25,8 +25,6 @@ import Image from "next/image";
 const MobileSheet = ({
   isOpen,
   setIsOpen,
-  isScrolling,
-  setIsScrolling,
   // searchResults,
   searchQuery,
   setSearchQuery,
@@ -67,9 +65,7 @@ const MobileSheet = ({
   }, [activeTab]);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger
-        className="fixed w-full sm:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] min-h-16"
-      >
+      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] min-h-16">
         <MenuIcon
           onClick={() => setIsOpen(true)}
           className="dark:text-white text-black"
@@ -83,7 +79,7 @@ const MobileSheet = ({
       </SheetTrigger>
       <SheetContent
         side="right"
-        className='dark:bg-[#08080a] dark:text-white text-black px-4 border-b-2 dark:border-[#262629ff] border-white min-w-[87%]'
+        className="dark:bg-[#08080a] dark:text-white text-black px-4 border-b-2 dark:border-[#262629ff] border-white min-w-[87%]"
       >
         <VisuallyHidden>
           <SheetTitle>Menu</SheetTitle>
@@ -132,7 +128,10 @@ const MobileSheet = ({
                     searchQuery.length > 0 ? "block" : "hidden"
                   )}
                 >
-                  <CrossIcon onClick={() => setSearchQuery("")} className={`${searchQuery.length > 0 ? 'block' : 'hidden'}`}/>
+                  <CrossIcon
+                    onClick={() => setSearchQuery("")}
+                    className={`${searchQuery.length > 0 ? "block" : "hidden"}`}
+                  />
                 </span>
               </div>
             </div>
@@ -162,12 +161,12 @@ const MobileSheet = ({
 
         {activeTab === "overview" && ( // maybe make into info
           <div>
-              <Link
-                href="/support"
-                className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
-              >
-                Support Us ♥
-              </Link>
+            <Link
+              href="/support"
+              className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+            >
+              Support Us ♥
+            </Link>
             {surahInfo ? (
               <>
                 <div className="bg-black flex flex-col gap-5 rounded-xl px-2 py-5">
@@ -203,7 +202,7 @@ const MobileSheet = ({
                   </p>
                 </div>
 
-                <Image src='/svg/map.svg' width={64} height={64} alt="map"/>
+                <Image src="/svg/map.svg" width={64} height={64} alt="map" />
               </>
             ) : (
               <p>loading</p>

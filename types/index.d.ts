@@ -98,12 +98,12 @@ interface AyahCardProps {
 interface MobileSheetProps {
   isOpen: boolean; // Boolean state for whether the sheet is open or not
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>; // Set state function to toggle the open state
-  isScrolling: boolean; // Boolean state to check if the sheet is scrolling
+  // isScrolling: boolean; // Boolean state to check if the sheet is scrolling
   setIsScrolling?: React.Dispatch<React.SetStateAction<boolean>>; // Set state function for scrolling state
   searchResults?: SearchResult[]; // Array of search results of type `SearchResult`
   searchQuery: string; // Search query string to filter the results
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  amount: number;
+  // amount: number;
   surahs?: Surah[];
 }
 
@@ -122,4 +122,20 @@ interface ActionButtonProps {
   onClick?: () => void; // make unoptional;
 }
 
-// REWRITE ENTIRE PROPS AND ORANGIZE WITH STARS
+interface SurahPlayerProps {
+  surahNumber: number;
+}
+
+interface Juz {
+  number: number;
+  text: string;
+  surah: Surah;
+  numberInSurah: number;
+  juz: number;
+  manzil: number;
+  page: number;
+  ruku: number;
+  hizbQuarter: number;
+  sajda: boolean; // maybe add ayahs[] as seperate
+}
+// REWRITE ENTIRE PROPS AND ORGANIZE WITH STARS
