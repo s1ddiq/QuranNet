@@ -362,13 +362,13 @@ const Surah = () => {
 
       </div>
 
-      <div className="mb-8 lg:w-5/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
+      <div className="mb-2 lg:w-5/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
         <div className={cn("flex flex-row w-full", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
             surahNumber={params.surah ? surahNumber - 1 : 1}
           />
-          <Link href={`/`} className="flex-center navigator-styles">
+          <Link href={`/`} className="flex-center navigator-styles bg-zinc-900">
             Go Home
           </Link>
           <NavigatorButton
