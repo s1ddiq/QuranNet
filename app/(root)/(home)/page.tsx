@@ -369,7 +369,7 @@ const SurahsList = () => {
                   ) => (
                     <div
                       key={ayah.number}
-                      className={cn('min-h-12 w-fit rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative', deletedAyah?.number === ayah.number ? 'hidden' : '')}
+                      className={cn('min-h-12 lg:w-fit w-full rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative', deletedAyah?.number === ayah.number ? 'hidden' : '')}
                     >
                       <Link
                         href={`surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
