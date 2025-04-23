@@ -28,9 +28,31 @@ const Saved = () => {
   const [savedAyahs, setSavedAyahs] = useState<Ayah[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>("pinned");
   const router = useRouter();
+  const [roast, setRoast] = useState("");
+
+  const roasts = [
+    "You're not signed in 😢 — ",
+    "Not signed in? Pathetic. ",
+    "Guest mode? Rookie mistake. ",
+    "You tryna vibe without logging in? Bold. ",
+    "Still not signed in? Yikes. ",
+    "Bro really forgot step one... ",
+    "You're lurking like a ghost 👻 — ",
+    "What is this? 2010? Sign in. ",
+    "No sign-in, no respect. ",
+    "Don't be shy 👀 — log in. ",
+    "You're invisible rn. Sign into fix it. ",
+    "You call yourself a user? Sign in. ",
+    "Access denied to NPCs that aren't signed in 😐 ",
+    "🤡 Not signed in? Couldn't be me. ",
+    "You're about as logged in as a rock. ",
+  ];
 
   useEffect(() => {
     const res = localStorage.getItem("saved-ayahs");
+    const random = roasts[Math.floor(Math.random() * roasts.length)];
+    setRoast(random);
+
     if (res) {
       try {
         setSavedAyahs(JSON.parse(res));
@@ -92,55 +114,80 @@ const Saved = () => {
           </select>
         </div>
 
-        {savedAyahs.length > 0 ? (
-          <div className="space-y-6">
-            {sortedAyahs().map((ayah) => (
-              <div
-                key={ayah.number}
-                className="relative rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:bg-zinc-800"
-              >
-                <Link
-                  href={`/surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
-                  className="block space-y-2"
-                >
-                  <p className="text-lg leading-relaxed font-medium">{ayah.text}</p>
-                  <p className="text-sm text-zinc-400">{ayah.translation}</p>
-                  <div className="text-xs text-zinc-500 mt-2">
-                    Surah {ayah.surahNumber} — Ayah {ayah.numberInSurah}
+        {isSignedIn ? (
+          <>
+            {savedAyahs.length > 0 ? (
+              <div className="space-y-6">
+                {sortedAyahs().map((ayah) => (
+                  <div
+                    key={ayah.number}
+                    className="relative rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:bg-zinc-800"
+                  >
+                    <Link
+                      href={`/surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
+                      className="block space-y-2"
+                    >
+                      <p className="text-lg leading-relaxed font-medium">
+                        {ayah.text}
+                      </p>
+                      <p className="text-sm text-zinc-400">
+                        {ayah.translation}
+                      </p>
+                      <div className="text-xs text-zinc-500 mt-2">
+                        Surah {ayah.surahNumber} — Ayah {ayah.numberInSurah}
+                      </div>
+                    </Link>
+
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      <button
+                        onClick={() => togglePin(ayah.number)}
+                        className={`p-2 rounded-full ${
+                          ayah.pinned
+                            ? "bg-yellow-500"
+                            : "bg-zinc-800 hover:bg-yellow-600"
+                        }`}
+                        title={ayah.pinned ? "Unpin Ayah" : "Pin Ayah"}
+                      >
+                        <Pin
+                          size={16}
+                          className={ayah.pinned ? "rotate-45" : ""}
+                        />
+                      </button>
+
+                      <button
+                        onClick={() => handleRemove(ayah.number)}
+                        className="p-2 bg-zinc-800 hover:bg-red-600 text-white rounded-full"
+                        title="Remove Ayah"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
                   </div>
-                </Link>
-
-                <div className="absolute top-3 right-3 flex gap-2">
-                  <button
-                    onClick={() => togglePin(ayah.number)}
-                    className={`p-2 rounded-full ${
-                      ayah.pinned ? "bg-yellow-500" : "bg-zinc-800 hover:bg-yellow-600"
-                    }`}
-                    title={ayah.pinned ? "Unpin Ayah" : "Pin Ayah"}
-                  >
-                    <Pin size={16} className={ayah.pinned ? "rotate-45" : ""} />
-                  </button>
-
-                  <button
-                    onClick={() => handleRemove(ayah.number)}
-                    className="p-2 bg-zinc-800 hover:bg-red-600 text-white rounded-full"
-                    title="Remove Ayah"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            ) : (
+              <div className="text-center mt-20 text-zinc-400">
+                <p className="text-xl mb-4">No saved ayahs yet.</p>
+                <Link
+                  href="/surah/1"
+                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-medium"
+                >
+                  Start Reading
+                </Link>
+              </div>
+            )}
+          </>
         ) : (
-          <div className="text-center mt-20 text-zinc-400">
-            <p className="text-xl mb-4">No saved ayahs yet.</p>
-            <Link
-              href="/surah/1"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-medium"
-            >
-              Start Reading
-            </Link>
+          <div className="flex text-center w-full justify-center items-center">
+            <p className="text-white text-lg transition-opacity duration-500 opacity-100">
+              {roast}
+              <Link
+                href="/sign-in"
+                className="text-blue-500 underline transition-all duration-300 hover:text-red-500 hover:ml-1 hover:opacity-100 hover:blur-[0.3px] hover:scale-[1.05]"
+              >
+                click here and stop embarrassing yourself
+              </Link>
+            </p>
           </div>
         )}
         <button

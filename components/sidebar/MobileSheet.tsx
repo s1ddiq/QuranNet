@@ -49,20 +49,6 @@ const MobileSheet = ({
   const surahId = pathname.match(/\d+/g)?.[0];
   const currentSurah = surahs?.find((s) => s.number === Number(surahId));
 
-  useEffect(() => {
-    if (activeTab === "overview") {
-      const fetchSurahInfo = async () => {
-        if (currentSurah?.number !== undefined) {
-          const res = await fetchSurahById(currentSurah.number);
-          setSurahInfo(res.data);
-        }
-      };
-
-      fetchSurahInfo();
-    }
-
-    return () => {};
-  }, [activeTab]);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] min-h-16">
@@ -96,12 +82,12 @@ const MobileSheet = ({
               Search
             </p>
             <p
-              onClick={() => setActiveTab("overview")}
+              onClick={() => setActiveTab("settings")}
               className={`cursor-pointer ${
-                activeTab === "overview" ? "text-white" : "text-gray-500"
+                activeTab === "settings" ? "text-white" : "text-gray-500"
               }`}
             >
-              Overview
+              Settings
             </p>
           </div>
         </div>
@@ -159,7 +145,7 @@ const MobileSheet = ({
           </>
         )}
 
-        {activeTab === "overview" && ( // maybe make into info
+        {activeTab === "settings" && ( // maybe make into info
           <div>
             <Link
               href="/support"

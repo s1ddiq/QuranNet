@@ -13,7 +13,6 @@ import { useClerk, UserButton } from "@clerk/nextjs";
 
 // COMPONENTS START ⭐
 import SignInPopup from "@/components/popups/SignInPopup";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 import NavigatorButton from "@/components/NavigatorButton";
 
 // COMPONENTS END
@@ -24,7 +23,7 @@ import { cn } from "@/lib/utils"; // ⭐
 
 // ICONS START ⭐
 import BismillahIcon from "@/components/svg/BismillahIcon";
-import { Check, Loader, Pause } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Loader, Pause } from "lucide-react";
 import DocumentIcon from "@/components/svg/DocumentIcon";
 import PlayIcon from "@/components/svg/PlayIcon";
 import CopyIcon from "@/components/svg/CopyIcon";
@@ -52,7 +51,7 @@ const Surah = () => {
 
   // USESTATES OPEN/CLOSED STATES START ⭐
   const [showHeader, setShowHeader] = useState(true);
-
+  const [collapsed, setCollapsed] = useState(true);
   // Subdivision of O/C;
   const [currentlyPlayingAyah, setCurrentlyPlayingAyah] = useState<
     number | null
@@ -209,15 +208,18 @@ const Surah = () => {
   const handleSaveAyah = (ayah: Ayah) => {
     if (isSignedIn) {
       const saved = JSON.parse(localStorage.getItem("saved-ayahs") || "[]");
-  
+
       // Check if this ayah is already saved
-      const alreadySaved = saved.some((item: Ayah) => item.number === ayah.number);
-  
-      if (alreadySaved) { // 🧾📑🔖
+      const alreadySaved = saved.some(
+        (item: Ayah) => item.number === ayah.number
+      );
+
+      if (alreadySaved) {
+        // 🧾📑🔖
         toast(
           <div className="flex items-center gap-3">
-            <p className="text-3xl">🧾</p>  
-         
+            <p className="text-3xl">🧾</p>
+
             <div>
               <p className="font-semibold">Already saved</p>
               <p className="text-sm text-muted-foreground">
@@ -228,10 +230,10 @@ const Surah = () => {
         );
         return;
       }
-  
-      const updated = [...saved, {...ayah, surahNumber}];
+
+      const updated = [...saved, { ...ayah, surahNumber }];
       localStorage.setItem("saved-ayahs", JSON.stringify(updated));
-  
+
       toast(
         <div className="flex items-center gap-3">
           <Check size={36} />
@@ -254,7 +256,6 @@ const Surah = () => {
       );
     }
   };
-  
 
   if (loading)
     return (
@@ -283,8 +284,50 @@ const Surah = () => {
       </div>
 
       <div className="flex flex-col w-full gap-14">
-        <div className="flex justify-center text-center w-full">
+        <div className="flex items-center text-center w-full flex-col">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
+          {}
+          {collapsed ? (
+            <ChevronDown
+              className="size-8 cursor-pointer"
+              onClick={() => setCollapsed(false)}
+            />
+          ) : (
+            <>
+              <ChevronUp
+                className="size-8 cursor-pointer"
+                onClick={() => setCollapsed(true)}
+              />
+              <div className="bg-zinc-900 flex flex-col gap-5 rounded-xl px-2 py-5">
+                <p className="text-gray-200">
+                  Surah Number&nbsp;
+                  <span className="text-blue-500">{surah.number}</span>
+                </p>
+                <p className="text-gray-200">
+                  Surah Name&nbsp;
+                  <span className="text-blue-500">{surah.name}</span>
+                </p>
+                <p className="text-gray-200">
+                  You're currently reading&nbsp;
+                  <span className="text-blue-500">
+                    {surah.englishName}
+                  </span>{" "}
+                  &nbsp; or &nbsp;
+                  <span className="text-blue-500">{surah.name}</span>
+                </p>
+
+                <p className="text-gray-200">
+                  This surah is&nbsp;
+                  <span className="text-blue-500">{surah.revelationType}</span>
+                </p>
+                <p className="text-gray-200">
+                  This surah has&nbsp;
+                  <span className="text-blue-500">{surah.numberOfAyahs}</span>
+                  &nbsp; ayahs
+                </p>
+              </div>
+            </>
+          )}
         </div>
         {!loading &&
           ayahs.map((ayah) => (
@@ -319,7 +362,10 @@ const Surah = () => {
                   </PopoverTrigger>
                 </Popover>
                 {/* <HighlighterPenIcon /> */}
-                <DocumentIcon onClick={() => handleSaveAyah(ayah)} className="hover:opacity-80"/>
+                <DocumentIcon
+                  onClick={() => handleSaveAyah(ayah)}
+                  className="hover:opacity-80"
+                />
                 {/* <Popover>
                   <PopoverTrigger>
                     <PopoverContent className="w-48 p-2 rounded-xl bg-background shadow-xl space-y-1">
@@ -329,9 +375,16 @@ const Surah = () => {
                   </PopoverTrigger>
                 </Popover> */}
                 {currentlyPlayingAyah === ayah.numberInSurah ? (
-                  <Pause fill="white" onClick={() => handleFetchAudio(ayah)} className="hover:opacity-80" />
+                  <Pause
+                    fill="white"
+                    onClick={() => handleFetchAudio(ayah)}
+                    className="hover:opacity-80"
+                  />
                 ) : (
-                  <PlayIcon onClick={() => handleFetchAudio(ayah)} className="hover:opacity-80" />
+                  <PlayIcon
+                    onClick={() => handleFetchAudio(ayah)}
+                    className="hover:opacity-80"
+                  />
                 )}
 
                 {/* <PlayIcon onClick={() => handleFetchAudio()} /> */}
@@ -341,7 +394,7 @@ const Surah = () => {
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
                   className="md:text-3xl lg:text-4xl text-xl font-light tracking-wider arabic-text 
-                  sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] cursor-pointer"
+                  sm:pr-8 md:pr-16 lg:pr-26"
                   // onClick={() => handleFetchAudio()}
                 >
                   {ayah.text.startsWith("بِسۡمِ")
@@ -359,7 +412,6 @@ const Surah = () => {
               </div>
             </div>
           ))}
-
       </div>
 
       <div className="mb-2 lg:w-5/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
@@ -386,8 +438,8 @@ const Surah = () => {
         </div> */}
       </div>
       <div className="sticky bottom-0 bg-transparent p-4 w-full flex justify-center items-center">
-      <SurahPlayer surahNumber={surahNumber} />
-    </div>
+        <SurahPlayer surahNumber={surahNumber} />
+      </div>
     </section>
   );
 };

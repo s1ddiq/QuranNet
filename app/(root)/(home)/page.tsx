@@ -363,7 +363,7 @@ const SurahsList = () => {
               //   </p>
               // </div>
               <div className="flex flex-wrap w-full gap-5">
-                {savedAyahs && savedAyahs.length > 0 ? savedAyahs.map(
+                {savedAyahs && savedAyahs.length > 0 ? savedAyahs.slice(0, 5).map(
                   (
                     ayah: Ayah // destructure later
                   ) => (
@@ -408,7 +408,7 @@ const SurahsList = () => {
                     href="/saved"
                     className="bg-zinc-900 border border-gray-400 text-white rounded-full px-8 py-2 w-44 text-center flex justify-center items-center"
                   >
-                    View Saved
+                    View All Saved
                   </Link>
                 </div>
               </div>
