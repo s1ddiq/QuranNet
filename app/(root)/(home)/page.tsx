@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   SignedIn,
   SignedOut,
-  SignOutButton,
   useClerk,
   UserButton,
   useUser,
@@ -29,7 +28,7 @@ import SingleHill from "@/components/svg/illustrations/SingleHill";
 import ScrollingAyah from "@/components/ScrollingAyahs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
-import { ArrowDown, Trash, User, X } from "lucide-react";
+import { X } from "lucide-react";
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 
 const SurahsList = () => {
@@ -51,7 +50,7 @@ const SurahsList = () => {
   >("Last Read");
   const [amount, setAmount] = useState(21);
   const [deletedAyah, setDeletedAyah] = useState<Ayah>()
-  const [savedAyahs, setSavedAyahs] = useState<any>(); // ‼ ☹
+  const [savedAyahs, setSavedAyahs] = useState<Ayah[]>(); // ‼ ☹
   const {getSurahNumber} = useSurahNavigation();
 
   useEffect(() => {

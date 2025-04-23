@@ -138,6 +138,7 @@ interface Juz {
   hizbQuarter: number;
   sajda: boolean; // maybe add ayahs[] as seperate
 }
+
 // REWRITE ENTIRE PROPS AND ORGANIZE WITH STARS
 
 // im singing rn lol
