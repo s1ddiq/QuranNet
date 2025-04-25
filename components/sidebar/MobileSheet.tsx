@@ -2,8 +2,7 @@
 import { cn } from "@/lib/utils";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Sheet } from "../ui/sheet";
-import React, { useEffect, useState } from "react";
-import SearchResultCard from "./SearchResultCard";
+import React, { useState } from "react";
 import { Input } from "../ui/input";
 import {
   SheetTrigger,
@@ -13,14 +12,11 @@ import {
 } from "../ui/sheet";
 import { usePathname, useRouter } from "next/navigation";
 import MenuIcon from "../svg/MenuIcon";
-import SearchIcon from "../svg/SearchIcon";
-import CrossIcon from "../svg/CrossIcon";
 import LogoIcon from "../svg/LogoIcon";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { toast } from "sonner";
-import { fetchSurahById } from "@/api/api";
-import Image from "next/image";
+import { Slider } from "../ui/slider";
+import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 
 const MobileSheet = ({
   isOpen,
@@ -41,17 +37,17 @@ const MobileSheet = ({
     numberOfAyahs: number;
   }
 
-  const [surahInfo, setSurahInfo] = useState<SurahInfo | null>(null);
   const filteredSurahs = surahs?.filter((surah: Surah) =>
     surah.englishName.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const pathname = usePathname();
-  const surahId = pathname.match(/\d+/g)?.[0];
-  const currentSurah = surahs?.find((s) => s.number === Number(surahId));
+  const { fontSize, setFontSize } = useGlobalState();
 
+  const handleFontSizeChange = (value: number[]) => {
+    setFontSize(value[0]);
+  };
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] min-h-16">
+      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md border-b border-[#262629ff] min-h-16">
         <MenuIcon
           onClick={() => setIsOpen(true)}
           className="dark:text-white text-black"
@@ -65,50 +61,56 @@ const MobileSheet = ({
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="dark:bg-[#08080a] dark:text-white text-black px-4 border-b-2 dark:border-[#262629ff] border-white min-w-[87%]"
+        className="bg-zinc-900 dark:text-white text-black px-4 border-b-2 dark:border-[#262629ff] border-white sm:min-w-[75%] min-w-[90%]" // maybe make transparent and add backdrop MAYBE REVERT BACK TO NOT  bg-transparent backdrop-blur-md
       >
         <VisuallyHidden>
           <SheetTitle>Menu</SheetTitle>
           <SheetHeader>Menu</SheetHeader>
         </VisuallyHidden>
-        <div>
-          <div className="flex w-full justify-center gap-4 pt-[12px]">
-            <p
+        <div className="relative mt-4 mx-1">
+          {/* Sliding pill */}
+          <div
+            className="absolute -top-[4px] fatranslate-y-[6px] left-0 h-9 bg-blue-500 rounded-full transition-all duration-300"
+            style={{
+              width: "50%",
+              left: activeTab === "search" ? "0%" : "50%",
+            }}
+          />
+          <div className="relative flex border bg-zinc-800 border-[#262629ff] p-1 rounded-full">
+            <button
               onClick={() => setActiveTab("search")}
-              className={`cursor-pointer ${
-                activeTab === "search" ? "text-white" : "text-gray-500"
-              }`}
+              className={cn(
+                "flex-1 text-center text-sm font-medium py-2 z-10 transition-colors focus:outline-none focus-ring-0",
+                activeTab === "search" ? "text-white" : "text-white/70"
+              )}
             >
               Search
-            </p>
-            <p
+            </button>
+            <button
               onClick={() => setActiveTab("settings")}
-              className={`cursor-pointer ${
-                activeTab === "settings" ? "text-white" : "text-gray-500"
-              }`}
+              className={cn(
+                "flex-1 text-center text-sm font-medium py-2 z-10 transition-colors",
+                activeTab === "settings" ? "text-white" : "text-white/70"
+              )}
             >
               Settings
-            </p>
+            </button>
           </div>
         </div>
 
         {activeTab === "search" && (
           <>
             <div className="flex flex-col gap-3">
-              <p className="text-lg font-light text-center pointer-events-none">
-                Search surah, verse, juz, or page
-              </p>
-              <div className="rounded-full border border-[#262629ff] w-full h-12 flex items-center justify-center relative p-4 cursor-pointer">
-                <SearchIcon className="dark:text-white text-black" />
+              <div>
+                {/* <SearchIcon className="dark:text-white text-black" /> */}
                 <Input
                   value={searchQuery}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setSearchQuery(e.target.value);
                   }} // Update search query on input change
-                  placeholder="Search the Quran"
-                  className="border-0 ml-4 focus-visible:ring-0 h-full !shadow-none !bg-transparent"
+                  placeholder="Search by Quran"
                 />
-                <span
+                {/* <span
                   className={cn(
                     "",
                     searchQuery.length > 0 ? "block" : "hidden"
@@ -118,81 +120,45 @@ const MobileSheet = ({
                     onClick={() => setSearchQuery("")}
                     className={`${searchQuery.length > 0 ? "block" : "hidden"}`}
                   />
-                </span>
+                </span> */}
               </div>
             </div>
 
-            <div className="flex flex-col gap-6 items-start h-full overflow-y-auto scrollable-container">
-              {filteredSurahs?.map(
-                ({ number, englishName, englishNameTranslation }) => (
-                  <Link
-                    href={`/surah/${number}`}
-                    key={number}
-                    title={`${englishName} - ${englishNameTranslation}`}
-                    onClick={() => {
-                      toast("Navigating to surah");
-                      setIsOpen(false);
-                    }}
-                  >
-                    <div className="flex gap-5">
-                      <p className="text-gray-400">{number}</p>
-                      <p>{englishName}</p>
-                    </div>
-                  </Link>
-                )
-              )}
+            <div className="overflow-y-auto scrollable-container max-h-[calc(100vh-50px)] min-h-[calc(100vh-50px)] pb-0">
+              {filteredSurahs?.map((surah) => (
+                <Link
+                  key={surah.number}
+                  href={`/surah/${surah.number}`}
+                  title={`${surah.englishName} — ${surah.englishNameTranslation}`}
+                  className="block rounded-md py-2 hover:bg-white/10 transition flex items-center gap-3 w-full"
+                >
+                  <span className="text-gray-400 w-6 text-left">
+                    {surah.number}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-white">{surah.englishName}</span>
+                  </div>
+                </Link>
+              ))}
             </div>
           </>
         )}
 
         {activeTab === "settings" && ( // maybe make into info
-          <div>
-            <Link
-              href="/support"
-              className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
-            >
-              Support Us ♥
-            </Link>
-            {surahInfo ? (
-              <>
-                <div className="bg-black flex flex-col gap-5 rounded-xl px-2 py-5">
-                  <p className="text-gray-200">
-                    Surah Number&nbsp;
-                    <span className="text-gray-400">{surahInfo.number}</span>
-                  </p>
-                  <p className="text-gray-200">
-                    Surah Name&nbsp;
-                    <span className="text-gray-400">{surahInfo.name}</span>
-                  </p>
-                  <p className="text-gray-200">
-                    You're currently reading&nbsp;
-                    <span className="text-gray-400">
-                      {surahInfo.englishName}
-                    </span>{" "}
-                    &nbsp; or &nbsp;
-                    <span className="text-gray-400">{surahInfo.name}</span>
-                  </p>
-
-                  <p className="text-gray-200">
-                    This surah is&nbsp;
-                    <span className="text-gray-400">
-                      {surahInfo.revelationType}
-                    </span>
-                  </p>
-                  <p className="text-gray-200">
-                    This surah has&nbsp;
-                    <span className="text-gray-400">
-                      {surahInfo.numberOfAyahs}
-                    </span>
-                    &nbsp; ayahs
-                  </p>
-                </div>
-
-                <Image src="/svg/map.svg" width={64} height={64} alt="map" />
-              </>
-            ) : (
-              <p>loading</p>
-            )}
+          <div className="p-4 bg-transparent rounded-md bg-gray-400">
+            {/* <p className="text-2xl">Accessiblity</p> */}
+            <p className="text-xl text-white">Font Size</p>
+            <div className="space-y-4">
+              <Slider
+                value={[fontSize]}
+                defaultValue={[2]}
+                max={3}
+                step={1}
+                onValueChange={handleFontSizeChange}
+                className="relative flex w-full touch-none select-none items-center"
+              >
+              </Slider>
+            </div>
           </div>
         )}
       </SheetContent>

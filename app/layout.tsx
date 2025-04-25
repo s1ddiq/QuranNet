@@ -3,6 +3,7 @@ import "./globals.css";
 import Head from "next/head";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import { GlobalStateProvider } from "@/lib/providers/GlobalStatesProvider";
 
 const dm_sans = DM_Sans({ subsets: ["latin"] });
 
@@ -18,15 +19,20 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className="dark">
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </Head>
-        <body className={`${dm_sans.className} dark:bg-[#08080a] bg-white`}>
-          {children}
-          <Toaster />
-        </body>
-      </html>
+      <GlobalStateProvider>
+        <html lang="en" className="dark">
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+          </Head>
+          <body className={`${dm_sans.className} dark:bg-[#08080a] bg-white`}>
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </GlobalStateProvider>
     </ClerkProvider>
   );
 }

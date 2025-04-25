@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/popover";
 import ActionButton from "@/components/ActionButton";
 import SurahPlayer from "@/components/SurahPlayer";
+import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 // SHADCN UI END
 
 const Surah = () => {
@@ -49,6 +50,8 @@ const Surah = () => {
   const [loading, setLoading] = useState(true);
   // USESTATES END
 
+  // Global States
+  const { fontSize, setFontSize } = useGlobalState();
   // USESTATES OPEN/CLOSED STATES START ⭐
   const [showHeader, setShowHeader] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
@@ -69,17 +72,17 @@ const Surah = () => {
     const fetchSurahData = async () => {
       if (!params.surah) return;
       try {
-        const surahResponse = await fetchSurahById(surahNumber);
-        const translationResponse = await fetchSurahTranslation(surahNumber);
+        const surahResponse = await fetchSurahById(surahNumber); // Surah Data
+        const translationResponse = await fetchSurahTranslation(surahNumber); // Surah Translation Data
 
         setSurah(surahResponse.data);
 
         const combinedAyahs = surahResponse.data.ayahs.map((ayah: Ayah) => {
           const translated = translationResponse.ayahs.find(
-            (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah
+            (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah // gets translation for each ayah. (may refactor)
           );
           return {
-            ...ayah,
+            ...ayah, // spreads the contents of ayah but also adds the translation as another property.
             translation: translated?.text || "", // Merge translation directly into the ayah
           };
         });
@@ -141,8 +144,7 @@ const Surah = () => {
         ticking = true;
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
+    +window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -158,7 +160,7 @@ const Surah = () => {
       );
     } else if (type === "arabic") {
       navigator.clipboard.writeText(
-        `${text} ${params.surah}:[${numberInSurah}]`
+        `${text} [${params.surah}:${numberInSurah}]`
       );
     } else {
       navigator.clipboard.writeText(
@@ -226,8 +228,10 @@ const Surah = () => {
                 This ayah is already in your saved list.
               </p>
             </div>
-          </div>
+          </div>,
+          { style: { backgroundColor: "#27272A" } }
         );
+        // toast('hello', {style: {backgroundColor: 'red'}})
         return;
       }
 
@@ -265,7 +269,7 @@ const Surah = () => {
       />
     );
   return (
-    <section className="w-full flex items-center flex-col dark:bg-[#08080aff] bg-white flex-1 dark:text-white text-black">
+    <section className="w-full flex items-center flex-col  bg-zinc-900 flex-1 dark:text-white text-black">
       {/* turn into component */}
       <SignInPopup />
       <div
@@ -298,7 +302,7 @@ const Surah = () => {
                 className="size-8 cursor-pointer"
                 onClick={() => setCollapsed(true)}
               />
-              <div className="bg-zinc-900 flex flex-col gap-5 rounded-xl px-2 py-5">
+              <div className="mx-2 bg-zinc-800 flex flex-col text-left gap-3 rounded-xl px-2 py-5">
                 <p className="text-gray-200">
                   Surah Number&nbsp;
                   <span className="text-blue-500">{surah.number}</span>
@@ -333,10 +337,10 @@ const Surah = () => {
           ayahs.map((ayah) => (
             <div
               key={ayah.number}
-              className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-4 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
+              className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
-              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
+              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
                 <p className="text-lg font-light text-gray-600 dark:text-gray-400 ">
                   {params.surah}:{ayah.numberInSurah}
                 </p>
@@ -345,7 +349,7 @@ const Surah = () => {
                   <PopoverTrigger>
                     <CopyIcon />
                     {/* REFACTOR TO MAP OVER. */}
-                    <PopoverContent className="w-48 p-2 rounded-xl bg-background shadow-xl space-y-1">
+                    <PopoverContent className="w-48 p-2 rounded-xl bg-zinc-800 shadow-xl space-y-1">
                       <ActionButton
                         text="Arabic"
                         onClick={() => handleCopyAyah("arabic", ayah)}
@@ -393,9 +397,14 @@ const Surah = () => {
 
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
-                  className="md:text-3xl lg:text-4xl text-xl font-light tracking-wider arabic-text 
-                  sm:pr-8 md:pr-16 lg:pr-26"
-                  // onClick={() => handleFetchAudio()}
+                  className={cn(
+                    "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
+                    {
+                      "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
+                      "text-3xl": fontSize === 2, // If fontSize is 2, apply text-base
+                      "text-4xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                    }
+                  )}
                 >
                   {ayah.text.startsWith("بِسۡمِ")
                     ? ayah.text.replace(
@@ -405,7 +414,20 @@ const Surah = () => {
                     : ayah.text}
                 </p>
                 <div>
-                  <p className="text-gray-300 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6">
+                  {/* <p className="text-zinc-200 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6">
+                    {ayah.translation}
+                  </p> */}
+
+                  <p
+                    className={cn(
+                      "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                      {
+                        "text-base": fontSize === 1, // If fontSize is 1, apply text-sm
+                        "text-lg": fontSize === 2, // If fontSize is 2, apply text-base
+                        "text-xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                      }
+                    )}
+                  >
                     {ayah.translation}
                   </p>
                 </div>
@@ -414,13 +436,16 @@ const Surah = () => {
           ))}
       </div>
 
-      <div className="mb-2 lg:w-5/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
+      <div className="mb-2 md:w-4/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
         <div className={cn("flex flex-row w-full", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
             surahNumber={params.surah ? surahNumber - 1 : 1}
           />
-          <Link href={`/`} className="flex-center navigator-styles bg-zinc-900">
+          <Link
+            href={`/`}
+            className="flex-center navigator-styles bg-zinc-800 "
+          >
             Go Home
           </Link>
           <NavigatorButton

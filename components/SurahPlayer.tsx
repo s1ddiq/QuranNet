@@ -83,7 +83,7 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
           <ChevronUp className="size-6" />
         </button>
       ) : (
-        <div className="flex justify-center items-center space-x-3 bg-zinc-900/80 backdrop-blur-md p-3 rounded-full shadow-lg">
+        <div className="flex justify-center items-center space-x-3 bg-zinc-800/90 backdrop-blur-md p-3 rounded-full shadow-lg">
           {/* collapse button */}
           <button
             onClick={() => setCollapsed(true)}

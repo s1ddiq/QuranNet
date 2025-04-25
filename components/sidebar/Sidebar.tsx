@@ -5,9 +5,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import SidebarHeader from "./SidebarHeader";
 import MobileSheet from "./MobileSheet";
-import { toast } from "sonner";
 import { fetchAllSurahs } from "@/api/api";
 import JuzList from "../JuzList";
+import { SearchIcon } from "lucide-react";
+import { Input } from "../ui/input";
 
 type TabKey = "surah" | "juz" | "page";
 const tabs: { key: TabKey; label: string }[] = [
@@ -17,11 +18,18 @@ const tabs: { key: TabKey; label: string }[] = [
 ];
 
 const Sidebar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabKey>("surah");
+  // USESTATES START
+  
+  // Data States:
   const [surahs, setSurahs] = useState<Surah[]>([]);
+  // Active States:
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<TabKey>("surah");
+  // Open/Closed States:
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // USESTATES END
 
   // Load all surahs for the Surah panel
   useEffect(() => {
@@ -44,7 +52,7 @@ const Sidebar = () => {
     <div>
       <div
         className={cn(
-          "min-h-screen md:block hidden sticky top-0 z-50 bg-transparent border-x border-[#262629ff] text-white transition-all duration-300",
+          "min-h-screen md:block hidden sticky top-0 z-50 border-x border-[#262629ff] bg-zinc-900 text-white transition-all duration-300",
           isCollapsed ? "w-16" : "md:w-[350px]" // fix mobilesheet hiding before MD (yk)
         )}
       >
@@ -56,10 +64,10 @@ const Sidebar = () => {
           <div className="relative mt-4 mx-4">
             {/* Sliding pill */}
             <div
-              className="absolute top-0 fatranslate-y-[6px] left-0 h-12 bg-blue-500 rounded-full transition-all duration-300 px-2"
+              className="absolute -top-[4px] fatranslate-y-[6px] left-0 h-12 bg-blue-500 rounded-full transition-all duration-300 px-2"
               style={{ width: pillW, left: pillLeft }}
             />
-            <div className="relative flex bg-[#18181B] p-1 rounded-full">
+            <div className="relative flex border bg-zinc-800 border-[#262629ff] p-1 rounded-full">
               {tabs.map((tab) => (
                 <button
                   key={tab.key}
@@ -80,33 +88,37 @@ const Sidebar = () => {
 
         {/* Search Input */}
         {!isCollapsed && (
-          <div className="mt-4 mx-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={`Search by ${tabs.find((tab) => tab.key === activeTab)?.label}`}
-              className="w-full p-2 bg-[#18181B] text-white rounded-md"
-            />
-          </div>
+          <div className="mt-4 mx-4"> {/* add relative later for searchicon maybe */}
+          {/* <SearchIcon className="absolute left-2 text-gray-400 top-1/2 -translate-y-1/2" /> */}
+          <Input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={`Search by ${tabs.find((tab) => tab.key === activeTab)?.label}`}
+            className="bg-zinc-800 text-white border-0"
+          />
+        </div>
         )}
 
         {/* Surah Panel */}
         {!isCollapsed && activeTab === "surah" && (
           <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
-            {filteredSurahs.map((surah) => (
-              <Link
-                key={surah.number}
-                href={`/surah/${surah.number}`}
-                title={`${surah.englishName} — ${surah.englishNameTranslation}`}
-                onClick={() => toast("Navigating to surah")}
-                className="block rounded-md p-2 hover:bg-white/10 transition flex items-center gap-3"
-              >
-                <span className="text-gray-400">{surah.number}.</span>
-                <span className="flex-1">{surah.englishName}</span>
-              </Link>
-            ))}
-          </div>
+          {filteredSurahs.map((surah) => (
+            <Link
+              key={surah.number}
+              href={`/surah/${surah.number}`}
+              title={`${surah.englishName} — ${surah.englishNameTranslation}`}
+              className="block rounded-md py-2 hover:bg-white/10 transition flex items-center gap-3 w-full"
+            >
+              <span className="text-gray-400 w-6 text-right">{surah.number}.</span>
+              <div className="flex flex-col">
+                <span className="text-white">{surah.englishName}</span>
+                {/* <span className="text-sm text-gray-400">{surah.englishNameTranslation}</span> */}
+              </div>
+            </Link>
+          ))}
+        </div>
+        
         )}
 
         {/* Juz Panel */}
