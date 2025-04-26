@@ -215,7 +215,7 @@ const Surah = () => {
           <p className="font-semibold">Copied Ayah</p>
         </div>
       </div>,
-       { style: { backgroundColor: "#27272A" } }
+      { style: { backgroundColor: "#27272A" } }
     );
     return;
   };
@@ -287,7 +287,7 @@ const Surah = () => {
             <p className="font-semibold">Saved Ayah</p>
           </div>
         </div>,
-         { style: { backgroundColor: "#27272A" } }
+        { style: { backgroundColor: "#27272A" } }
       );
     } else {
       toast(
@@ -305,7 +305,7 @@ const Surah = () => {
             </p>
           </div>
         </div>,
-         { style: { backgroundColor: "#27272A" } }
+        { style: { backgroundColor: "#27272A" } }
       );
     }
   };
@@ -317,14 +317,14 @@ const Surah = () => {
           {/* Surah Header */}
           <div className="bg-neutral-500/45 w-3/4 h-6 animate-bounce rounded-md"></div>
           <div className="bg-neutral-400/50 w-2/4 h-4 animate-pulse rounded-md"></div>
-  
+
           {/* Surah Details */}
           <div className="flex flex-col gap-3 mt-4">
             <div className="bg-neutral-400/50 w-full h-4 animate-pulse rounded-md"></div>
             <div className="bg-neutral-400/50 w-5/6 h-4 animate-pulse rounded-md"></div>
             <div className="bg-neutral-400/50 w-3/4 h-4 animate-pulse rounded-md"></div>
           </div>
-  
+
           {/* Ayah Section */}
           <div className="mt-6 flex flex-col gap-2">
             <div className="bg-neutral-400/50 w-5/6 h-4 animate-pulse rounded-md"></div>
@@ -333,7 +333,7 @@ const Surah = () => {
         </div>
       </div>
     );
-  
+
   return (
     <section className="w-full flex items-center flex-col  bg-zinc-900 flex-1 dark:text-white text-black">
       {/* turn into component */}
@@ -461,8 +461,11 @@ const Surah = () => {
                     "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
                     {
                       "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
-                      "text-3xl": fontSize === 2, // If fontSize is 2, apply text-base
-                      "text-4xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                      "text-2xl": fontSize === 2, // If fontSize is 2, apply text-base
+                      "text-3xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                      "sm:text-4xl text-2xl": fontSize === 4, // If fontSize is 4, apply text-xl
+                      "text-5xl": fontSize === 5, // If fontSize is 5, apply text-2xl
+                      "text-6xl": fontSize > 5, // If fontSize is 8, apply text-5xl
                     }
                   )}
                 >
@@ -473,6 +476,7 @@ const Surah = () => {
                       )
                     : ayah.text}
                 </p>
+
                 <div>
                   {/* <p className="text-zinc-200 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6">
                     {ayah.translation}
@@ -482,9 +486,14 @@ const Surah = () => {
                     className={cn(
                       "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
                       {
-                        "text-base": fontSize === 1, // If fontSize is 1, apply text-sm
-                        "text-lg": fontSize === 2, // If fontSize is 2, apply text-base
-                        "text-xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                        "text-sm": fontSize === 1, // If fontSize is 1, apply text-sm
+                        "text-base": fontSize === 2, // If fontSize is 2, apply text-base
+                        "text-lg": fontSize === 3, // If fontSize is 3, apply text-lg
+                        "sm:text-xl text-lg": fontSize === 4, // If fontSize is 4, apply text-xl
+                        "text-2xl": fontSize === 5, // If fontSize is 5, apply text-2xl
+                        "text-3xl": fontSize === 6, // If fontSize is 6, apply text-3xl
+                        "text-4xl": fontSize === 7, // If fontSize is 7, apply text-4xl
+                        "text-5xl": fontSize === 8, // If fontSize is 8, apply text-5xl
                       }
                     )}
                   >
@@ -501,44 +510,54 @@ const Surah = () => {
             <p className="text-zinc-200 text-xl ">{juzAyah.text}</p>
           </div>
         ))} */}
-        {juz && ayahs.map((juzAyah) => (
-          <div key={juzAyah.number}>
-            <div className="px-2">
-              <p className="text-sm text-gray-400">{juzAyah.numberInSurah}.</p>
-            </div>
-            <div
-              className="text-right sm:order-2 order-1 flex flex-col w-full px-2"
-              
-            >
-              <p
-                className={cn(
-                  "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
-                  {
-                    "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
-                    "text-3xl": fontSize === 2, // If fontSize is 2, apply text-base
-                    "text-4xl": fontSize === 3, // If fontSize is 3, apply text-lg
-                  }
-                )}
-              >
-                {juzAyah.text}
-              </p>
-              <div>
+        {juz &&
+          ayahs.map((juzAyah) => (
+            <div key={juzAyah.number}>
+              <div className="px-2">
+                <p className="text-sm text-gray-400">
+                  {juzAyah.numberInSurah}.
+                </p>
+              </div>
+              <div className="text-right sm:order-2 order-1 flex flex-col w-full px-2">
                 <p
                   className={cn(
-                    "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                    "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
                     {
-                      "text-base": fontSize === 1, // If fontSize is 1, apply text-sm
-                      "text-lg": fontSize === 2, // If fontSize is 2, apply text-base
-                      "text-xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                      "text-sm": fontSize === 1, // If fontSize is 1, apply text-sm
+                      "text-base": fontSize === 2, // If fontSize is 2, apply text-base
+                      "text-lg": fontSize === 3, // If fontSize is 3, apply text-lg
+                      "text-xl": fontSize === 4, // If fontSize is 4, apply text-xl
+                      "text-2xl": fontSize === 5, // If fontSize is 5, apply text-2xl
+                      "text-3xl": fontSize === 6, // If fontSize is 6, apply text-3xl
+                      "text-4xl": fontSize === 7, // If fontSize is 7, apply text-4xl
+                      "text-5xl": fontSize === 8, // If fontSize is 8, apply text-5xl
                     }
                   )}
                 >
-                  {juzAyah.translation}
+                  {juzAyah.text}
                 </p>
+                <div>
+                  <p
+                    className={cn(
+                      "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                      {
+                        "text-xs": fontSize === 1, // If fontSize is 1, apply text-xs
+                        "text-sm": fontSize === 2, // If fontSize is 2, apply text-sm
+                        "text-base": fontSize === 3, // If fontSize is 3, apply text-base
+                        "text-lg": fontSize === 4, // If fontSize is 4, apply text-lg
+                        "text-xl": fontSize === 5, // If fontSize is 5, apply text-xl
+                        "text-2xl": fontSize === 6, // If fontSize is 6, apply text-2xl
+                        "text-3xl": fontSize === 7, // If fontSize is 7, apply text-3xl
+                        "text-4xl": fontSize === 8, // If fontSize is 8, apply text-4xl
+                      }
+                    )}
+                  >
+                    {juzAyah.translation}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
         <div></div>
       </div>
 

@@ -8,12 +8,14 @@ import MobileSheet from "./MobileSheet";
 import { fetchAllSurahs } from "@/api/api";
 import JuzList from "../JuzList";
 import { Input } from "../ui/input";
+import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
+import { Slider } from "../ui/slider";
 
-type TabKey = "surah" | "juz" | "page";
+type TabKey = "surah" | "juz" | "settings";
 const tabs: { key: TabKey; label: string }[] = [
   { key: "surah", label: "Surah" },
   { key: "juz", label: "Juz" },
-  { key: "page", label: "Page" },
+  { key: "settings", label: "Settings" }, // maybe settings
 ];
 
 const Sidebar = () => {
@@ -47,6 +49,11 @@ const Sidebar = () => {
   const pillLeft = `${idx * pillPct}%`;
   const pillW = `${pillPct}%`;
 
+    const { fontSize, setFontSize } = useGlobalState();
+  
+    const handleFontSizeChange = (value: number[]) => {
+      setFontSize(value[0]);
+    };
   return (
     <div>
       <div
@@ -131,11 +138,25 @@ const Sidebar = () => {
         )}
 
         {/* Page Panel */}
-        {!isCollapsed && activeTab === "page" && (
+        {!isCollapsed && activeTab === "settings" && (
           <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
             {/* Example Page Content */}
-            <h2 className="text-lg font-semibold">Page Content</h2>
-            <p className="text-gray-400">Surah Pages will be displayed here</p>
+            {/* <p className="text-xl text-white">Font Size</p> */}
+            <p className="text-xl mb-2 text-gray-400">Adjust Font Size</p>
+
+            <div className="space-y-4">
+              <Slider
+                value={[fontSize]}
+                defaultValue={[6]}
+                max={8}
+                step={1}
+                onValueChange={handleFontSizeChange}
+                className="relative flex w-full touch-none select-none items-center"
+              >
+              </Slider>
+            </div>
+
+            <p className="text-sm mb-2 text-gray-400">...More settings coming soon</p>
           </div>
         )}
 {/* 

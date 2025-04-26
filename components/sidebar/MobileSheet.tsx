@@ -146,18 +146,25 @@ const MobileSheet = ({
 
         {activeTab === "settings" && ( // maybe make into info
           <div className="p-4 bg-transparent rounded-md bg-gray-400">
-            {/* <p className="text-2xl">Accessiblity</p> */}
             <p className="text-xl text-white">Font Size</p>
             <div className="space-y-4">
-              <Slider
-                value={[fontSize]}
-                defaultValue={[2]}
-                max={3}
-                step={1}
-                onValueChange={handleFontSizeChange}
-                className="relative flex w-full touch-none select-none items-center"
-              >
-              </Slider>
+              {/* Updated the layout to be 2 columns on small screens */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col">
+                  <Slider
+                    value={[fontSize]}
+                    defaultValue={[2]}
+                    max={8}
+                    step={1}
+                    onValueChange={handleFontSizeChange}
+                    className="relative flex w-full touch-none select-none items-center"
+                  />
+                </div>
+                {/* Add another element or content if necessary */}
+                <div className="flex flex-col">
+                  <p className="text-sm text-white">Adjust Font Size</p>
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -20,7 +20,7 @@ export const useGlobalState = (): GlobalState => {
 }
 
 export const GlobalStateProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  const [fontSize, setFontSize] = useState(2)
+  const [fontSize, setFontSize] = useState(4)
 
   return (
     <GlobalStateContext.Provider value={{ fontSize, setFontSize }}>
