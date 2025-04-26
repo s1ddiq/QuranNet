@@ -109,19 +109,75 @@ export const fetchSurahAudio = async (surahId: number) => {
   }
 };
 
-export const fetchJuz = async (juzId: number) => {
+export const fetchJuz = async (juzId: string | null) => {
+  if (!juzId) {
+    console.log("Invalid juzId provided."); // 🚨
+    return null;
+  }
+
   try {
-    const response = await fetch(
+    const responseEnglish = await fetch(
+      `https://api.alquran.cloud/v1/juz/${juzId}/en.sahih`
+    );
+    const responseArabic = await fetch(
       `https://api.alquran.cloud/v1/juz/${juzId}/quran-uthmani`
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+
+    if (!responseEnglish.ok || !responseArabic.ok) {
+      throw new Error(`HTTP error! status: ${responseEnglish.status}`);
     }
     
-    const data = await response.json();
-    console.log(data);
-    return data;
+    const english = await responseEnglish.json();
+    const arabic = await responseArabic.json();
+    
+    return { arabic, english };
   } catch (error) {
-    -console.log(`Error fetching juz: ${error}`);
+    console.log(`Error fetching juz: ${error}`);
+    return null;
   }
 };
+
+
+// archoiv
+
+
+/*
+     {juz?.arabic.data.ayahs.map((juzAyah: Ayah) => (
+            <div key={juzAyah.number}>
+              <p className="text-sm text-gray-400 p-4">
+                {juzAyah.numberInSurah}
+              </p>
+              <p
+                className={cn(
+                  "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                  {
+                    "text-base": fontSize === 1, // If fontSize is 1, apply text-sm
+                    "text-lg": fontSize === 2, // If fontSize is 2, apply text-base
+                    "text-xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                  }
+                )}
+              >
+                {juzAyah.text}
+              </p>
+            </div>
+          ))}
+          {juz?.english.data.ayahs.map((juzAyah: Ayah) => (
+            <div key={juzAyah.number}>
+              <p className="text-sm text-gray-400 p-4">
+                {juzAyah.numberInSurah}
+              </p>
+              <p
+                className={cn(
+                  "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                  {
+                    "text-base": fontSize === 1, // If fontSize is 1, apply text-sm
+                    "text-lg": fontSize === 2, // If fontSize is 2, apply text-base
+                    "text-xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                  }
+                )}
+              >
+                {juzAyah.text}
+              </p>
+            </div>
+          ))}
+*/

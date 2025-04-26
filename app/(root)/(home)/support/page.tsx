@@ -11,6 +11,12 @@ const Support = () => {
         Check back soon, or follow us for updates!
       </p>
       <Link
+          href="https://github.com/s1ddiq"
+          className="px-5 py-2 mt-4 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+        >
+          QuranNet - Github
+        </Link>
+      <Link
           href="/"
           className="px-5 py-2 mt-4 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
         >

@@ -49,9 +49,9 @@ const SurahsList = () => {
     "Last Read" | "Saved" | "Collections"
   >("Last Read");
   const [amount, setAmount] = useState(21);
-  const [deletedAyah, setDeletedAyah] = useState<Ayah>()
+  const [deletedAyah, setDeletedAyah] = useState<Ayah>();
   const [savedAyahs, setSavedAyahs] = useState<Ayah[]>(); // ‼ ☹
-  const {getSurahNumber} = useSurahNavigation();
+  const { getSurahNumber } = useSurahNavigation();
 
   useEffect(() => {
     const func = async () => {
@@ -101,12 +101,11 @@ const SurahsList = () => {
   const handleRemoveSavedAyah = (ayah: Ayah) => {
     const saved = savedAyahs ?? []; // use current state, fallback if needed
     const updated = saved.filter((a: Ayah) => a.number !== ayah.number);
-  
+
     localStorage.setItem("saved-ayahs", JSON.stringify(updated));
     setSavedAyahs(updated); // <- update the state too
     setDeletedAyah(ayah);
   };
-  
 
   return (
     <>
@@ -183,9 +182,13 @@ const SurahsList = () => {
             {activeSidebarTab === "overview" && (
               <Link
                 href="/support"
-                className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+                className="px-5 py-2 bg-blue-500 text-white rounded-xl text-sm font-medium transition relative w-44"
               >
                 Support Us ♥
+                <span className="absolute -top-[4px] -right-[6px] flex size-4">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+                  <span className="relative inline-flex size-4 rounded-full bg-indigo-500"></span>
+                </span>
               </Link>
             )}
           </SheetContent>
@@ -269,10 +272,12 @@ const SurahsList = () => {
                 sm:flex-row flex-col items-stretch mt-4 px-4"
             >
               {["Al-Mulk", "Al-Baqara", "An-Nisaa", "Al-Faatiha"].map(
-                (sura) => ( // rename to surah
+                (
+                  sura // rename to surah
+                ) => (
                   <Link
                     key={sura}
-                    href={`/surah/${getSurahNumber(sura)}`}// map to surah name later
+                    href={`/surah/${getSurahNumber(sura)}`} // map to surah name later
                     className="bg-[#18181B] text-center rounded-full px-4 py-2 flex justify-center items-center"
                   >
                     {sura}
@@ -363,44 +368,46 @@ const SurahsList = () => {
               //   </p>
               // </div>
               <div className="flex flex-wrap w-full gap-5">
-                {savedAyahs && savedAyahs.length > 0 ? savedAyahs.slice(0, 5).map(
-                  (
-                    ayah: Ayah // destructure later
-                  ) => (
-                    <div
-                      key={ayah.number}
-                      className={cn('min-h-12 lg:w-fit w-full rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative', deletedAyah?.number === ayah.number ? 'hidden' : '')}
-                    >
-                      <Link
-                        href={`surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
+                {savedAyahs && savedAyahs.length > 0 ? (
+                  savedAyahs.slice(0, 5).map(
+                    (
+                      ayah: Ayah // destructure later
+                    ) => (
+                      <div
+                        key={ayah.number}
+                        className={cn(
+                          "min-h-12 lg:w-fit w-full rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative",
+                          deletedAyah?.number === ayah.number ? "hidden" : ""
+                        )}
                       >
-                        <p className="text-lg">{ayah.text}</p>
-                        <p className="text-gray-400">{ayah.translation}</p>
-                        <div className="flex justify-between">
-                          <div className="bg-black/45 p-[8px] rounded-full w-fit">
-                            {ayah.surahNumber}:{ayah.numberInSurah}
+                        <Link
+                          href={`surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
+                        >
+                          <p className="text-lg">{ayah.text}</p>
+                          <p className="text-gray-400">{ayah.translation}</p>
+                          <div className="flex justify-between">
+                            <div className="bg-black/45 p-[8px] rounded-full w-fit">
+                              {ayah.surahNumber}:{ayah.numberInSurah}
+                            </div>
                           </div>
-                        </div>
-                      </Link>
-                      <X
-                        className="text-blue-500 cursor-pointer absolute right-4 top-4"
-                        onClick={() => handleRemoveSavedAyah(ayah)}
-                        size={24}
-                      />
-                    </div>
+                        </Link>
+                        <X
+                          className="text-blue-500 cursor-pointer absolute right-4 top-4"
+                          onClick={() => handleRemoveSavedAyah(ayah)}
+                          size={24}
+                        />
+                      </div>
+                    )
                   )
                 ) : (
                   <div>
-                  <p className="text-xl text-gray-200 hover:text-gray-100 text-center">
-                   No saved ayahs
-                    <Link
-                      href="/surah/1"
-                      className="text-blue-500 text-lg"
-                    >
-                      &nbsp;Start Reading
-                    </Link>
-                  </p>
-                </div>
+                    <p className="text-xl text-gray-200 hover:text-gray-100 text-center">
+                      No saved ayahs
+                      <Link href="/surah/1" className="text-blue-500 text-lg">
+                        &nbsp;Start Reading
+                      </Link>
+                    </p>
+                  </div>
                 )}
 
                 <div className="w-full rounded-full p-2 flex justify-center items-center">
@@ -491,7 +498,7 @@ const SurahsList = () => {
                 Quran — beautifully designed, always available, and built with
                 love for every heart.
               </p>
-                <UserButton />
+              <UserButton />
             </div>
 
             {/* Column 2 */}

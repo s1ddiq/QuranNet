@@ -1,3 +1,4 @@
+// * ================== SURAH & AYAH TYPES ================== *
 interface Surah {
   number: number;
   name: string;
@@ -17,30 +18,15 @@ interface Ayah {
   ruku: number;
   hizbQuarter: number;
   sajda: boolean;
-  translation: any;
+  translation?: string;
   surahNumber?: number;
 }
 
 interface EnglishAyah {
   number: number;
   text: string;
-  edition: {
-    identifier: string;
-    language: string;
-    name: string;
-    englishName: string;
-    format: string;
-    type: string;
-    direction: string;
-  };
-  surah: {
-    number: number;
-    name: string;
-    englishName: string;
-    englishNameTranslation: string;
-    numberOfAyahs: number;
-    revelationType: string;
-  };
+  edition: Edition;
+  surah: Surah;
   numberInSurah: number;
   juz: number;
   manzil: number;
@@ -50,28 +36,16 @@ interface EnglishAyah {
   sajda: boolean;
 }
 
+// * ================== SEARCH TYPES ================== *
 interface SearchResult {
-  edition: {
-    identifier: string;
-    language: string;
-    name: string;
-    englishName: string;
-    format: string;
-    type: string;
-    direction: string;
-  };
+  edition: Edition;
   number: number;
   numberInSurah: number;
-  surah: {
-    number: number;
-    name: string;
-    englishName: string;
-    englishNameTranslation: string;
-    revelationType: string;
-  };
+  surah: SurahSummary;
   text: string;
 }
 
+// * ================== PROPS ================== *
 interface SearchResultCardProps {
   result: SearchResult;
   searchQuery: string;
@@ -89,21 +63,19 @@ interface SurahNavigationProps {
 
 interface AyahCardProps {
   surah: Surah;
-  params: any; // REPLACE LATER WITH PROPER TYPES.
-  ayah: Ayah & { translation?: string }; // REPLACE LATER WITH PROPER TYPES.
+  params: Record<string, any>; // Replace later with specific params type
+  ayah: Ayah;
   currentAudio: HTMLAudioElement | null;
   setCurrentAudio: (audio: HTMLAudioElement | null) => void;
 }
 
 interface MobileSheetProps {
-  isOpen: boolean; // Boolean state for whether the sheet is open or not
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>; // Set state function to toggle the open state
-  // isScrolling: boolean; // Boolean state to check if the sheet is scrolling
-  setIsScrolling?: React.Dispatch<React.SetStateAction<boolean>>; // Set state function for scrolling state
-  searchResults?: SearchResult[]; // Array of search results of type `SearchResult`
-  searchQuery: string; // Search query string to filter the results
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsScrolling?: React.Dispatch<React.SetStateAction<boolean>>;
+  searchResults?: SearchResult[];
+  searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  // amount: number;
   surahs?: Surah[];
 }
 
@@ -114,18 +86,19 @@ interface SidebarHeaderProps {
 
 interface SearchInputProps {
   searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface ActionButtonProps {
   text: string;
-  onClick?: () => void; // make unoptional;
+  onClick: () => void;
 }
 
 interface SurahPlayerProps {
   surahNumber: number;
 }
 
+// * ================== JUZ ================== *
 interface Juz {
   number: number;
   text: string;
@@ -136,8 +109,28 @@ interface Juz {
   page: number;
   ruku: number;
   hizbQuarter: number;
-  sajda: boolean; // maybe add ayahs[] as seperate
+  sajda: boolean;
 }
+
+// * ================== SHARED SMALL TYPES ================== *
+interface Edition {
+  identifier: string;
+  language: string;
+  name: string;
+  englishName: string;
+  format: string;
+  type: string;
+  direction: string;
+}
+
+interface SurahSummary {
+  number: number;
+  name: string;
+  englishName: string;
+  englishNameTranslation: string;
+  revelationType: string;
+}
+
 
 // REWRITE ENTIRE PROPS AND ORGANIZE WITH STARS
 

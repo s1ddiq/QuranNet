@@ -1,30 +1,3 @@
-// 'use client'
-// import { fetchJuz } from '@/api/api';
-// import { useParams } from 'next/navigation';
-// import React, { useEffect, useState } from 'react'
-
-// const Juz = () => {
-//   const [juz, setJuz] = useState<Juz[]>();
-//   const params = useParams();
-//   const juzNumber = Number(params.juz);
-//   useEffect(() => {
-//     const func = async () => {
-//       const res = await fetchJuz(juzNumber);
-      
-//       setJuz(res.data.ayahs);
-//     }
-//     func();
-//   }, [])
-//   return (
-//     <div className='text-white'>
-//       {juz && juz.map((juz) => (
-//         <p>{juz.text}</p>
-//       ))}
-//     </div>
-//   )
-// }
-
-// export default Juz
 'use client'
 import { useRouter } from 'next/navigation'
 import React from 'react'

@@ -7,7 +7,6 @@ import SidebarHeader from "./SidebarHeader";
 import MobileSheet from "./MobileSheet";
 import { fetchAllSurahs } from "@/api/api";
 import JuzList from "../JuzList";
-import { SearchIcon } from "lucide-react";
 import { Input } from "../ui/input";
 
 type TabKey = "surah" | "juz" | "page";

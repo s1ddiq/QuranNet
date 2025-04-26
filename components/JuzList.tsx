@@ -1,4 +1,6 @@
+'use client'
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const juzData = [
@@ -140,15 +142,17 @@ const juzData = [
 
 //   const filteredSurahs = surahs.filter(surah => surah.englishName.toLowerCase().includes(searchQuery.toLowerCase()));
 const JuzList = ({ searchQuery }: { searchQuery: string }) => {
+  const router = useRouter();
   const filteredJuzData =
     searchQuery.trim() === ""
       ? juzData
       : juzData.filter((juz) => juz.juz === Number(searchQuery));
+
   return (
     <div className="text-white">
       {filteredJuzData.map((juz) => (
-        <Link href={`/juz/${juz.juz}`} key={juz.juz}>
-          <div className="mb-6 bg-zinc-900 border rounded-xl p-4">
+        <Link href={`?juz=${juz.juz}`} key={juz.juz}>
+          <div className="mb-6 bg-zinc-800 border rounded-xl p-4">
             <h2 className="text-xl font-bold mb-2">Juz {juz.juz}</h2>
             <ul className="pl-4 list-disc text-gray-300">
               {juz.surahs.map((name, i) => (

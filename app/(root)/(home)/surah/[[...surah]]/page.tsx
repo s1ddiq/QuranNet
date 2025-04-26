@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   fetchAyahAudio,
+  fetchJuz,
   fetchSurahById,
   fetchSurahTranslation,
 } from "@/api/api";
@@ -47,6 +48,7 @@ const Surah = () => {
   // USESTATES START
   const [surah, setSurah] = useState<Surah | any>(null);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
+  const [juz, setJuz] = useState<{ arabic: any; english: any } | null>(null);
   const [loading, setLoading] = useState(true);
   // USESTATES END
 
@@ -63,14 +65,21 @@ const Surah = () => {
   const [copied, setCopied] = useState(false);
   // USESTATES OPEN/CLOSED STATES END
 
+  // Params
   const params = useParams();
   const searchParams = useSearchParams();
   const ayahParam = searchParams.get("ayah");
+  const juzParam = searchParams.get("juz");
   const surahNumber = Number(params.surah);
+  // Params END
+
+  // ROUTER NEXTJS
+  const router = useRouter();
+  // END
 
   useEffect(() => {
     const fetchSurahData = async () => {
-      if (!params.surah) return;
+      if (!params.surah || !surahNumber) return; // 🚨
       try {
         const surahResponse = await fetchSurahById(surahNumber); // Surah Data
         const translationResponse = await fetchSurahTranslation(surahNumber); // Surah Translation Data
@@ -125,11 +134,43 @@ const Surah = () => {
   }, [ayahParam, ayahs]);
 
   useEffect(() => {
+    const func = async () => {
+      if (!juzParam) return;
+      toast(
+        <div
+          className="flex items-center gap-3"
+          onClick={() => router.push("/sign-in")}
+        >
+          <p className="text-3xl">⚠</p>
+          <div>
+            <p className="font-semibold">Juz functionality is limited</p>
+          </div>
+        </div>
+      );
+      try {
+        const res = await fetchJuz(juzParam);
+        if (res) {
+          setJuz(res);
+          setAyahs(
+            res.arabic.data.ayahs.map((ayah: any, index: number) => ({
+              ...ayah,
+              translation: res.english[index]?.text || "",
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching juz:", error);
+      }
+    };
+    func();
+  }, [juzParam]);
+
+  useEffect(() => {
     let lastY = window.scrollY;
     let ticking = false;
 
     const handleScroll = () => {
-      const currentY = window.scrollY;
+      const currentY = window.scrollY; // was working on juz
 
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -144,7 +185,7 @@ const Surah = () => {
         ticking = true;
       }
     };
-    +window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -173,7 +214,8 @@ const Surah = () => {
         <div>
           <p className="font-semibold">Copied Ayah</p>
         </div>
-      </div>
+      </div>,
+       { style: { backgroundColor: "#27272A" } }
     );
     return;
   };
@@ -244,30 +286,54 @@ const Surah = () => {
           <div>
             <p className="font-semibold">Saved Ayah</p>
           </div>
-        </div>
+        </div>,
+         { style: { backgroundColor: "#27272A" } }
       );
     } else {
       toast(
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3"
+          onClick={() => router.push("/sign-in")}
+        >
           <p className="text-3xl">☹</p>
           <div>
-            <p className="font-semibold">Sign in required</p>
+            <p className="font-semibold">
+              <span className="text-blue-500">Sign in&nbsp;</span>required
+            </p>
             <p className="text-sm text-muted-foreground">
               You need to be signed in to save ayahs.
             </p>
           </div>
-        </div>
+        </div>,
+         { style: { backgroundColor: "#27272A" } }
       );
     }
   };
 
   if (loading)
     return (
-      <Loader
-        className="text-gray-400 text-center animate-spin absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
-        size={32}
-      />
+      <div className="w-full h-screen bg-zinc-900 flex justify-center items-center">
+        <div className="flex flex-col bg-zinc-900 w-72 h-80 animate-pulse rounded-xl p-6 gap-4">
+          {/* Surah Header */}
+          <div className="bg-neutral-500/45 w-3/4 h-6 animate-bounce rounded-md"></div>
+          <div className="bg-neutral-400/50 w-2/4 h-4 animate-pulse rounded-md"></div>
+  
+          {/* Surah Details */}
+          <div className="flex flex-col gap-3 mt-4">
+            <div className="bg-neutral-400/50 w-full h-4 animate-pulse rounded-md"></div>
+            <div className="bg-neutral-400/50 w-5/6 h-4 animate-pulse rounded-md"></div>
+            <div className="bg-neutral-400/50 w-3/4 h-4 animate-pulse rounded-md"></div>
+          </div>
+  
+          {/* Ayah Section */}
+          <div className="mt-6 flex flex-col gap-2">
+            <div className="bg-neutral-400/50 w-5/6 h-4 animate-pulse rounded-md"></div>
+            <div className="bg-neutral-400/50 w-3/4 h-4 animate-pulse rounded-md"></div>
+          </div>
+        </div>
+      </div>
     );
+  
   return (
     <section className="w-full flex items-center flex-col  bg-zinc-900 flex-1 dark:text-white text-black">
       {/* turn into component */}
@@ -290,7 +356,7 @@ const Surah = () => {
       <div className="flex flex-col w-full gap-14">
         <div className="flex items-center text-center w-full flex-col">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
-          {}
+
           {collapsed ? (
             <ChevronDown
               className="size-8 cursor-pointer"
@@ -303,37 +369,32 @@ const Surah = () => {
                 onClick={() => setCollapsed(true)}
               />
               <div className="mx-2 bg-zinc-800 flex flex-col text-left gap-3 rounded-xl px-2 py-5">
-                <p className="text-gray-200">
-                  Surah Number&nbsp;
-                  <span className="text-blue-500">{surah.number}</span>
-                </p>
-                <p className="text-gray-200">
-                  Surah Name&nbsp;
-                  <span className="text-blue-500">{surah.name}</span>
-                </p>
-                <p className="text-gray-200">
-                  You're currently reading&nbsp;
-                  <span className="text-blue-500">
-                    {surah.englishName}
-                  </span>{" "}
-                  &nbsp; or &nbsp;
-                  <span className="text-blue-500">{surah.name}</span>
-                </p>
-
-                <p className="text-gray-200">
-                  This surah is&nbsp;
-                  <span className="text-blue-500">{surah.revelationType}</span>
-                </p>
-                <p className="text-gray-200">
-                  This surah has&nbsp;
-                  <span className="text-blue-500">{surah.numberOfAyahs}</span>
-                  &nbsp; ayahs
-                </p>
+                {juzParam ? (
+                  <p className="text-gray-200">
+                    Juz Number&nbsp;
+                    <span className="text-blue-500">{juzParam}</span>
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-gray-200">
+                      Surah Number&nbsp;
+                      <span className="text-blue-500">{surah?.number}</span>
+                    </p>
+                    <p className="text-gray-200">
+                      Surah Name&nbsp;
+                      <span className="text-blue-500">
+                        {surah?.englishName}
+                      </span>
+                    </p>
+                  </>
+                )}
               </div>
             </>
           )}
         </div>
+
         {!loading &&
+          !juz &&
           ayahs.map((ayah) => (
             <div
               key={ayah.number}
@@ -350,18 +411,17 @@ const Surah = () => {
                     <CopyIcon />
                     {/* REFACTOR TO MAP OVER. */}
                     <PopoverContent className="w-48 p-2 rounded-xl bg-zinc-800 shadow-xl space-y-1">
-                      <ActionButton
-                        text="Arabic"
-                        onClick={() => handleCopyAyah("arabic", ayah)}
-                      />
-                      <ActionButton
-                        text="English"
-                        onClick={() => handleCopyAyah("english", ayah)}
-                      />
-                      <ActionButton
-                        text="Arabic + English"
-                        onClick={() => handleCopyAyah("both", ayah)}
-                      />
+                      {["Arabic", "English", "Arabic + English"].map(
+                        (option) => (
+                          <ActionButton
+                            key={option}
+                            text={option}
+                            onClick={() =>
+                              handleCopyAyah(option.toLowerCase(), ayah)
+                            }
+                          />
+                        )
+                      )}
                     </PopoverContent>
                   </PopoverTrigger>
                 </Popover>
@@ -434,6 +494,52 @@ const Surah = () => {
               </div>
             </div>
           ))}
+
+        {/* {juz?.english.data.ayahs.map((juzAyah: EnglishAyah) => (
+          <div key={juzAyah.number} className="px-6">
+            <p className="text-gray-400 text-sm ">{juzAyah.numberInSurah}</p>
+            <p className="text-zinc-200 text-xl ">{juzAyah.text}</p>
+          </div>
+        ))} */}
+        {ayahs.map((juzAyah) => (
+          <div key={juzAyah.number}>
+            <div className="px-2">
+              <p className="text-sm text-gray-400">{juzAyah.numberInSurah}.</p>
+            </div>
+            <div
+              className="text-right sm:order-2 order-1 flex flex-col w-full px-2"
+              
+            >
+              <p
+                className={cn(
+                  "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
+                  {
+                    "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
+                    "text-3xl": fontSize === 2, // If fontSize is 2, apply text-base
+                    "text-4xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                  }
+                )}
+              >
+                {juzAyah.text}
+              </p>
+              <div>
+                <p
+                  className={cn(
+                    "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                    {
+                      "text-base": fontSize === 1, // If fontSize is 1, apply text-sm
+                      "text-lg": fontSize === 2, // If fontSize is 2, apply text-base
+                      "text-xl": fontSize === 3, // If fontSize is 3, apply text-lg
+                    }
+                  )}
+                >
+                  {juzAyah.translation}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+        <div></div>
       </div>
 
       <div className="mb-2 md:w-4/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
@@ -453,14 +559,6 @@ const Surah = () => {
             surahNumber={params.surah ? surahNumber + 1 : 1}
           />
         </div>
-        {/* <div className="flex justify-between w-full pt-2 sm:pt-8">
-          <p className="text-sm font-bold tracking-widest text-gray-400">
-            QuranNet
-          </p>
-          <p className="text-sm font-bold tracking-widest text-gray-400">
-            {new Date().getFullYear()}
-          </p>
-        </div> */}
       </div>
       <div className="sticky bottom-0 bg-transparent p-4 w-full flex justify-center items-center">
         <SurahPlayer surahNumber={surahNumber} />
