@@ -501,7 +501,7 @@ const Surah = () => {
             <p className="text-zinc-200 text-xl ">{juzAyah.text}</p>
           </div>
         ))} */}
-        {ayahs.map((juzAyah) => (
+        {juz && ayahs.map((juzAyah) => (
           <div key={juzAyah.number}>
             <div className="px-2">
               <p className="text-sm text-gray-400">{juzAyah.numberInSurah}.</p>
