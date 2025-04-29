@@ -108,7 +108,7 @@ const MobileSheet = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setSearchQuery(e.target.value);
                   }} // Update search query on input change
-                  placeholder="Search by Quran"
+                  placeholder="Search by Surah"
                 />
                 {/* <span
                   className={cn(

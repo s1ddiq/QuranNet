@@ -58,7 +58,7 @@ const Sidebar = () => {
     <div>
       <div
         className={cn(
-          "min-h-screen md:block hidden sticky top-0 z-50 border-x border-[#262629ff] bg-zinc-900 text-white transition-all duration-300",
+          "min-h-screen md:block hidden sticky top-0 z-50 border-x border-[#262629ff] dark:bg-zinc-900 bg-orange-100 text-white transition-all duration-300",
           isCollapsed ? "w-16" : "md:w-[350px]" // fix mobilesheet hiding before MD (yk)
         )}
       >

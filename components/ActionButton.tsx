@@ -2,7 +2,7 @@ import React from "react";
 
 const ActionButton = ({text, onClick}: ActionButtonProps) => {
   return (
-    <div className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-center cursor-pointer transition-colors" onClick={onClick}>
+    <div className="dark:bg-blue-500 bg-white dark:hover:bg-blue-600 dark:text-white text-black py-2 px-4  cursor-pointer transition-colors" onClick={onClick}>
       {text}
     </div>
   );

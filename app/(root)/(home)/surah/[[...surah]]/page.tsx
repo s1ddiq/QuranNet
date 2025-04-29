@@ -24,7 +24,12 @@ import { cn } from "@/lib/utils"; // ⭐
 
 // ICONS START ⭐
 import BismillahIcon from "@/components/svg/BismillahIcon";
-import { Check, ChevronDown, ChevronUp, Loader, Pause } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Pause,
+} from "lucide-react";
 import DocumentIcon from "@/components/svg/DocumentIcon";
 import PlayIcon from "@/components/svg/PlayIcon";
 import CopyIcon from "@/components/svg/CopyIcon";
@@ -39,6 +44,9 @@ import {
 import ActionButton from "@/components/ActionButton";
 import SurahPlayer from "@/components/SurahPlayer";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
+import { amiri, montserrat } from "@/app/fonts";
+import ThemeToggleButton from "@/components/ThemeToggleButton";
+
 // SHADCN UI END
 
 const Surah = () => {
@@ -57,6 +65,7 @@ const Surah = () => {
   // USESTATES OPEN/CLOSED STATES START ⭐
   const [showHeader, setShowHeader] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(true);
   // Subdivision of O/C;
   const [currentlyPlayingAyah, setCurrentlyPlayingAyah] = useState<
     number | null
@@ -335,25 +344,40 @@ const Surah = () => {
     );
 
   return (
-    <section className="w-full flex items-center flex-col  bg-zinc-900 flex-1 dark:text-white text-black">
+    <section className="w-full flex items-center flex-col dark:bg-zinc-900 bg-orange-100 flex-1 dark:text-white text-black">
       {/* turn into component */}
       <SignInPopup />
       <div
         className={cn(
-          "md:flex hidden flex-row justify-between items-center w-1/3 mb-2 min-h-14 md:sticky top-0 backdrop-blur-md bg-transparent border-b border-[#262629ff] w-full px-6 transition-all duration-300",
+          "hidden md:flex items-center justify-between w-full h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-transparent border-white/10 transition-all duration-300 z-50",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
-        <p className="font-bold text-center text-2xl">
-          {surah?.englishNameTranslation}
-        </p>
-        <p className="font-bold text-center text-2xl">{surah?.name}</p>
-        <div className="hidden sm:block">
+        <div className="flex gap-3 items-center">
+          <p className="text-white font-bold text-lg leading-tight">
+            {surah?.name}
+          </p>
+          {/* <p className="text-white font-semibold text-lg tracking-wide">
+      {surah?.englishNameTranslation}
+    </p> */}
+        </div>
+
+        {/* Centered Input */}
+        {/* <div className="absolute left-1/2 -translate-x-1/2">
+          <Input
+            type="text"
+            placeholder="Search the Quran"
+            onClick={() => setIsSearchModalOpen(true)}
+            className="w-96 bg-zinc-800 text-white border-0"
+          />
+        </div> */}
+
+        <div className="hidden sm:flex items-center">
           <UserButton />
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-14">
+      <div className="flex flex-col w-full min-h-screen gap-12">
         <div className="flex items-center text-center w-full flex-col">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
 
@@ -368,7 +392,7 @@ const Surah = () => {
                 className="size-8 cursor-pointer"
                 onClick={() => setCollapsed(true)}
               />
-              <div className="mx-2 bg-zinc-800 flex flex-col text-left gap-3 rounded-xl px-2 py-5">
+              <div className="mx-2 bg-zinc-800 flex flex-col text-left gap-3 rounded-xl px-2 py-5 border">
                 {juzParam ? (
                   <p className="text-gray-200">
                     Juz Number&nbsp;
@@ -401,7 +425,7 @@ const Surah = () => {
               className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
-              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
+              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-between">
                 <p className="text-lg font-light text-gray-600 dark:text-gray-400 ">
                   {params.surah}:{ayah.numberInSurah}
                 </p>
@@ -409,8 +433,7 @@ const Surah = () => {
                 <Popover>
                   <PopoverTrigger>
                     <CopyIcon />
-                    {/* REFACTOR TO MAP OVER. */}
-                    <PopoverContent className="w-48 p-2 rounded-xl bg-zinc-800 shadow-xl space-y-1">
+                    <PopoverContent className="w-48 p-2 rounded-xl dark:bg-zinc-800 bg-orange-200 shadow-xl">
                       {["Arabic", "English", "Arabic + English"].map(
                         (option) => (
                           <ActionButton
@@ -425,19 +448,10 @@ const Surah = () => {
                     </PopoverContent>
                   </PopoverTrigger>
                 </Popover>
-                {/* <HighlighterPenIcon /> */}
                 <DocumentIcon
                   onClick={() => handleSaveAyah(ayah)}
                   className="hover:opacity-80"
                 />
-                {/* <Popover>
-                  <PopoverTrigger>
-                    <PopoverContent className="w-48 p-2 rounded-xl bg-background shadow-xl space-y-1">
-                      <ActionButton text="Save to Collections" />
-                      <ActionButton text="Bookmark Ayah" />
-                    </PopoverContent>
-                  </PopoverTrigger>
-                </Popover> */}
                 {currentlyPlayingAyah === ayah.numberInSurah ? (
                   <Pause
                     fill="white"
@@ -458,7 +472,7 @@ const Surah = () => {
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
                   className={cn(
-                    "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
+                    `${amiri.className} font-light tracking-wider sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
                     {
                       "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
                       "text-2xl": fontSize === 2, // If fontSize is 2, apply text-base
@@ -484,7 +498,7 @@ const Surah = () => {
 
                   <p
                     className={cn(
-                      "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
+                      ` dark:text-zinc-200 text-black md:leading-[1] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
                       {
                         "text-sm": fontSize === 1, // If fontSize is 1, apply text-sm
                         "text-base": fontSize === 2, // If fontSize is 2, apply text-base
@@ -504,64 +518,11 @@ const Surah = () => {
             </div>
           ))}
 
-        {/* {juz?.english.data.ayahs.map((juzAyah: EnglishAyah) => (
-          <div key={juzAyah.number} className="px-6">
-            <p className="text-gray-400 text-sm ">{juzAyah.numberInSurah}</p>
-            <p className="text-zinc-200 text-xl ">{juzAyah.text}</p>
-          </div>
-        ))} */}
-        {juz &&
-          ayahs.map((juzAyah) => (
-            <div key={juzAyah.number}>
-              <div className="px-2">
-                <p className="text-sm text-gray-400">
-                  {juzAyah.numberInSurah}.
-                </p>
-              </div>
-              <div className="text-right sm:order-2 order-1 flex flex-col w-full px-2">
-                <p
-                  className={cn(
-                    "font-light tracking-wider arabic-text sm:pr-8 md:pr-16 lg:pr-26",
-                    {
-                      "text-sm": fontSize === 1, // If fontSize is 1, apply text-sm
-                      "text-base": fontSize === 2, // If fontSize is 2, apply text-base
-                      "text-lg": fontSize === 3, // If fontSize is 3, apply text-lg
-                      "text-xl": fontSize === 4, // If fontSize is 4, apply text-xl
-                      "text-2xl": fontSize === 5, // If fontSize is 5, apply text-2xl
-                      "text-3xl": fontSize === 6, // If fontSize is 6, apply text-3xl
-                      "text-4xl": fontSize === 7, // If fontSize is 7, apply text-4xl
-                      "text-5xl": fontSize === 8, // If fontSize is 8, apply text-5xl
-                    }
-                  )}
-                >
-                  {juzAyah.text}
-                </p>
-                <div>
-                  <p
-                    className={cn(
-                      "text-zinc-200 md:leading-[1.2] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6",
-                      {
-                        "text-xs": fontSize === 1, // If fontSize is 1, apply text-xs
-                        "text-sm": fontSize === 2, // If fontSize is 2, apply text-sm
-                        "text-base": fontSize === 3, // If fontSize is 3, apply text-base
-                        "text-lg": fontSize === 4, // If fontSize is 4, apply text-lg
-                        "text-xl": fontSize === 5, // If fontSize is 5, apply text-xl
-                        "text-2xl": fontSize === 6, // If fontSize is 6, apply text-2xl
-                        "text-3xl": fontSize === 7, // If fontSize is 7, apply text-3xl
-                        "text-4xl": fontSize === 8, // If fontSize is 8, apply text-4xl
-                      }
-                    )}
-                  >
-                    {juzAyah.translation}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+
         <div></div>
       </div>
 
-      <div className="mb-2 md:w-4/6 w-full flex justify-center items-center flex-col p-4 sm:p-8">
+      <div className="mb-2 md:w-4/6  lg:w-[400px] w-full flex justify-center items-center flex-col p-4 sm:p-8">
         <div className={cn("flex flex-row w-full", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
@@ -577,6 +538,7 @@ const Surah = () => {
             direction="Next"
             surahNumber={params.surah ? surahNumber + 1 : 1}
           />
+          <ThemeToggleButton />
         </div>
       </div>
       <div className="sticky bottom-0 bg-transparent p-4 w-full flex justify-center items-center">

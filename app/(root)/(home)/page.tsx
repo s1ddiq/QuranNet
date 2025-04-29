@@ -1,8 +1,11 @@
 "use client";
-import { fetchAllSurahs, searchQuran } from "@/api/api";
+// Other -/-Essential Imports ⭐
 import React, { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
+// API ⭐
+import { fetchAllSurahs, searchQuran } from "@/api/api";
+// Next ⭐
 import Link from "next/link";
+// Clerk ⭐
 import {
   SignedIn,
   SignedOut,
@@ -10,55 +13,75 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
+// Components ⭐
 import SearchIcon from "@/components/svg/SearchIcon";
 import SignInPopup from "@/components/popups/SignInPopup";
 import LogoIcon from "@/components/svg/LogoIcon";
 import { useRouter } from "next/navigation";
 import SearchResultCard from "@/components/sidebar/SearchResultCard";
+import SearchInput from "@/components/sidebar/SearchInput";
+import Hills from "@/components/svg/illustrations/Hills";
+import SingleHill from "@/components/svg/illustrations/SingleHill";
+import ScrollingAyah from "@/components/ScrollingAyahs";
+// ShadCN ⭐
+import { Input } from "@/components/ui/input";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import SearchInput from "@/components/sidebar/SearchInput";
-import MenuIcon from "@/components/svg/MenuIcon";
-import Hills from "@/components/svg/illustrations/Hills";
-import SingleHill from "@/components/svg/illustrations/SingleHill";
-import ScrollingAyah from "@/components/ScrollingAyahs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
+
+// Icons / Lucide React ⭐
+import MenuIcon from "@/components/svg/MenuIcon";
 import { X } from "lucide-react";
+// Hooks ⭐
 import useSurahNavigation from "@/hooks/useSurahNavigation";
+// Fonts ⭐
+import { amiri } from "@/app/fonts";
 
 const SurahsList = () => {
   // organize later
+  // -ROUTER-
+  const router = useRouter();
+  // USE STATES Data: 🔹
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [recent, setRecent] = useState<any>(); // ‼ ☹
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const { isSignedIn } = useUser();
+  const [deletedAyah, setDeletedAyah] = useState<Ayah>();
+  const [savedAyahs, setSavedAyahs] = useState<Ayah[]>(); // ‼ ☹
+
+  // USE STATES States: 🔹
+  // Active: 🟥
   const [isOpen, setIsOpen] = useState(false);
-  const { openUserProfile } = useClerk();
-  const router = useRouter();
-  const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
     "overview" | "search"
   >("search");
   const [activeSection, setActiveSection] = useState<
     "Last Read" | "Saved" | "Collections"
   >("Last Read");
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchResults, setSearchResults] = useState([]);
   const [amount, setAmount] = useState(21);
-  const [deletedAyah, setDeletedAyah] = useState<Ayah>();
-  const [savedAyahs, setSavedAyahs] = useState<Ayah[]>(); // ‼ ☹
+  // USE STATES Clerk 🔹
+
+  // USE STATEs essentials 🔹
+  const { isSignedIn } = useUser();
+  const { openUserProfile } = useClerk();
+  // Boolean 🔹
+  const [loading, setLoading] = useState(false);
+  // Hooks 🔹
   const { getSurahNumber } = useSurahNavigation();
 
+  // FETCH HOOK FOR SURAHS, RECENT, SAVED AYAHS!
   useEffect(() => {
     const func = async () => {
-      const resA = await fetchAllSurahs();
-      setSurahs(resA.data);
+      const resA = await fetchAllSurahs(); //
       const resB = localStorage.getItem("recent");
       const resC = localStorage.getItem("saved-ayahs");
+      setSurahs(resA.data);
       if (resB && resC) {
         const parsedRecent = JSON.parse(resB);
         const parsedSaved = JSON.parse(resC);
@@ -71,33 +94,7 @@ const SurahsList = () => {
     func();
   }, []);
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (!searchQuery.trim()) {
-        setSearchResults([]);
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const res = await searchQuran(searchQuery);
-        setSearchResults(res.data.matches); // Adjust this depending on your API response
-        // Debug statement removed for production
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error("Search error:", err.message);
-        } else {
-          console.error("Search error:", err);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const debounceTimer = setTimeout(fetchSearchResults, 300); // debounce 300ms
-    return () => clearTimeout(debounceTimer);
-  }, [searchQuery]);
-
+  // HANDLE remove Saved Ayahs
   const handleRemoveSavedAyah = (ayah: Ayah) => {
     const saved = savedAyahs ?? []; // use current state, fallback if needed
     const updated = saved.filter((a: Ayah) => a.number !== ayah.number);
@@ -109,9 +106,8 @@ const SurahsList = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] flex items-center justify-between xl:px-32 lg:px-24 px-4">
+      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] flex items-center justify-between xl:px-64  lg:px-24 px-4">
         <LogoIcon className="text-white hidden md:block" />
-        {/* Menu Icon for small screens */}
         <div className="sm:hidden flex items-center">
           <MenuIcon
             className="text-white"
@@ -123,7 +119,7 @@ const SurahsList = () => {
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <VisuallyHidden>
             <SheetTitle>Menu</SheetTitle>
-            <SheetHeader>Glenue</SheetHeader>
+            <SheetHeader>Mobile Menu</SheetHeader>
           </VisuallyHidden>
           <SheetContent className="px-2 py-2">
             <div className="w-full flex items-center justify-center">
@@ -228,13 +224,6 @@ const SurahsList = () => {
           </span>
         </nav>
 
-        {/* <Link
-          href="/support"
-          className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
-          >
-          Support Us ♥
-          </Link> */}
-
         <SignedIn>
           <UserButton />
         </SignedIn>
@@ -273,14 +262,14 @@ const SurahsList = () => {
             >
               {["Al-Mulk", "Al-Baqara", "An-Nisaa", "Al-Faatiha"].map(
                 (
-                  sura // rename to surah
+                  surah // rename to surah
                 ) => (
                   <Link
-                    key={sura}
-                    href={`/surah/${getSurahNumber(sura)}`} // map to surah name later
+                    key={surah}
+                    href={`/surah/${getSurahNumber(surah)}`} // map to surah name later
                     className="bg-[#18181B] text-center rounded-full px-4 py-2 flex justify-center items-center"
                   >
-                    {sura}
+                    {surah}
                   </Link>
                 )
               )}
@@ -293,10 +282,7 @@ const SurahsList = () => {
 
         <SignInPopup />
 
-        {/* seperator */}
-        {/* w-full flex sm:flex-row flex-col flex-wrap md:gap-6 gap-5 justify-center px-4 mb-12 bg-[#0F0F0F] pb-12 rounded-b-3xl border-b-4 border-gray-600 */}
-
-        <div className="w-full xl:px-32 lg:px-24 px-4 bg-[#0F0F0F] pb-24">
+        <div className="w-full xl:px-64 lg:px-24 px-4 bg-[#0F0F0F] pb-12">
           <div className="text-base flex md:flex-row flex-col gap-4 justify-between">
             <p
               className="text-white text-2xl pb-2 text-left font-open-sans cursor-pointer"
@@ -333,7 +319,7 @@ const SurahsList = () => {
             </div>
           </div>
 
-          <div className="lg:min-h-48 min-h-32">
+          <div className="min-h-32">
             {isSignedIn && activeSection === "Last Read" && recent && (
               <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer text-gray-400 flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
                 <Link href={`/surah/${recent.number}`} key={recent.number}>
@@ -353,20 +339,6 @@ const SurahsList = () => {
             )}
 
             {isSignedIn && activeSection === "Saved" && (
-              // <div>
-              //   <p className="text-xl">😢</p>
-              //   <p className="text-gray-200 hover:text-gray-100">
-              //     We're sorry, but saving surahs is currently unavailable. We're
-              //     actively working to bring this feature to you as soon as
-              //     possible.{" "}
-              //     <Link
-              //       href="https://github.com/s1ddiq/QuranNet"
-              //       className="text-blue-500 text-lg"
-              //     >
-              //       Learn More
-              //     </Link>
-              //   </p>
-              // </div>
               <div className="flex flex-wrap w-full gap-5">
                 {savedAyahs && savedAyahs.length > 0 ? (
                   savedAyahs.slice(0, 5).map(
@@ -439,44 +411,55 @@ const SurahsList = () => {
             )}
           </div>
         </div>
-        <div className="w-full grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-6 xl:px-32 lg:px-24 px-4 lg:pt-24">
+        <div className="w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24">
           {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="group min-h-24 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl p-4 cursor-pointer transition-discrete transition-all duration-100 text-gray-400 flex hover:brightness-110">
-                <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
-                  <div className="group-hover:bg-blue-500 w-10 h-10 rounded-xl bg-black/45 flex justify-center items-center rotate-45 transition-all duration-100">
+              <div className="group min-h-12 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl px-4 py-2 cursor-pointer transition-discrete  text-gray-400 flex hover:brightness-110">
+                <div className="flex items-center justify-between gap-3 px-2 py-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
+                  <div className="group-hover:bg-blue-500 size-8 rounded-md bg-black/45 flex justify-center items-center rotate-45">
                     <p className="-rotate-45 text-white text-sm font-bold">
                       {surah.number}
                     </p>
                   </div>
 
                   <div className="flex flex-col text-sm flex-1">
-                    <p className="text-lg font-semibold dark:text-white text-black">
+                    <p className="font-semibold dark:text-white text-black">
                       {surah.englishName}
                     </p>
-                    <p className="text-zinc-500 dark:text-zinc-400">
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">
                       {surah.englishNameTranslation}
                     </p>
                   </div>
 
-                  <div className="text-right text-sm text-zinc-600 dark:text-zinc-400 min-w-[80px]">
-                    <p>{surah.numberOfAyahs} Ayahs</p>
-                  </div>
+                  <p
+                    className={`${amiri.className} text-sm leading-relaxed tracking-wide dark:text-white text-black`}
+                  >
+                    {surah.name}
+                  </p>
                 </div>
               </div>
             </Link>
           ))}
         </div>
-        <div className="w-full flex-center pt-8">
-          <div className="bg-zinc-900 w-44 min-h-8 flex-center rounded-full py-2">
+        <div className="w-full flex justify-center bg-[#0F0F0F] py-6">
+          <div className="bg-zinc-900 rounded-md shadow-lg px-4 py-2 flex items-center border border-gray-700">
             <button
-              className="text-white bg-black/45 rounded-full py-2 px-8"
+              className={`
+        relative overflow-hidden rounded-md
+        px-5 py-2 text-sm font-medium
+        transition
+        before:absolute before:inset-0 before:rounded-md before:bg-gradient-to-r before:from-blue-500 before:to-purple-600
+        before:opacity-0 before:scale-90 before:transition-all
+        hover:before:opacity-30 hover:before:scale-100
+        text-white
+      `}
               onClick={() => (amount < 22 ? setAmount(114) : setAmount(21))}
             >
               {amount < 22 ? "Show More ⬇" : "Show Less ⬆"}
             </button>
           </div>
         </div>
+
         {/* move up later */}
 
         <Hills />
