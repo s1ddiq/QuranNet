@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { EclipseIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggleButton() {
-  const [isDark, setIsDark] = useState(true); // default to true for dark theme
+  const [isDark, setIsDark] = useState(false); // default to true for dark theme
 
   useEffect(() => {
     // On initial load, add the 'dark' class to the HTML root element
@@ -21,15 +21,20 @@ export default function ThemeToggleButton() {
   };
 
   return (
-    <div
-      onClick={toggleTheme}
-      className="text-3xl dark:bg-[#08080aff] bg-white rounded-full 
-        flex justify-center items-center border-px dark:border-white border-gray-400
-        cursor-pointer transition-all duration-300 hover:-translate-y-2 z-[999]"
-    >
-      <p className="pointer-events-none dark:text-white text-black">
-        <EclipseIcon size={32} />
-      </p>
-    </div>
+<div
+  onClick={toggleTheme}
+  className="group flex flex-col items-center gap-2 cursor-pointer select-none"
+>
+  <div
+    className="rounded-full border border-gray-300 dark:border-zinc-700 w-14 h-14 flex items-center justify-center 
+      bg-white dark:bg-[#0a0a0c] shadow-md group-hover:shadow-lg active:scale-95 transition-all duration-300"
+  >
+    <EclipseIcon size={24} className="text-[var(--sephia-700)] dark:text-white transition-colors duration-300" />
+  </div>
+  <span className="text-sm font-medium dark:text-white text-[var(--sephia-700)] transition-colors duration-300">
+    {isDark ? "Dark" : "Sepia"}
+  </span>
+</div>
+
   );
 }

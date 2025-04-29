@@ -24,12 +24,7 @@ import { cn } from "@/lib/utils"; // ⭐
 
 // ICONS START ⭐
 import BismillahIcon from "@/components/svg/BismillahIcon";
-import {
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Pause,
-} from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Pause } from "lucide-react";
 import DocumentIcon from "@/components/svg/DocumentIcon";
 import PlayIcon from "@/components/svg/PlayIcon";
 import CopyIcon from "@/components/svg/CopyIcon";
@@ -123,7 +118,7 @@ const Surah = () => {
       const element = document.getElementById(`ayah-${ayahParam}`);
       if (element) {
         toast("Scrolling to requested Ayah");
-        const c = ["dark:bg-[#1c1c1cff]", "bg-gray-200"];
+        const c = ["dark:bg-[#1c1c1cff]", "bg-[var(--sephia-300)]"];
         element.classList.add(...c);
 
         element.scrollIntoView({ behavior: "auto", block: "center" }); // maybe make this smooth
@@ -344,40 +339,29 @@ const Surah = () => {
     );
 
   return (
-    <section className="w-full flex items-center flex-col dark:bg-zinc-900 bg-orange-100 flex-1 dark:text-white text-black">
+    <section className="w-full flex items-center flex-col dark:bg-zinc-900 bg-[var(--sephia-primary)] flex-1 dark:text-white text-black">
       {/* turn into component */}
       <SignInPopup />
       <div
         className={cn(
-          "hidden md:flex items-center justify-between w-full h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-transparent border-white/10 transition-all duration-300 z-50",
+          "hidden md:flex items-center justify-between w-full h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
         <div className="flex gap-3 items-center">
-          <p className="text-white font-bold text-lg leading-tight">
+          <p
+            className={`${amiri.className} dark:text-white text-black font-bold text-lg leading-tight`}
+          >
             {surah?.name}
           </p>
-          {/* <p className="text-white font-semibold text-lg tracking-wide">
-      {surah?.englishNameTranslation}
-    </p> */}
         </div>
-
-        {/* Centered Input */}
-        {/* <div className="absolute left-1/2 -translate-x-1/2">
-          <Input
-            type="text"
-            placeholder="Search the Quran"
-            onClick={() => setIsSearchModalOpen(true)}
-            className="w-96 bg-zinc-800 text-white border-0"
-          />
-        </div> */}
 
         <div className="hidden sm:flex items-center">
           <UserButton />
         </div>
       </div>
 
-      <div className="flex flex-col w-full min-h-screen gap-12">
+      <div className="flex flex-col w-full min-h-screen lg:px-24 md:px-16 sm:px-8 px-2">
         <div className="flex items-center text-center w-full flex-col">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
 
@@ -422,18 +406,21 @@ const Surah = () => {
           ayahs.map((ayah) => (
             <div
               key={ayah.number}
-              className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
+              className="border-b-[0.1px] border-b-[var(--sephia-500)] dark:border-b-[#262629ff]
+ p-2 py-12 md:px-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
-              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-between">
-                <p className="text-lg font-light text-gray-600 dark:text-gray-400 ">
+              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
+                <p className="text-lg font-light text-[var(--sephia-700)] dark:text-gray-400 ">
                   {params.surah}:{ayah.numberInSurah}
                 </p>
 
                 <Popover>
                   <PopoverTrigger>
-                    <CopyIcon />
-                    <PopoverContent className="w-48 p-2 rounded-xl dark:bg-zinc-800 bg-orange-200 shadow-xl">
+                    <div className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center">
+                      <CopyIcon />
+                    </div>
+                    <PopoverContent className="w-48 p-2 rounded-xl dark:bg-zinc-800 bg-[var(--sephia-200)] shadow-xl space-y-1">
                       {["Arabic", "English", "Arabic + English"].map(
                         (option) => (
                           <ActionButton
@@ -445,34 +432,35 @@ const Surah = () => {
                           />
                         )
                       )}
+                      
                     </PopoverContent>
                   </PopoverTrigger>
                 </Popover>
-                <DocumentIcon
+                <div
                   onClick={() => handleSaveAyah(ayah)}
-                  className="hover:opacity-80"
-                />
-                {currentlyPlayingAyah === ayah.numberInSurah ? (
-                  <Pause
-                    fill="white"
-                    onClick={() => handleFetchAudio(ayah)}
-                    className="hover:opacity-80"
-                  />
-                ) : (
-                  <PlayIcon
-                    onClick={() => handleFetchAudio(ayah)}
-                    className="hover:opacity-80"
-                  />
-                )}
-
-                {/* <PlayIcon onClick={() => handleFetchAudio()} /> */}
-                {/* {playing ? <PauseIcon fill="white" onClick={() => handleFetchAudio()} /> : <PlayIcon onClick={() => handleFetchAudio()} />} */}
+                  className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
+                >
+                  <DocumentIcon />
+                </div>
+                <div
+                  onClick={() => handleFetchAudio(ayah)}
+                  className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
+                >
+                  {currentlyPlayingAyah === ayah.numberInSurah ? (
+                    <Pause
+                      fill="white"
+                      size={22}
+                    />
+                  ) : (
+                    <PlayIcon />
+                  )}
+                </div>
               </div>
 
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
                   className={cn(
-                    `${amiri.className} font-light tracking-wider sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
+                    `${amiri.className} font-light tracking-wider leading-[2rem]  sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
                     {
                       "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
                       "text-2xl": fontSize === 2, // If fontSize is 2, apply text-base
@@ -492,10 +480,6 @@ const Surah = () => {
                 </p>
 
                 <div>
-                  {/* <p className="text-zinc-200 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6">
-                    {ayah.translation}
-                  </p> */}
-
                   <p
                     className={cn(
                       ` dark:text-zinc-200 text-black md:leading-[1] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
@@ -518,11 +502,10 @@ const Surah = () => {
             </div>
           ))}
 
-
         <div></div>
       </div>
 
-      <div className="mb-2 md:w-4/6  lg:w-[400px] w-full flex justify-center items-center flex-col p-4 sm:p-8">
+      <div className="mb-2 md:w-4/6  lg:w-[500px] w-full flex justify-center items-center flex-col p-4 sm:p-8">
         <div className={cn("flex flex-row w-full", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
@@ -530,7 +513,7 @@ const Surah = () => {
           />
           <Link
             href={`/`}
-            className="flex-center navigator-styles bg-zinc-800 "
+            className="flex-center navigator-styles dark:bg-zinc-800 bg-[var(--sephia-200)]"
           >
             Go Home
           </Link>
@@ -538,7 +521,6 @@ const Surah = () => {
             direction="Next"
             surahNumber={params.surah ? surahNumber + 1 : 1}
           />
-          <ThemeToggleButton />
         </div>
       </div>
       <div className="sticky bottom-0 bg-transparent p-4 w-full flex justify-center items-center">

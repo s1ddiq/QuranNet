@@ -77,6 +77,14 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   /* --font-arabic: 'Noto Sans Arabic' */
+  --sephia-primary: #f7ebd5ff;
+  --sephia-200: #fff7ebff;
+  --sephia-300: #f0e3ceff; 
+  --sephia-400: #f0cc8bff;
+  --sephia-500: #dbcdb4ff;
+  --sephia-600: #787167ff;
+  --sephia-700: #72603F;
+  --sephia-800: #73613fff;
 }
 
 .dark {
@@ -111,6 +119,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
 }
 
 @layer base {
@@ -125,6 +134,9 @@
   
 }
 
+
+
+
 .flex-center {
   @apply flex justify-center items-center;
 }
@@ -138,7 +150,7 @@
 }
 
 .navigator-styles {
-  @apply min-h-16 font-semibold px-4 text-center text-sm w-1/3 border transition-all duration-300 transition-discrete;
+  @apply min-h-8 font-semibold px-2 text-center text-sm w-1/3 border transition-all duration-300 transition-discrete;
 } 
 
 .scrollable-container {
@@ -184,4 +196,5 @@
 .animate-scroll {
   animation: scroll 40s linear infinite;
 }
+
 

@@ -78,33 +78,33 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
       {collapsed ? (
         <button
           onClick={() => setCollapsed(false)}
-          className="bg-zinc-900/80 text-white p-2 rounded-full shadow-lg hover:bg-zinc-900 transition"
+          className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg hover:bg-zinc-900 transition"
         >
           <ChevronUp className="size-6" />
         </button>
       ) : (
-        <div className="flex justify-center items-center space-x-3 bg-zinc-800/90 backdrop-blur-md p-3 rounded-full shadow-lg">
+        <div className="flex justify-center items-center space-x-3 dark:bg-zinc-800/90 bg-[var(--sephia-200)] backdrop-blur-md p-3 rounded-full shadow-lg">
           {/* collapse button */}
           <button
             onClick={() => setCollapsed(true)}
             className="text-white p-1 hover:bg-white/10 rounded-full transition"
           >
-            <ChevronDown className="size-6" />
+            <ChevronDown className="size-6 dark:text-white text-black" />
           </button>
 
           {/* Skip Back 10s */}
           <button onClick={() => skip(-10)} className="text-white p-2 hover:bg-white/10 rounded-full">
-            <SkipBackIcon className="size-5" />
+            <SkipBackIcon className="size-5 dark:text-white text-black" />
           </button>
 
           {/* Play/Pause */}
           <button onClick={handlePlayPause} className="text-white p-3 bg-white/10 hover:bg-white/20 rounded-full">
-            {playing ? <Pause className="size-5" /> : <PlayIcon className="size-5" />}
+            {playing ? <Pause className="size-5 dark:text-white text-black" /> : <PlayIcon className="size-5 dark:text-white text-black" />}
           </button>
 
           {/* Skip Forward 10s */}
           <button onClick={() => skip(10)} className="text-white p-2 hover:bg-white/10 rounded-full">
-            <SkipForwardIcon className="size-5" />
+            <SkipForwardIcon className="size-5 dark:text-white text-black" />
           </button>
 
           {/* Time Display */}

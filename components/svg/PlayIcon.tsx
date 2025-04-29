@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface PlayIconProps extends React.SVGProps<SVGSVGElement> {
   onClick?: React.MouseEventHandler<SVGSVGElement>;
@@ -9,10 +9,11 @@ const PlayIcon: React.FC<PlayIconProps> = ({ onClick, ...props }) => (
     width="22"
     height="22"
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill="none"
+    stroke="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     onClick={onClick}
-    className='dark:text-white text-gray-600 cursor-pointer'
+    className="dark:text-white text-[#72603F] cursor-pointer"
     {...props} // Spread any other passed props to the SVG element
   >
     <g id="SVGRepo_iconCarrier">

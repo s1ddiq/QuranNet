@@ -1,6 +1,7 @@
-'use client'
+"use client";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const juzData = [
@@ -148,21 +149,31 @@ const JuzList = ({ searchQuery }: { searchQuery: string }) => {
       ? juzData
       : juzData.filter((juz) => juz.juz === Number(searchQuery));
 
+    const searchParams = useSearchParams();
+    const selectedJuz = searchParams.get('juz');
+
   return (
-    <div className="text-white">
+    <>
       {filteredJuzData.map((juz) => (
-        <Link href={`?juz=${juz.juz}`} key={juz.juz}>
-          <div className="mb-6 bg-zinc-800 border rounded-xl p-4">
-            <h2 className="text-xl font-bold mb-2">Juz {juz.juz}</h2>
-            <ul className="pl-4 list-disc text-gray-300">
-              {juz.surahs.map((name, i) => (
-                <li key={i}>{name}</li>
-              ))}
-            </ul>
+        <Link
+          key={juz.juz}
+          href={`?juz=${juz.juz}`}
+          title={`Juz ${juz.juz}`}
+          className={cn(
+            "block rounded-md py-2 hover:bg-[var(--sephia-300)] transition flex items-center gap-6 w-full",
+            juz.juz === Number(selectedJuz) &&
+              "dark:bg-zinc-800 bg-[var(--sephia-300)] font-bold"
+          )}
+        >
+          <span className="dark:text-gray-400 text-black w-6 text-right">
+            {juz.juz}
+          </span>
+          <div className="flex flex-col">
+            <span className="dark:text-white text-black">Juz {juz.juz}</span>
           </div>
         </Link>
       ))}
-    </div>
+    </>
   );
 };
 

@@ -61,3 +61,27 @@
 //     </div>
 //   </div>
 // )} */}
+
+
+//  className="border-b-[0.1px] dark:border-[#262629ff] dark:border-gray-400 border-[var(--sephia-500)] border-opacity-50 p-2 py-12 md:px-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
+
+//          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+        //     {/* Example Page Content */}
+        //     {/* <p className="text-xl text-white">Font Size</p> */}
+        //     <p className="text-xl mb-2 text-gray-400">Adjust Font Size</p>
+
+        //     <div className="space-y-4">
+        //       <Slider
+        //         value={[fontSize]}
+        //         defaultValue={[6]}
+        //         max={8}
+        //         step={1}
+        //         onValueChange={handleFontSizeChange}
+        //         className="relative flex w-full touch-none select-none items-center"
+        //       >
+        //       </Slider>
+        //     </div>
+
+
+        //     <p className="text-sm mb-2 text-gray-400">...More settings coming soon</p>
+        //   </div>

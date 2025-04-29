@@ -10,7 +10,7 @@ const NavigatorButton = ({
 }) => (
   <Link
     href={`${surahNumber}`}
-    className={`flex-center navigator-styles bg-zinc-800 ${
+    className={`flex-center navigator-styles dark:bg-zinc-800 bg-[var(--sephia-200)] ${
       direction === "Previous"
         ? "rounded-l-xl hover:-translate-x-2"
         : "rounded-r-xl hover:translate-x-2"
