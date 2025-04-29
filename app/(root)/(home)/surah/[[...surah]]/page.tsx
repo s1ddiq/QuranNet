@@ -216,10 +216,13 @@ const Surah = () => {
       <div className="flex items-center gap-3">
         <Check size={36} />
         <div>
-          <p className="font-semibold">Copied Ayah</p>
+          <p className="font-semibold">Copied {type} Ayah to Clipboard</p>
         </div>
       </div>,
-      { style: { backgroundColor: "#27272A" } }
+      {
+        className: "bg-[#73613fff] dark:bg-[#27272A] text-black dark:text-white",
+        duration: 3000,
+      }
     );
     return;
   };
@@ -427,7 +430,7 @@ const Surah = () => {
                             key={option}
                             text={option}
                             onClick={() =>
-                              handleCopyAyah(option.toLowerCase(), ayah)
+                              handleCopyAyah(option, ayah)
                             }
                           />
                         )
