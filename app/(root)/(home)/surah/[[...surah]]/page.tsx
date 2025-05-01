@@ -39,8 +39,7 @@ import {
 import ActionButton from "@/components/ActionButton";
 import SurahPlayer from "@/components/SurahPlayer";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
-import { amiri, montserrat } from "@/app/fonts";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
+import { amiri } from "@/app/fonts";
 
 // SHADCN UI END
 
@@ -220,7 +219,8 @@ const Surah = () => {
         </div>
       </div>,
       {
-        className: "bg-[#73613fff] dark:bg-[#27272A] text-black dark:text-white",
+        className:
+          "bg-[#73613fff] dark:bg-[#27272A] text-black dark:text-white",
         duration: 3000,
       }
     );
@@ -368,18 +368,23 @@ const Surah = () => {
         <div className="flex items-center text-center w-full flex-col">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  sm:mt-0 mt-16" />
 
-          {collapsed ? (
+          <button
+            onClick={() => setCollapsed((prev) => !prev)}
+            className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg hover:opacity-80 mb-2"
+          >
             <ChevronDown
-              className="size-8 cursor-pointer"
-              onClick={() => setCollapsed(false)}
+              className={`${
+                collapsed ? "rotate-180" : ""
+              } size-6 cursor-pointer transition-all transition-discrete duration-300`}
             />
-          ) : (
+          </button>
+          {/* {!collapsed && ( */}
             <>
-              <ChevronUp
-                className="size-8 cursor-pointer"
-                onClick={() => setCollapsed(true)}
-              />
-              <div className="mx-2 rounded-2xl px-4 py-6 border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2">
+              <div
+                className={`mx-2 rounded-2xl px-4 py-6 border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
+                  collapsed ? "h-0 opacity-0" : "h-56"
+                }`}
+              >
                 {juzParam ? (
                   <p className="text-zinc-700 dark:text-gray-200">
                     <span className="font-medium">Juz Number:</span>&nbsp;
@@ -427,7 +432,7 @@ const Surah = () => {
                 )}
               </div>
             </>
-          )}
+          {/* )} */}
         </div>
 
         {!loading &&
@@ -473,7 +478,10 @@ const Surah = () => {
                   className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
                   {currentlyPlayingAyah === ayah.numberInSurah ? (
-                    <Pause className="dark:text-white text-[var(--sephia-700)]" size={22} />
+                    <Pause
+                      className="dark:text-white text-[var(--sephia-700)]"
+                      size={22}
+                    />
                   ) : (
                     <PlayIcon />
                   )}
@@ -483,7 +491,7 @@ const Surah = () => {
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
                   className={cn(
-                    `${amiri.className} font-light tracking-wider leading-[2rem]  sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
+                    `${amiri.className} font-light leading-[2rem]  sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
                     {
                       "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
                       "text-2xl": fontSize === 2, // If fontSize is 2, apply text-base
