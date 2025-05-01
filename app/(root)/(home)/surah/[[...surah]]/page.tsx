@@ -366,7 +366,7 @@ const Surah = () => {
 
       <div className="flex flex-col w-full min-h-screen lg:px-24 md:px-16 sm:px-8 px-2">
         <div className="flex items-center text-center w-full flex-col">
-          <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-64" />
+          <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  sm:mt-0 mt-16" />
 
           {collapsed ? (
             <ChevronDown
@@ -379,25 +379,51 @@ const Surah = () => {
                 className="size-8 cursor-pointer"
                 onClick={() => setCollapsed(true)}
               />
-              <div className="mx-2 bg-zinc-800 flex flex-col text-left gap-3 rounded-xl px-2 py-5 border">
+              <div className="mx-2 rounded-2xl px-4 py-6 border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2">
                 {juzParam ? (
-                  <p className="text-gray-200">
-                    Juz Number&nbsp;
+                  <p className="text-zinc-700 dark:text-gray-200">
+                    <span className="font-medium">Juz Number:</span>&nbsp;
                     <span className="text-blue-500">{juzParam}</span>
                   </p>
                 ) : (
-                  <>
-                    <p className="text-gray-200">
-                      Surah Number&nbsp;
+                  <div className="space-y-1 text-zinc-800 dark:text-gray-200">
+                    <p>
+                      <span className="font-medium">Surah Number:</span>&nbsp;
                       <span className="text-blue-500">{surah?.number}</span>
                     </p>
-                    <p className="text-gray-200">
-                      Surah Name&nbsp;
+                    <p>
+                      <span className="font-medium">Surah Name:</span>&nbsp;
+                      <span className={`${amiri.className} text-blue-500`}>
+                        {surah?.name}
+                      </span>
+                    </p>
+                    <p>
+                      <span className="font-medium">English Name:</span>&nbsp;
                       <span className="text-blue-500">
                         {surah?.englishName}
                       </span>
                     </p>
-                  </>
+                    <p>
+                      <span className="font-medium">Translation:</span>&nbsp;
+                      <span className="text-blue-500">
+                        {surah?.englishNameTranslation}
+                      </span>
+                    </p>
+                    <p>
+                      <span className="font-medium">Number of Ayahs:</span>
+                      &nbsp;
+                      <span className="text-blue-500">
+                        {surah?.numberOfAyahs}
+                      </span>
+                    </p>
+                    <p>
+                      <span className="font-medium">Revelation Type:</span>
+                      &nbsp;
+                      <span className="text-blue-500">
+                        {surah?.revelationType}
+                      </span>
+                    </p>
+                  </div>
                 )}
               </div>
             </>
@@ -429,13 +455,10 @@ const Surah = () => {
                           <ActionButton
                             key={option}
                             text={option}
-                            onClick={() =>
-                              handleCopyAyah(option, ayah)
-                            }
+                            onClick={() => handleCopyAyah(option, ayah)}
                           />
                         )
                       )}
-                      
                     </PopoverContent>
                   </PopoverTrigger>
                 </Popover>
@@ -450,10 +473,7 @@ const Surah = () => {
                   className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
                   {currentlyPlayingAyah === ayah.numberInSurah ? (
-                    <Pause
-                      fill="white"
-                      size={22}
-                    />
+                    <Pause fill="white" size={22} />
                   ) : (
                     <PlayIcon />
                   )}

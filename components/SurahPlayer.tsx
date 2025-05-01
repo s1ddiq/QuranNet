@@ -108,16 +108,16 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
           </button>
 
           {/* Time Display */}
-          <span className="text-xs font-mono text-gray-300">
+          <span className="text-xs font-mono dark:text-gray-300 text-[var(--sephia-400)]">
             {formatTime(currentTime)} / {formatTime(duration || 0)}
           </span>
 
           {/* Playback Speed Popover */}
           <Popover>
-            <PopoverTrigger className="text-white p-2 hover:bg-white/10 rounded-full cursor-pointer">
+            <PopoverTrigger className="dark:text-white text-black p-2 hover:bg-white/10 rounded-full cursor-pointer">
               {playbackRate}×
             </PopoverTrigger>
-            <PopoverContent className="bg-zinc-800 text-white rounded-lg p-2 space-y-1 shadow-lg">
+            <PopoverContent className="dark:bg-zinc-800 bg-[var(--sephia-200)] rounded-lg p-2 space-y-1 shadow-lg">
               {playbackRates.map((rate) => (
                 <div
                   key={rate}

@@ -8,9 +8,7 @@ import MobileSheet from "./MobileSheet";
 import { fetchAllSurahs } from "@/api/api";
 import JuzList from "../JuzList";
 import { Input } from "../ui/input";
-import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
-import { Slider } from "../ui/slider";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import Settings from "../Settings";
 
 type TabKey = "surah" | "juz" | "settings";
@@ -58,7 +56,7 @@ const Sidebar = () => {
     <div>
       <div
         className={cn(
-          "min-h-screen md:block hidden sticky top-0 z-50 border-r dark:border-[#262629ff] border-[var(--sephia-500)] dark:bg-zinc-900 bg-[var(--sephia-200)] text-white transition-all duration-300",
+          "min-h-screen md:block hidden sticky top-0 z-50 border-r dark:border-[#262629ff] border-[var(--sephia-500)] dark:bg-zinc-900 bg-[var(--sephia-200)] text-white transition-all duration-300 shadow-sm",
           isCollapsed ? "w-16" : "md:w-[350px]" // fix mobilesheet hiding before MD (yk)
         )}
       >
