@@ -473,7 +473,7 @@ const Surah = () => {
                   className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
                   {currentlyPlayingAyah === ayah.numberInSurah ? (
-                    <Pause fill="white" size={22} />
+                    <Pause className="dark:text-white text-[var(--sephia-700)]" size={22} />
                   ) : (
                     <PlayIcon />
                   )}
