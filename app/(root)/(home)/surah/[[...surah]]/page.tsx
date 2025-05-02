@@ -368,7 +368,8 @@ const Surah = () => {
 
             <button
               onClick={() => setCollapsed((prev) => !prev)}
-              className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black rounded-full shadow-lg hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
+              // dark:bg-zinc-800 bg-[var(--sephia-200)] 
+              className="dark:text-white text-black rounded-full hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
             >
               <ChevronUp
                 className={`${
