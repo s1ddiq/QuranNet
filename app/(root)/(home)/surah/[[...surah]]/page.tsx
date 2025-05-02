@@ -366,22 +366,25 @@ const Surah = () => {
 
       <div className="flex flex-col w-full min-h-screen lg:px-24 md:px-16 sm:px-8 px-2">
         <div className="flex items-center text-center w-full flex-col">
+        <div className="relative">
           <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  sm:mt-0 mt-16" />
 
           <button
             onClick={() => setCollapsed((prev) => !prev)}
-            className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg hover:opacity-80 mb-2"
-          >
+            className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black rounded-full shadow-lg hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
+            >
             <ChevronDown
               className={`${
                 collapsed ? "rotate-180" : ""
               } size-6 cursor-pointer transition-all transition-discrete duration-300`}
             />
           </button>
+              </div>
+          
           {/* {!collapsed && ( */}
             <>
               <div
-                className={`mx-2 rounded-2xl px-4 py-6 border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
+                className={`mx-2 rounded-2xl ${collapsed ? '' : 'px-4 py-6'} border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
                   collapsed ? "h-0 opacity-0" : "h-56"
                 }`}
               >
