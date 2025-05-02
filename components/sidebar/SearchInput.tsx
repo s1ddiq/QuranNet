@@ -1,5 +1,5 @@
-import CrossIcon from "../svg/CrossIcon";
-import SearchIcon from "../svg/SearchIcon";
+import CrossIcon from "../svg/icons/CrossIcon";
+import SearchIcon from "../svg/icons/SearchIcon";
 import { Input } from "../ui/input";
 
 const SearchInput = ({

@@ -11,8 +11,8 @@ import {
   SheetHeader,
 } from "../ui/sheet";
 import { useRouter } from "next/navigation";
-import MenuIcon from "../svg/MenuIcon";
-import LogoIcon from "../svg/LogoIcon";
+import MenuIcon from "../svg/icons/MenuIcon";
+import LogoIcon from "../svg/icons/LogoIcon";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Settings from "../Settings";

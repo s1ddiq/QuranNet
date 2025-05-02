@@ -23,11 +23,11 @@ import { cn } from "@/lib/utils"; // ⭐
 // UTILS
 
 // ICONS START ⭐
-import BismillahIcon from "@/components/svg/BismillahIcon";
+import BismillahIcon from "@/components/svg/icons/BismillahIcon";
 import { Check, ChevronDown, ChevronUp, Pause } from "lucide-react";
-import DocumentIcon from "@/components/svg/DocumentIcon";
-import PlayIcon from "@/components/svg/PlayIcon";
-import CopyIcon from "@/components/svg/CopyIcon";
+import DocumentIcon from "@/components/svg/icons/DocumentIcon";
+import PlayIcon from "@/components/svg/icons/PlayIcon";
+import CopyIcon from "@/components/svg/icons/CopyIcon";
 // ICONS END ⭐
 
 // SHADCN UI START ⭐
@@ -344,7 +344,7 @@ const Surah = () => {
       <SignInPopup />
       <div
         className={cn(
-          "hidden md:flex items-center justify-between w-full h-[55px] px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",
+          "hidden md:flex items-center justify-between w-full md:min-h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
@@ -490,9 +490,9 @@ const Surah = () => {
               </div>
 
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
-                <p
+                <p 
                   className={cn(
-                    `${amiri.className} font-light leading-[2.5rem] sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
+                    `font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8 quran-text`,
                     {
                       "text-lg": fontSize === 0,
                       "text-2xl": fontSize === 1,
@@ -510,6 +510,7 @@ const Surah = () => {
                         ""
                       )
                     : ayah.text}
+                    {/* {ayah.text.replace(/[\u0610-\u061A\u064B-\u065F\u06D6-\u06ED]/g, '')} */}
                 </p>
 
                 <div>

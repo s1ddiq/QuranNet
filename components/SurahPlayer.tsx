@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pause, SkipForwardIcon, SkipBackIcon, ChevronDown, ChevronUp } from "lucide-react";
-import PlayIcon from "./svg/PlayIcon";
+import PlayIcon from "./svg/icons/PlayIcon";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 interface SurahPlayerProps {

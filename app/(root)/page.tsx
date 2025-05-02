@@ -2,7 +2,7 @@
 // Other -/-Essential Imports ⭐
 import React, { useEffect, useState } from "react";
 // API ⭐
-import { fetchAllSurahs, searchQuran } from "@/api/api";
+import { fetchAllSurahs } from "@/api/api";
 // Next ⭐
 import Link from "next/link";
 // Clerk ⭐
@@ -14,28 +14,18 @@ import {
   useUser,
 } from "@clerk/nextjs";
 // Components ⭐
-import SearchIcon from "@/components/svg/SearchIcon";
+import SearchIcon from "@/components/svg/icons/SearchIcon";
 import SignInPopup from "@/components/popups/SignInPopup";
-import LogoIcon from "@/components/svg/LogoIcon";
+import LogoIcon from "@/components/svg/icons/LogoIcon";
 import { useRouter } from "next/navigation";
-import SearchResultCard from "@/components/sidebar/SearchResultCard";
-import SearchInput from "@/components/sidebar/SearchInput";
 import Hills from "@/components/svg/illustrations/Hills";
-import SingleHill from "@/components/svg/illustrations/SingleHill";
+import Hill from "@/components/svg/illustrations/Hill";
 import ScrollingAyah from "@/components/ScrollingAyahs";
 // ShadCN ⭐
-import { Input } from "@/components/ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
 
 // Icons / Lucide React ⭐
-import MenuIcon from "@/components/svg/MenuIcon";
+import MenuIcon from "@/components/svg/icons/MenuIcon";
 import { X } from "lucide-react";
 // Hooks ⭐
 import useSurahNavigation from "@/hooks/useSurahNavigation";
@@ -56,15 +46,12 @@ const SurahsList = () => {
   // USE STATES States: 🔹
   // Active: 🟥
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "overview" | "search"
-  >("search");
   const [activeSection, setActiveSection] = useState<
     "Last Read" | "Saved" | "Collections"
   >("Last Read");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchResults, setSearchResults] = useState([]);
+  // const [searchResults, setSearchResults] = useState([]);
   const [amount, setAmount] = useState(21);
   // USE STATES Clerk 🔹
 
@@ -153,7 +140,7 @@ const SurahsList = () => {
           <span
             className="cursor-pointer hover:text-gray-300 transition"
             onClick={() => {
-              setActiveSidebarTab("overview");
+             
               setIsOpen(true);
             }}
           >
@@ -231,8 +218,7 @@ const SurahsList = () => {
             </div>
           </div>
           <ScrollingAyah />
-
-          <SingleHill />
+          <Hill />
         </div>
 
         <SignInPopup />
@@ -421,7 +407,7 @@ const SurahsList = () => {
         <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center dark:bg-[#18181B] bg-var(--sephia-primary)] text-white">
           <div className="flex flex-col md:flex-row justify-center w-full xl:px-64 lg:px-24 px-4 gap-4">
             {/* Column 1 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-5 md:items-end items-center">
+            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
               <div className="flex gap-3 items-center">
                 <LogoIcon className="dark:text-[var(--sephia-200)] text-[var(--sephia-800)]" />
                 <div className="flex flex-col">
@@ -442,7 +428,7 @@ const SurahsList = () => {
             </div>
 
             {/* Column 2 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2 md:items-end items-center">
+            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
               <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                 Quick Navigation
               </p>
@@ -466,7 +452,7 @@ const SurahsList = () => {
             </div>
 
             {/* Column 3 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2 md:items-end items-center">
+            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
               <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                 Quick Links
               </p>
@@ -493,7 +479,7 @@ const SurahsList = () => {
             </div>
 
             {/* Column 4 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2 md:items-end items-center">
+            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
               <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                 Latest News
               </p>
