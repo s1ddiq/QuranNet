@@ -347,7 +347,7 @@ const Surah = () => {
       <SignInPopup />
       <div
         className={cn(
-          "hidden md:flex items-center justify-between w-full h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",
+          "hidden md:flex items-center justify-between w-full h-[55px] px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",
           !showHeader && "-translate-y-24 opacity-0"
         )}
       >
@@ -366,75 +366,75 @@ const Surah = () => {
 
       <div className="flex flex-col w-full min-h-screen lg:px-24 md:px-16 sm:px-8 px-2">
         <div className="flex items-center text-center w-full flex-col">
-        <div className="relative">
-          <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  sm:mt-0 mt-16" />
+          <div className="relative">
+            <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  sm:mt-0 mt-16" />
 
-          <button
-            onClick={() => setCollapsed((prev) => !prev)}
-            className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black rounded-full shadow-lg hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
+            <button
+              onClick={() => setCollapsed((prev) => !prev)}
+              className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black rounded-full shadow-lg hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
             >
-            <ChevronDown
-              className={`${
-                collapsed ? "rotate-180" : ""
-              } size-6 cursor-pointer transition-all transition-discrete duration-300`}
-            />
-          </button>
-              </div>
-          
+              <ChevronUp
+                className={`${
+                  collapsed ? "rotate-180" : ""
+                } size-6 cursor-pointer transition-all transition-discrete duration-300`}
+              />
+            </button>
+          </div>
+
           {/* {!collapsed && ( */}
-            <>
-              <div
-                className={`mx-2 rounded-2xl ${collapsed ? '' : 'px-4 py-6'} border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
-                  collapsed ? "h-0 opacity-0" : "h-56"
-                }`}
-              >
-                {juzParam ? (
-                  <p className="text-zinc-700 dark:text-gray-200">
-                    <span className="font-medium">Juz Number:</span>&nbsp;
-                    <span className="text-blue-500">{juzParam}</span>
+          <>
+            <div
+              className={`mx-2 rounded-2xl ${
+                collapsed ? "" : "px-4 py-6"
+              } border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
+                collapsed ? "h-0 opacity-0" : "h-56"
+              }`}
+            >
+              {juzParam ? (
+                <p className="text-zinc-700 dark:text-gray-200">
+                  <span className="font-medium">Juz Number:</span>&nbsp;
+                  <span className="text-blue-500">{juzParam}</span>
+                </p>
+              ) : (
+                <div className="space-y-1 text-zinc-800 dark:text-gray-200">
+                  <p>
+                    <span className="font-medium">Surah Number:</span>&nbsp;
+                    <span className="text-blue-500">{surah?.number}</span>
                   </p>
-                ) : (
-                  <div className="space-y-1 text-zinc-800 dark:text-gray-200">
-                    <p>
-                      <span className="font-medium">Surah Number:</span>&nbsp;
-                      <span className="text-blue-500">{surah?.number}</span>
-                    </p>
-                    <p>
-                      <span className="font-medium">Surah Name:</span>&nbsp;
-                      <span className={`${amiri.className} text-blue-500`}>
-                        {surah?.name}
-                      </span>
-                    </p>
-                    <p>
-                      <span className="font-medium">English Name:</span>&nbsp;
-                      <span className="text-blue-500">
-                        {surah?.englishName}
-                      </span>
-                    </p>
-                    <p>
-                      <span className="font-medium">Translation:</span>&nbsp;
-                      <span className="text-blue-500">
-                        {surah?.englishNameTranslation}
-                      </span>
-                    </p>
-                    <p>
-                      <span className="font-medium">Number of Ayahs:</span>
-                      &nbsp;
-                      <span className="text-blue-500">
-                        {surah?.numberOfAyahs}
-                      </span>
-                    </p>
-                    <p>
-                      <span className="font-medium">Revelation Type:</span>
-                      &nbsp;
-                      <span className="text-blue-500">
-                        {surah?.revelationType}
-                      </span>
-                    </p>
-                  </div>
-                )}
-              </div>
-            </>
+                  <p>
+                    <span className="font-medium">Surah Name:</span>&nbsp;
+                    <span className={`${amiri.className} text-blue-500`}>
+                      {surah?.name}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-medium">English Name:</span>&nbsp;
+                    <span className="text-blue-500">{surah?.englishName}</span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Translation:</span>&nbsp;
+                    <span className="text-blue-500">
+                      {surah?.englishNameTranslation}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Number of Ayahs:</span>
+                    &nbsp;
+                    <span className="text-blue-500">
+                      {surah?.numberOfAyahs}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-medium">Revelation Type:</span>
+                    &nbsp;
+                    <span className="text-blue-500">
+                      {surah?.revelationType}
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
+          </>
           {/* )} */}
         </div>
 
@@ -494,14 +494,15 @@ const Surah = () => {
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
                   className={cn(
-                    `${amiri.className} font-light leading-[2rem]  sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
+                    `${amiri.className} font-light leading-[2.5rem] sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
                     {
-                      "text-xl": fontSize === 1, // If fontSize is 1, apply text-sm
-                      "text-2xl": fontSize === 2, // If fontSize is 2, apply text-base
-                      "text-3xl": fontSize === 3, // If fontSize is 3, apply text-lg
-                      "sm:text-4xl text-2xl": fontSize === 4, // If fontSize is 4, apply text-xl
-                      "text-5xl": fontSize === 5, // If fontSize is 5, apply text-2xl
-                      "text-6xl": fontSize > 5, // If fontSize is 8, apply text-5xl
+                      "text-lg": fontSize === 0,
+                      "text-2xl": fontSize === 1,
+                      "text-3xl": fontSize === 2,
+                      "text-4xl": fontSize === 3,
+                      "sm:text-5xl text-4xl": fontSize === 4,
+                      "text-6xl": fontSize === 5,
+                      "text-7xl": fontSize > 5,
                     }
                   )}
                 >
@@ -516,16 +517,17 @@ const Surah = () => {
                 <div>
                   <p
                     className={cn(
-                      ` dark:text-zinc-200 text-black md:leading-[1] leading-[1.5] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
+                      `dark:text-zinc-200 text-black md:leading-[1.2] leading-[1.8] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
                       {
-                        "text-sm": fontSize === 1, // If fontSize is 1, apply text-sm
-                        "text-base": fontSize === 2, // If fontSize is 2, apply text-base
-                        "text-lg": fontSize === 3, // If fontSize is 3, apply text-lg
-                        "sm:text-xl text-lg": fontSize === 4, // If fontSize is 4, apply text-xl
-                        "text-2xl": fontSize === 5, // If fontSize is 5, apply text-2xl
-                        "text-3xl": fontSize === 6, // If fontSize is 6, apply text-3xl
-                        "text-4xl": fontSize === 7, // If fontSize is 7, apply text-4xl
-                        "text-5xl": fontSize === 8, // If fontSize is 8, apply text-5xl
+                        "text-sm": fontSize === 0,
+                        "text-base": fontSize === 1,
+                        "text-lg": fontSize === 2,
+                        "text-xl": fontSize === 3,
+                        "sm:text-2xl text-xl": fontSize === 4,
+                        "text-3xl": fontSize === 5,
+                        "text-4xl": fontSize === 6,
+                        "text-5xl": fontSize === 7,
+                        "text-6xl": fontSize >= 8,
                       }
                     )}
                   >

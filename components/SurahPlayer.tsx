@@ -21,28 +21,42 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
 
   // Load and setup audio
   useEffect(() => {
+    let isCancelled = false;
     const audio = new Audio(
       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
     );
+  
+    audioRef.current?.pause();
+    audioRef.current = null;
+  
     audioRef.current = audio;
     audio.preload = "auto";
     audio.playbackRate = playbackRate;
-
+  
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
     const handleEnded = () => setPlaying(false);
-
+  
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
     audio.addEventListener("ended", handleEnded);
-
+  
+    // Optional: auto-play when switching surahs
+    audio.play().then(() => {
+      if (!isCancelled) setPlaying(true);
+    }).catch(() => {
+      if (!isCancelled) setPlaying(false);
+    });
+  
     return () => {
+      isCancelled = true;
       audio.pause();
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
       audio.removeEventListener("ended", handleEnded);
     };
   }, [surahNumber]);
+  
 
   // Apply new playback rate immediately
   useEffect(() => {
@@ -108,7 +122,7 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
           </button>
 
           {/* Time Display */}
-          <span className="text-xs font-mono dark:text-gray-300 text-[var(--sephia-400)]">
+          <span className="text-xs font-mono dark:text-gray-300 text-black">
             {formatTime(currentTime)} / {formatTime(duration || 0)}
           </span>
 
