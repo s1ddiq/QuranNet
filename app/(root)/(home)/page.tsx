@@ -369,9 +369,9 @@ const SurahsList = () => {
         <div className="w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 dark:bg-[#0F0F0F] bg-[var(--sephia-200)] gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24">
           {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="group min-h-12 dark:bg-zinc-900 bg-[var(--sephia-300)] dark:border border-[#262629ff] rounded-xl px-4 py-2 cursor-pointer transition-discrete text-gray-400 flex hover:brightness-110">
+              <div className="group min-h-12 dark:bg-zinc-900 bg-[var(--sephia-300)] dark:border border-[#262629ff] rounded-xl px-4 py-2 cursor-pointer transition-discrete text-gray-400 flex dark:hover:brightness-110 hover:brightness-105">
                 <div className="flex items-center justify-between gap-3 px-2 py-4 rounded-xl w-full">
-                  <div className="group-hover:bg-blue-500 size-8 rounded-md dark:bg-black/45 bg-[var(--sephia-700)] flex justify-center items-center rotate-45">
+                  <div className="dark:group-hover:bg-blue-500 group-hover:bg-[var(--sephia-800)] size-8 rounded-md dark:bg-black/45 bg-[var(--sephia-700)] flex justify-center items-center rotate-45">
                     <p className="-rotate-45 text-white text-sm font-bold">
                       {surah.number}
                     </p>
@@ -419,14 +419,13 @@ const SurahsList = () => {
 
         <Hills />
         <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center dark:bg-[#18181B] bg-var(--sephia-primary)] text-white">
-          <div className="flex flex-col md:flex-row flex-wrap justify-center w-full lg:px-32 gap-4">
+          <div className="flex flex-col md:flex-row justify-center w-full xl:px-64 lg:px-24 px-4 gap-4">
             {/* Column 1 */}
-            {/* Column 1 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-5">
+            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-5 md:items-end items-center">
               <div className="flex gap-3 items-center">
                 <LogoIcon className="dark:text-[var(--sephia-200)] text-[var(--sephia-800)]" />
                 <div className="flex flex-col">
-                  <p className="font-bold dark:text-[var(--sephia-100)] text-[var(--sephia-900)]">
+                  <p className="font-bold dark:text-[var(--sephia-100)] text-[var(--sephia-600)]">
                     QuranNet
                   </p>
                   <p className="text-[12px] dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
@@ -443,7 +442,7 @@ const SurahsList = () => {
             </div>
 
             {/* Column 2 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2">
+            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2 md:items-end items-center">
               <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                 Quick Navigation
               </p>
@@ -467,7 +466,7 @@ const SurahsList = () => {
             </div>
 
             {/* Column 3 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2">
+            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2 md:items-end items-center">
               <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                 Quick Links
               </p>
@@ -494,7 +493,7 @@ const SurahsList = () => {
             </div>
 
             {/* Column 4 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2">
+            <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2 md:items-end items-center">
               <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                 Latest News
               </p>

@@ -26,26 +26,25 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
     const audio = new Audio(
       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
     );
-
+  
     audioRef.current?.pause();
     audioRef.current = audio;
     audio.preload = "auto";
     audio.playbackRate = playbackRate;
-
+  
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
     const handleEnded = () => setPlaying(false);
-
+  
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
     audio.addEventListener("ended", handleEnded);
-
-    audio.play().then(() => {
-      if (!isCancelled) setPlaying(true);
-    }).catch(() => {
-      if (!isCancelled) setPlaying(false);
-    });
-
+  
+    // ← Remove this autoplay
+    // audio.play().then(() => {
+    //   if (!isCancelled) setPlaying(true);
+    // });
+  
     return () => {
       isCancelled = true;
       audio.pause();
@@ -54,6 +53,7 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
       audio.removeEventListener("ended", handleEnded);
     };
   }, [surahNumber]);
+  
 
   // Apply new playback rate immediately
   useEffect(() => {
