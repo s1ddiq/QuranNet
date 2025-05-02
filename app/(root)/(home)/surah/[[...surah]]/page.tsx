@@ -452,7 +452,7 @@ const Surah = () => {
 
                 <Popover>
                   <PopoverTrigger>
-                    <div className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center">
+                    <div className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center">
                       <CopyIcon />
                     </div>
                     <PopoverContent className="w-48 p-2 rounded-xl dark:bg-zinc-800 bg-[var(--sephia-200)] shadow-xl space-y-1">
@@ -470,13 +470,13 @@ const Surah = () => {
                 </Popover>
                 <div
                   onClick={() => handleSaveAyah(ayah)}
-                  className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
+                  className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
                   <DocumentIcon />
                 </div>
                 <div
                   onClick={() => handleFetchAudio(ayah)}
-                  className="p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
+                  className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
                   {currentlyPlayingAyah === ayah.numberInSurah ? (
                     <Pause

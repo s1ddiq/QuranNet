@@ -122,6 +122,10 @@
 
 }
 
+.home-gradient {
+  @apply bg-gradient-radial from-zinc-300 via-zinc-400 to-zinc-500;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

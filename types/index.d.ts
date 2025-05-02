@@ -77,7 +77,7 @@ interface MobileSheetProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   surahs?: Surah[];
-  surahNumber: number;
+  surahNumber?: number;
 }
 
 interface SidebarHeaderProps {

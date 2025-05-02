@@ -27,7 +27,7 @@ export default function RootLayout({
               content="width=device-width, initial-scale=1"
             />
           </Head>
-          <body className={`${dm_sans.className} dark:bg-[#08080a] bg-white`}>
+          <body className={`${dm_sans.className} dark:bg-[#08080a] bg-[var(--sephia-primary)]`}>
             {children}
             <Toaster />
           </body>

@@ -11,7 +11,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="p-6 rounded-xl bg-transparent space-y-6 max-w-md mx-auto">
+    <div className="p-6 rounded-xl bg-transparent space-y-6 max-w-md">
       <section className="space-y-2">
         <div className="flex justify-between">
           <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">

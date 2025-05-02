@@ -41,6 +41,7 @@ import { X } from "lucide-react";
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 // Fonts ⭐
 import { amiri } from "@/app/fonts";
+import MobileSheet from "@/components/sidebar/MobileSheet";
 
 const SurahsList = () => {
   // organize later
@@ -106,92 +107,28 @@ const SurahsList = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] flex items-center justify-between xl:px-64  lg:px-24 px-4">
-        <LogoIcon className="text-white hidden md:block" />
+      {/* <div className="w-full h-44 bg-[var(--sephia-700)]"></div> */}
+      <MobileSheet
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        surahs={surahs}
+      />
+
+      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] hidden md:flex items-center justify-between xl:px-64 lg:px-24 px-4">
+        <LogoIcon className="dark:text-white text-[var(--sephia-700)] hidden md:block" />
         <div className="sm:hidden flex items-center">
           <MenuIcon
-            className="text-white"
+            className="dark:text-white text-[var(--sephia-700)]"
             onClick={() => setIsOpen((prev) => !prev)}
           />
         </div>
 
         {/* Sheet for Mobile Menu */}
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <VisuallyHidden>
-            <SheetTitle>Menu</SheetTitle>
-            <SheetHeader>Mobile Menu</SheetHeader>
-          </VisuallyHidden>
-          <SheetContent className="px-2 py-2">
-            <div className="w-full flex items-center justify-center">
-              <div className="flex w-full justify-center items-center gap-4 pt-6 border-b border-[#262629ff] pb-2">
-                <p
-                  onClick={() => setActiveSidebarTab("search")}
-                  className={`cursor-pointer ${
-                    activeSidebarTab === "search"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }`}
-                >
-                  Search
-                </p>
-
-                <p
-                  onClick={() => setActiveSidebarTab("overview")}
-                  className={`cursor-pointer ${
-                    activeSidebarTab === "overview"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }`}
-                >
-                  Overview
-                </p>
-              </div>
-            </div>
-
-            {activeSidebarTab === "search" && (
-              <>
-                <SearchInput
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                />
-                <div className="flex flex-col gap-8 items-center scrollable-container">
-                  {searchResults.length > 0 ? (
-                    searchResults.map((result: SearchResult, index) => (
-                      <SearchResultCard
-                        key={`${result.number}-${index}`}
-                        result={result}
-                        searchQuery={searchQuery}
-                        type="desktop"
-                      />
-                    ))
-                  ) : (
-                    <p className="text-sm font-light ml-2 text-gray-400 pointer-events-none">
-                      {searchQuery.length > 3 && searchResults.length === 0
-                        ? `No results found for "${searchQuery}"`
-                        : null}
-                    </p>
-                  )}
-                </div>
-              </>
-            )}
-
-            {activeSidebarTab === "overview" && (
-              <Link
-                href="/support"
-                className="px-5 py-2 bg-blue-500 text-white rounded-xl text-sm font-medium transition relative w-44"
-              >
-                Support Us ♥
-                <span className="absolute -top-[4px] -right-[6px] flex size-4">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-                  <span className="relative inline-flex size-4 rounded-full bg-indigo-500"></span>
-                </span>
-              </Link>
-            )}
-          </SheetContent>
-        </Sheet>
 
         {/* Desktop Navigation */}
-        <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 gap-6 text-gray-200 text-sm">
+        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-6 text-gray-200 text-sm">
           <span className="cursor-pointer hover:text-gray-300 transition text-white">
             Home
           </span>
@@ -230,7 +167,7 @@ const SurahsList = () => {
         <SignedOut>
           <Link
             href="/sign-in"
-            className="px-5 py-2 bg-blue-500 hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+            className="px-5 py-2 dark:bg-blue-500 bg-[var(--sephia-700)] hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
           >
             Sign in
           </Link>
@@ -238,41 +175,59 @@ const SurahsList = () => {
       </div>
 
       <div className="w-full flex-items-center flex-col flex-1 text-white ">
-        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between bg-gradient-radial from-zinc-300 via-zinc-400 to-zinc-500">
-          <div className="w-full px-4 flex flex-col items-center pt-32">
-            <h1 className="md:text-6xl text-4xl font-bold text-center !font-serif">
+        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between dark:bg-black bg-[var(--sephia-primary)]">
+          <div className="w-full px-4 flex flex-col items-center pt-32 space-y-6">
+            <h1 className="md:text-6xl text-4xl font-bold text-center !font-serif dark:text-white text-black">
               QuranNet
             </h1>
 
-            <div className="rounded-full border border-[#262629ff] bg-[#18181B] lg:w-116 sm:w-96 w-full h-16 flex items-center justify-center my-5 relative p-4 ">
+            <div className="rounded-full dark:border border-[#262629ff] dark:bg-[#18181B] bg-[var(--sephia-700)] lg:w-116 sm:w-96 w-full h-16 flex items-center justify-center my-4 relative p-4 ">
               <SearchIcon />
-              <Input
+              <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onClick={() => setIsOpen(true)}
                 placeholder="Search the Quran"
-                className="border-0 ml-4 focus-visible:ring-0 h-full !bg-transparent !shadow-none"
+                className="border-0 ml-4 focus-visible:ring-0 h-full !bg-transparent !shadow-none !text-white"
               />
             </div>
 
             <div
-              className="flex flex-wrap justify-center gap-3 bg-transparent 
+              className="flex flex-wrap justify-between items-center sm:justify-center gap-3 bg-transparent 
                 w-[calc(100%+1rem)] sm:w-[28rem] lg:w-[30rem] 
-                sm:flex-row flex-col items-stretch mt-4 px-4"
+                sm:flex-row items-stretch sm:mt-4 px-2"
             >
-              {["Al-Mulk", "Al-Baqara", "An-Nisaa", "Al-Faatiha"].map(
+              {["Al-Mulk", "Al-Baqara", "An-Nisaa"].map(
                 (
                   surah // rename to surah
                 ) => (
                   <Link
                     key={surah}
                     href={`/surah/${getSurahNumber(surah)}`} // map to surah name later
-                    className="bg-[#18181B] text-center rounded-full px-4 py-2 flex justify-center items-center"
+                    className="dark:bg-[#18181B] bg-[var(--sephia-700)] text-center rounded-full px-4 py-2 flex justify-center items-center"
                   >
                     {surah}
                   </Link>
                 )
               )}
+            </div>
+
+            <div className="mt-4 w-full dark:bg-blue-600 bg-[var(--sephia-700)] text-white rounded-xl p-6 sm:hidden flex flex-col md:flex-row items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-center">
+                  Join Our Community
+                </h2>
+                <p className="text-center">
+                  Sign up to track your reading progress and save your favorite
+                  ayahs.
+                </p>
+              </div>
+              {/* <Link
+                href="/sign-up"
+                className="dark:bg-white bg-[var(--sephia-300)] text-[var(--sephia-400)] dark:text-blue-600 px-4 py-2 rounded-full"
+              >
+                Get Started
+              </Link> */}
             </div>
           </div>
           <ScrollingAyah />
@@ -282,10 +237,10 @@ const SurahsList = () => {
 
         <SignInPopup />
 
-        <div className="w-full xl:px-64 lg:px-24 px-4 bg-[#0F0F0F] pb-12">
+        <div className="w-full xl:px-64 lg:px-24 px-4 dark:bg-[#0F0F0F] bg-[var(--sephia-200)] pb-12">
           <div className="text-base flex md:flex-row flex-col gap-4 justify-between">
             <p
-              className="text-white text-2xl pb-2 text-left font-open-sans cursor-pointer"
+              className="dark:text-white text-black text-2xl pb-2 text-left font-open-sans cursor-pointer"
               onClick={!isSignedIn ? () => router.push("/sign-in") : () => {}}
             >
               {!isSignedIn
@@ -299,7 +254,7 @@ const SurahsList = () => {
                 : ""}
             </p>
 
-            <div className="bg-zinc-900 flex rounded-full p-2 md:text-base text-sm mb-6">
+            <div className="dark:bg-zinc-900 bg-[var(--sephia-700)] flex rounded-full p-2 md:text-base text-sm mb-6">
               {["Last Read", "Saved", "Collections"].map((section) => (
                 <p
                   key={section}
@@ -411,12 +366,12 @@ const SurahsList = () => {
             )}
           </div>
         </div>
-        <div className="w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 bg-[#0F0F0F] gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24">
+        <div className="w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 dark:bg-[#0F0F0F] bg-[var(--sephia-200)] gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24">
           {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="group min-h-12 bg-zinc-900 border dark:border-[#262629ff] border-gray-400 rounded-xl px-4 py-2 cursor-pointer transition-discrete  text-gray-400 flex hover:brightness-110">
-                <div className="flex items-center justify-between gap-3 px-2 py-4 rounded-xl bg-white dark:bg-zinc-900 w-full">
-                  <div className="group-hover:bg-blue-500 size-8 rounded-md bg-black/45 flex justify-center items-center rotate-45">
+              <div className="group min-h-12 dark:bg-zinc-900 bg-[var(--sephia-300)] dark:border border-[#262629ff] rounded-xl px-4 py-2 cursor-pointer transition-discrete text-gray-400 flex hover:brightness-110">
+                <div className="flex items-center justify-between gap-3 px-2 py-4 rounded-xl w-full">
+                  <div className="group-hover:bg-blue-500 size-8 rounded-md dark:bg-black/45 bg-[var(--sephia-700)] flex justify-center items-center rotate-45">
                     <p className="-rotate-45 text-white text-sm font-bold">
                       {surah.number}
                     </p>
@@ -441,8 +396,8 @@ const SurahsList = () => {
             </Link>
           ))}
         </div>
-        <div className="w-full flex justify-center bg-[#0F0F0F] py-6">
-          <div className="bg-zinc-900 rounded-md shadow-lg px-4 py-2 flex items-center border border-gray-700">
+        <div className="w-full flex justify-center dark:bg-[#0F0F0F] bg-[var(--sephia-200)] py-6">
+          <div className="dark:bg-zinc-900 bg-[var(--sephia-700)] rounded-md shadow-lg px-4 py-2 flex items-center border border-gray-700">
             <button
               className={`
         relative overflow-hidden rounded-md
@@ -463,20 +418,23 @@ const SurahsList = () => {
         {/* move up later */}
 
         <Hills />
-        <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center bg-[#18181B] text-white">
+        <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center dark:bg-[#18181B] bg-var(--sephia-primary)] text-white">
           <div className="flex flex-col md:flex-row flex-wrap justify-center w-full lg:px-32 gap-4">
+            {/* Column 1 */}
             {/* Column 1 */}
             <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-5">
               <div className="flex gap-3 items-center">
-                <LogoIcon />
+                <LogoIcon className="dark:text-[var(--sephia-200)] text-[var(--sephia-800)]" />
                 <div className="flex flex-col">
-                  <p className="font-bold">QuranNet</p>
-                  <p className="text-gray-200 text-[12px]">
+                  <p className="font-bold dark:text-[var(--sephia-100)] text-[var(--sephia-900)]">
+                    QuranNet
+                  </p>
+                  <p className="text-[12px] dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
                     Read, and Study The Quran
                   </p>
                 </div>
               </div>
-              <p className="text-sm">
+              <p className="text-sm dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
                 QuranNet is providing free, easy, and ad-free access to the Holy
                 Quran — beautifully designed, always available, and built with
                 love for every heart.
@@ -486,13 +444,22 @@ const SurahsList = () => {
 
             {/* Column 2 */}
             <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2">
-              <p className="text-gray-400 font-semibold">Quick Navigation</p>
-              <div className="text-gray-200 underline space-y-1">
-                <p onClick={() => openUserProfile()} className="cursor-pointer">
+              <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
+                Quick Navigation
+              </p>
+              <div className="underline space-y-1 dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
+                <p
+                  onClick={() => openUserProfile()}
+                  className="cursor-pointer dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
+                >
                   Profile
                 </p>
                 <p>
-                  <Link href="/surah/1" target="_blank">
+                  <Link
+                    href="/surah/1"
+                    target="_blank"
+                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
+                  >
                     Start reading
                   </Link>
                 </p>
@@ -501,18 +468,25 @@ const SurahsList = () => {
 
             {/* Column 3 */}
             <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2">
-              <p className="text-gray-400 font-semibold">Quick Links</p>
-              <div className="text-gray-200 underline space-y-1">
+              <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
+                Quick Links
+              </p>
+              <div className="underline space-y-1 dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
                 <p>
                   <Link
                     href="https://github.com/s1ddiq/Qurannet"
                     target="_blank"
+                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
                   >
                     QuranNet GitHub
                   </Link>
                 </p>
                 <p>
-                  <Link href="/surah/1" target="_blank">
+                  <Link
+                    href="/surah/1"
+                    target="_blank"
+                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
+                  >
                     Start reading
                   </Link>
                 </p>
@@ -521,12 +495,15 @@ const SurahsList = () => {
 
             {/* Column 4 */}
             <div className="w-full md:w-1/2 lg:w-1/4 p-4 flex flex-col gap-2">
-              <p className="text-gray-400 font-semibold">Latest News</p>
-              <div className="text-gray-200 underline">
+              <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
+                Latest News
+              </p>
+              <div className="underline dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
                 <p>
                   <Link
                     href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.0.0"
                     target="_blank"
+                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
                   >
                     v1.0.0 Latest Release
                   </Link>

@@ -15,8 +15,6 @@ import MenuIcon from "../svg/MenuIcon";
 import LogoIcon from "../svg/LogoIcon";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { Slider } from "../ui/slider";
-import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 import Settings from "../Settings";
 
 const MobileSheet = ({
@@ -44,7 +42,7 @@ const MobileSheet = ({
   );
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16">
+      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999">
         <MenuIcon
           onClick={() => setIsOpen(true)}
           className="dark:text-white text-black"

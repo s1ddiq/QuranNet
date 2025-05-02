@@ -1,12 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "./ui/carousel";
+
+import { useRef, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ayahs = [
   "Indeed, with hardship will be ease.",
@@ -32,32 +27,91 @@ const ayahs = [
 ];
 
 export default function ScrollingAyah() {
-  const [index, setIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
 
+  // Auto-advance every 3 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % ayahs.length);
-    }, 10000);
-    return () => clearInterval(interval);
+    const iv = setInterval(() => {
+      setActive((i) => (i + 1) % ayahs.length);
+    }, 6_000);
+    return () => clearInterval(iv);
   }, []);
 
+  // When `active` changes, scroll the container
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const child = container.children[active] as HTMLElement;
+    if (!child) return;
+
+    container.scrollTo({
+      left: child.offsetLeft,
+      behavior: "smooth",
+    });
+  }, [active]);
+
+  const prev = () => setActive((i) => (i - 1 + ayahs.length) % ayahs.length);
+  const next = () => setActive((i) => (i + 1) % ayahs.length);
+
   return (
-    <div className="w-full overflow-hidden bg-transparent text-white py-2 relative h-10 px-2">
+    <div className="relative w-full">
+      {/* Carousel viewport */}
       <div
-        key={index}
-        className="absolute w-full transition-opacity duration-500 ease-in-out text-center text-lg sm:text-sm"
+        ref={containerRef}
+        className="flex overflow-x-hidden scroll-smooth snap-x snap-mandatory"
       >
-        <Carousel >
-          <CarouselContent>
-            <CarouselItem>{ayahs[index]}</CarouselItem>
-            <CarouselItem>{ayahs[index + 1]}</CarouselItem>
-            <CarouselItem>{ayahs[index + 2]}</CarouselItem>
-            <CarouselItem>{ayahs[index + 3]}</CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        {ayahs.map((ayah, idx) => (
+          <div
+            key={idx}
+            className="
+          flex-shrink-0 
+          w-full 
+          snap-center 
+          p-4 
+          text-center 
+          text-xl sm:text-2xl
+          dark:text-white 
+          text-[var(--sephia-700)]
+        "
+          >
+            “{ayah}”
+          </div>
+        ))}
       </div>
+
+      {/* Prev/Next buttons */}
+      {/* <button
+        onClick={prev}
+        className="
+      absolute top-1/2 -translate-y-1/2 
+      left-4
+      p-3 
+      bg-black text-white hover:bg-[rgba(0,0,0,0.8)] 
+      dark:bg-white dark:text-black dark:hover:bg-[rgba(255,255,255,0.8)]
+      rounded-full 
+      shadow-lg
+      z-10
+    "
+      >
+        <ChevronLeft className="size-6" />
+      </button>
+      <button
+        onClick={next}
+        className="
+      absolute top-1/2 -translate-y-1/2 
+      right-4
+      p-3 
+      bg-black text-white hover:bg-[rgba(0,0,0,0.8)] 
+      dark:bg-white dark:text-black dark:hover:bg-[rgba(255,255,255,0.8)]
+      rounded-full 
+      shadow-lg
+      z-10
+    "
+      >
+        <ChevronRight className="size-6" />
+      </button> */}
     </div>
   );
 }

@@ -249,3 +249,76 @@
 //     </div>
 //   );
 // }
+// <Sheet open={isOpen} onOpenChange={setIsOpen}>
+// <VisuallyHidden>
+//   <SheetTitle>Menu</SheetTitle>
+//   <SheetHeader>Mobile Menu</SheetHeader>
+// </VisuallyHidden>
+// <SheetContent className="px-2 py-2">
+//   <div className="w-full flex items-center justify-center">
+//     <div className="flex w-full justify-center items-center gap-4 pt-6 border-b border-[#262629ff] pb-2">
+//       <p
+//         onClick={() => setActiveSidebarTab("search")}
+//         className={`cursor-pointer ${
+//           activeSidebarTab === "search"
+//             ? "text-white"
+//             : "text-gray-500"
+//         }`}
+//       >
+//         Search
+//       </p>
+
+//       <p
+//         onClick={() => setActiveSidebarTab("overview")}
+//         className={`cursor-pointer ${
+//           activeSidebarTab === "overview"
+//             ? "text-white"
+//             : "text-gray-500"
+//         }`}
+//       >
+//         Overview
+//       </p>
+//     </div>
+//   </div>
+
+//   {activeSidebarTab === "search" && (
+//     <>
+//       <SearchInput
+//         searchQuery={searchQuery}
+//         setSearchQuery={setSearchQuery}
+//       />
+//       <div className="flex flex-col gap-8 items-center scrollable-container">
+//         {searchResults.length > 0 ? (
+//           searchResults.map((result: SearchResult, index) => (
+//             <SearchResultCard
+//               key={`${result.number}-${index}`}
+//               result={result}
+//               searchQuery={searchQuery}
+//               type="desktop"
+//             />
+//           ))
+//         ) : (
+//           <p className="text-sm font-light ml-2 text-gray-400 pointer-events-none">
+//             {searchQuery.length > 3 && searchResults.length === 0
+//               ? `No results found for "${searchQuery}"`
+//               : null}
+//           </p>
+//         )}
+//       </div>
+//     </>
+//   )}
+
+//   {activeSidebarTab === "overview" && (
+//     <Link
+//       href="/support"
+//       className="px-5 py-2 bg-blue-500 text-white rounded-xl text-sm font-medium transition relative w-44"
+//     >
+//       Support Us ♥
+//       <span className="absolute -top-[4px] -right-[6px] flex size-4">
+//         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+//         <span className="relative inline-flex size-4 rounded-full bg-indigo-500"></span>
+//       </span>
+//     </Link>
+//   )}
+// </SheetContent>
+// </Sheet>

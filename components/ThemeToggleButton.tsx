@@ -35,7 +35,7 @@ export default function ThemeToggleButton() {
   return (
     <div
       onClick={toggleTheme}
-      className="group flex flex-col items-center gap-2 cursor-pointer select-none"
+      className="group flex flex-col gap-2 cursor-pointer select-none"
     >
       <div
         className="rounded-full border border-gray-300 dark:border-zinc-700 w-14 h-14 flex items-center justify-center 

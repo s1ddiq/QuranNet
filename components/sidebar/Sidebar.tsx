@@ -104,7 +104,7 @@ const Sidebar = () => {
               placeholder={`Search by ${
                 tabs.find((tab) => tab.key === activeTab)?.label
               }`}
-              className="dark:bg-zinc-800 bg-[var(--sephia-300)] dark:text-white text-[var(--)] border-0"
+              className="dark:bg-zinc-800 bg-[var(--sephia-300)] dark:text-white  border-0"
             />
           </div>
         )}
@@ -118,7 +118,7 @@ const Sidebar = () => {
                 href={`/surah/${surah.number}`}
                 title={`${surah.englishName} — ${surah.englishNameTranslation}`}
                 className={cn(
-                  "block rounded-md py-2 hover:bg-[var(--sephia-300)]  transition flex items-center gap-6 w-full",
+                  "block rounded-md py-2 hover:bg-[var(--sephia-300)] dark:hover:bg-zinc-800  transition flex items-center gap-6 w-full",
                   surah.number === surahNumber &&
                     "dark:bg-zinc-800 bg-[var(--sephia-300)] font-bold"
                 )}
