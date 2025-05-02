@@ -23,7 +23,7 @@ const Settings = () => {
         </div>
         <Slider
           value={[fontSize]}
-          defaultValue={[2]}
+          defaultValue={[3]}
           max={8}
           step={1}
           onValueChange={handleFontSizeChange}

@@ -213,14 +213,14 @@ const Surah = () => {
     }
     toast(
       <div className="flex items-center gap-3">
-        <Check size={36} />
+        <Check size={22} />
         <div>
           <p className="font-semibold">Copied {type} Ayah to Clipboard</p>
         </div>
       </div>,
       {
         className:
-          "bg-[#73613fff] dark:bg-[#27272A] text-black dark:text-white",
+          "bg-[var(--sephia-200)] dark:bg-[#27272A] text-black dark:text-white",
         duration: 3000,
       }
     );
@@ -277,8 +277,7 @@ const Surah = () => {
                 This ayah is already in your saved list.
               </p>
             </div>
-          </div>,
-          { style: { backgroundColor: "#27272A" } }
+          </div>
         );
         // toast('hello', {style: {backgroundColor: 'red'}})
         return;
@@ -293,14 +292,13 @@ const Surah = () => {
           <div>
             <p className="font-semibold">Saved Ayah</p>
           </div>
-        </div>,
-        { style: { backgroundColor: "#27272A" } }
+        </div>
       );
     } else {
       toast(
-        <div
+        <Link
+          href='/sign-in'
           className="flex items-center gap-3"
-          onClick={() => router.push("/sign-in")}
         >
           <p className="text-3xl">☹</p>
           <div>
@@ -311,8 +309,7 @@ const Surah = () => {
               You need to be signed in to save ayahs.
             </p>
           </div>
-        </div>,
-        { style: { backgroundColor: "#27272A" } }
+        </Link>
       );
     }
   };

@@ -3,8 +3,9 @@
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, ToasterProps } from "sonner";
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system", resolvedTheme } = useTheme();
+export const Toaster = (props: ToasterProps) => {
+  const { theme = "system", resolvedTheme = "light" } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   return (
     <Sonner
@@ -12,14 +13,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       style={
         {
-          "--normal-bg": resolvedTheme === "dark" ? "#27272A" : "#73613fff",
-          "--normal-text": resolvedTheme === "dark" ? "#000" : "#ffffff",
-          "--normal-border": "transparent", // <-- remove border
+          // Always produce a color string, never `false`
+          "--normal-bg": isDark ? "#27272A" : "#fff7ebff",
+          "--normal-text": isDark ? "#fff" : "#000",
+          "--normal-border": "transparent",
         } as React.CSSProperties
       }
       {...props}
     />
   );
 };
-
-export { Toaster };
