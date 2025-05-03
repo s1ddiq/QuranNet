@@ -138,8 +138,8 @@
   font-family: 'UthmanicHafs', serif;
   direction: rtl;
   unicode-bidi: isolate;
-  font-size: 1.5rem;
-  line-height: 2.5rem;
+  /* font-size: 1.5rem; */
+  line-height: 3.5rem;
 }
 
 /* Flexbox helpers */

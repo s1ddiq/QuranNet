@@ -55,7 +55,7 @@ const Surah = () => {
   // USESTATES END
 
   // Global States
-  const { fontSize, setFontSize } = useGlobalState();
+  const { fontSize } = useGlobalState();
   // USESTATES OPEN/CLOSED STATES START ⭐
   const [showHeader, setShowHeader] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
