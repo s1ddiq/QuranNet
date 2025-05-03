@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils"; // ⭐
 
 // ICONS START ⭐
 import BismillahIcon from "@/components/svg/icons/BismillahIcon";
-import { Check, ChevronDown, ChevronUp, Pause } from "lucide-react";
+import { Check, ChevronUp, Pause } from "lucide-react";
 import DocumentIcon from "@/components/svg/icons/DocumentIcon";
 import PlayIcon from "@/components/svg/icons/PlayIcon";
 import CopyIcon from "@/components/svg/icons/CopyIcon";
@@ -59,13 +59,12 @@ const Surah = () => {
   // USESTATES OPEN/CLOSED STATES START ⭐
   const [showHeader, setShowHeader] = useState(true);
   const [collapsed, setCollapsed] = useState(true);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(true);
   // Subdivision of O/C;
   const [currentlyPlayingAyah, setCurrentlyPlayingAyah] = useState<
     number | null
   >(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [copied, setCopied] = useState(false);
+  // const [copied, setCopied] = useState(false);
   // USESTATES OPEN/CLOSED STATES END
 
   // Params
@@ -197,7 +196,7 @@ const Surah = () => {
     type: string,
     { numberInSurah, text, translation }: Ayah
   ) => {
-    setCopied(true);
+    // setCopied(true);
     if (type === "english") {
       navigator.clipboard.writeText(
         `${translation} [${params.surah}:${numberInSurah}]`

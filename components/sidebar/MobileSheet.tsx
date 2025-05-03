@@ -29,13 +29,6 @@ const MobileSheet = ({
 }: MobileSheetProps) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("search");
-  interface SurahInfo {
-    number: number;
-    name: string;
-    englishName: string;
-    revelationType: string;
-    numberOfAyahs: number;
-  }
 
   const filteredSurahs = surahs?.filter((surah: Surah) =>
     surah.englishName.toLowerCase().includes(searchQuery.toLowerCase())

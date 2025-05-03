@@ -59,7 +59,7 @@ const SurahsList = () => {
   const { isSignedIn } = useUser();
   const { openUserProfile } = useClerk();
   // Boolean 🔹
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // Hooks 🔹
   const { getSurahNumber } = useSurahNavigation();
 
