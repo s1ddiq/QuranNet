@@ -491,7 +491,7 @@ const Surah = () => {
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p 
                   className={cn(
-                    `font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8 quran-text`,
+                    `font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
                     {
                       "text-lg": fontSize === 0,
                       "text-2xl": fontSize === 1,
@@ -509,7 +509,6 @@ const Surah = () => {
                         ""
                       )
                     : ayah.text}
-                    {/* {ayah.text.replace(/[\u0610-\u061A\u064B-\u065F\u06D6-\u06ED]/g, '')} */}
                 </p>
 
                 <div>

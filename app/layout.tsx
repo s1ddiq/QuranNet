@@ -10,8 +10,14 @@ const dm_sans = DM_Sans({ subsets: ["latin"] });
 export const metadata = {
   title: "QuranNet",
   description: "Read and listen to quran for free - forever.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon/apple-touch-icon.png",
+  }
 };
-
+/* This file is used to define the web app manifest for the QuranNet PWA.  */
+/* It includes metadata such as the app name, description, start URL, display mode, background color, theme color, and icons. */
 export default function RootLayout({
   children,
 }: Readonly<{
