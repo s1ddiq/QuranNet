@@ -46,7 +46,7 @@ const Sidebar = () => {
   const filteredSurahs = surahs.filter((surah) =>
     surah.englishName.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  // Compute pill position & size (three tabs)
+  // calculate pill position & size (three tabs)
   const idx = tabs.findIndex((t) => t.key === activeTab);
   const pillPct = 100 / tabs.length;
   const pillLeft = `${idx * pillPct}%`;

@@ -1,3 +1,7 @@
+// These functions use the Al Quran Cloud API to fetch data!
+// TODO: switch API to quran.com's api
+// TODO: add error handling and loading states
+
 export const fetchAllSurahs = async () => {
   try {
     const response = await fetch(`https://api.alquran.cloud/v1/surah`);
@@ -126,10 +130,10 @@ export const fetchJuz = async (juzId: string | null) => {
     if (!responseEnglish.ok || !responseArabic.ok) {
       throw new Error(`HTTP error! status: ${responseEnglish.status}`);
     }
-    
+
     const english = await responseEnglish.json();
     const arabic = await responseArabic.json();
-    
+
     return { arabic, english };
   } catch (error) {
     console.log(`Error fetching juz: ${error}`);

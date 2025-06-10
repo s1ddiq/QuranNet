@@ -1,28 +1,33 @@
 "use client";
 import { cn } from "@/lib/utils";
+import React, { useState } from "react";
+
+// =========== Shadcn UI and Components ==============
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Sheet } from "../ui/sheet";
-import React, { useState } from "react";
 import { Input } from "../ui/input";
+import Settings from "../Settings";
+
 import {
   SheetTrigger,
   SheetContent,
   SheetTitle,
   SheetHeader,
 } from "../ui/sheet";
-import { useRouter } from "next/navigation";
+
+// =========== Icons ==============
 import MenuIcon from "../svg/icons/MenuIcon";
 import LogoIcon from "../svg/icons/LogoIcon";
+
+// =========== Navigation & Routing ==============
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Settings from "../Settings";
 
 const MobileSheet = ({
   isOpen,
   setIsOpen,
-  // searchResults,
   searchQuery,
   setSearchQuery,
-  // amount,
   surahs,
   surahNumber,
 }: MobileSheetProps) => {
@@ -59,13 +64,13 @@ const MobileSheet = ({
         <div className="relative mt-4 mx-1">
           {/* Sliding pill */}
           <div
-            className="absolute -top-[4px] fatranslate-y-[6px] left-0 h-9 dark:bg-blue-500 bg-[var(--sephia-400)] rounded-full transition-all duration-300"
+            className="absolute -top-[4px] left-0 h-9 dark:bg-blue-500 bg-[var(--sephia-400)] rounded-full transition-all duration-300"
             style={{
               width: "50%",
-              left: activeTab === "search" ? "0%" : "50%",
+              left: activeTab === "search" ? "0%" : "50%", // adjust width based on activeTab, pretty weird looking and will refactor
             }}
           />
-          <div className="relative flex border dark:bg-zinc-800 bg-[var(--sephia-300)] dark:border-[#262629ff] border-0 p-1 rounded-full dark:text-white text-black">
+          <div className="relative flex dark:bg-zinc-800 bg-[var(--sephia-300)] dark:border-[#262629ff] border-0 p-1 rounded-full dark:text-white text-black">
             <button
               onClick={() => setActiveTab("search")}
               className="flex-1 text-center text-sm font-medium py-2 z-10 transition-colors focus:outline-none focus-ring-0"
@@ -103,7 +108,7 @@ const MobileSheet = ({
                   href={`/surah/${surah.number}`}
                   title={`${surah.englishName} — ${surah.englishNameTranslation}`}
                   className={cn(
-                    "block rounded-md py-2 hover:bg-[var(--sephia-300)]  transition flex items-center gap-6 w-full",
+                    "block rounded-md py-2 hover:bg-[var(--sephia-300)]  transition items-center gap-6 w-full",
                     surah.number === surahNumber &&
                       "dark:bg-zinc-800 bg-[var(--sephia-300)] font-bold"
                   )}
@@ -115,6 +120,7 @@ const MobileSheet = ({
                     <span className="dark:text-white text-black">
                       {surah.englishName}
                     </span>
+                    {/* may have to use this again */}
                     {/* <span className="text-sm text-gray-400">{surah.englishNameTranslation}</span> */}
                   </div>
                 </Link>
@@ -123,7 +129,7 @@ const MobileSheet = ({
           </>
         )}
 
-        {activeTab === "settings" && ( // maybe make into info
+        {activeTab === "settings" && ( // maybe rename into info
           <Settings />
         )}
       </SheetContent>
