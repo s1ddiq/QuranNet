@@ -19,7 +19,7 @@ import NavigatorButton from "@/components/NavigatorButton";
 // COMPONENTS END
 
 // UTILS
-import { cn } from "@/lib/utils"; // ⭐
+import { cn, convertNumberToArabicNumeral } from "@/lib/utils"; // ⭐
 // UTILS
 
 // ICONS START ⭐
@@ -192,6 +192,7 @@ const Surah = () => {
   }, []);
 
   const handleCopyAyah = ({ numberInSurah, text, translation }: Ayah) => {
+    // console.log(numberInSurah, text, translation);
     // setCopied(true);
     navigator.clipboard.writeText(
       `${text} ${translation} [${params.surah}:${numberInSurah}]`
@@ -299,7 +300,7 @@ const Surah = () => {
   if (loading)
     return (
       <div className="w-full h-screen bg-zinc-900 flex justify-center items-center">
-        <Loader className="size-12 text-white animate-spin" />
+        <Loader className="size-12 text-gray-400 animate-spin" />
       </div>
     );
 
@@ -437,8 +438,8 @@ const Surah = () => {
                 >
                   {currentlyPlayingAyah === ayah.numberInSurah ? (
                     <Pause
-                      className="dark:text-white text-[var(--sephia-700)]"
-                      size={22}
+                      className="dark:text-gray-400 text-[var(--sephia-700)]"
+                      size={18}
                     />
                   ) : (
                     <Play
@@ -470,6 +471,9 @@ const Surah = () => {
                       : "text-7xl"
                   }`}
                 >
+                  <span className="inline-flex items-center justify-center size-8 rounded-full border border-gray-400 text-2xl mr-4">
+                    {convertNumberToArabicNumeral(ayah.numberInSurah)}
+                  </span>
                   {ayah.text.startsWith("بِسۡمِ")
                     ? ayah.text.replace(
                         "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
