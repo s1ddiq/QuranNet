@@ -88,6 +88,7 @@
   --sephia-600: #787167ff;
   --sephia-700: #72603F;
   --sephia-800: #73613fff;
+  --gray-100: #999999;
 }
 
 /* Dark mode variables */
@@ -137,6 +138,17 @@
 .quran-text {
   font-family: 'UthmanicHafs', serif;
   direction: rtl
+}
+
+@font-face {
+  font-family: 'SurahFont';
+  src: url('/sura_names.woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.surah-font {
+  font-family: 'SurahFont', serif;
 }
 
 /* Flexbox helpers */

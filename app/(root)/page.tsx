@@ -30,8 +30,9 @@ import { X } from "lucide-react";
 // Hooks ⭐
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 // Fonts ⭐
-import { amiri } from "@/app/fonts";
+import { amiri, inter } from "@/app/fonts";
 import MobileSheet from "@/components/sidebar/MobileSheet";
+import Image from "next/image";
 
 const SurahsList = () => {
   // organize later
@@ -162,68 +163,101 @@ const SurahsList = () => {
 
       <div className="w-full flex-items-center flex-col flex-1 text-white ">
         <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between dark:bg-black bg-[var(--sephia-primary)]">
-          <div className="w-full px-4 flex flex-col items-center pt-32 space-y-6">
-            <h1 className="md:text-6xl text-4xl font-bold text-center !font-serif dark:text-white text-black">
-              QuranNet
-            </h1>
-
-            <div className="rounded-full dark:border border-[#262629ff] dark:bg-[#18181B] bg-[var(--sephia-700)] lg:w-116 sm:w-96 w-full h-16 flex items-center justify-center my-4 relative p-4 ">
-              <SearchIcon />
-              <input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onClick={() => setIsOpen(true)}
-                placeholder="Search the Quran"
-                className="border-0 ml-4 focus-visible:ring-0 h-full !bg-transparent !shadow-none !text-white"
-              />
-            </div>
-
-            <div
-              className="flex flex-wrap justify-between items-center sm:justify-center gap-3 bg-transparent 
-                w-[calc(100%+1rem)] sm:w-[28rem] lg:w-[30rem] 
-                sm:flex-row items-stretch sm:mt-4 px-2"
-            >
-              {["Al-Mulk", "Al-Baqara", "An-Nisaa"].map(
-                (
-                  surah // rename to surah
-                ) => (
-                  <Link
-                    key={surah}
-                    href={`/surah/${getSurahNumber(surah)}`} // map to surah name later
-                    className="dark:bg-[#18181B] bg-[var(--sephia-700)] text-center rounded-full px-4 py-2 flex justify-center items-center"
-                  >
-                    {surah}
-                  </Link>
-                )
-              )}
-            </div>
-
-            <div className="mt-4 w-full dark:bg-blue-600 bg-[var(--sephia-700)] text-white rounded-xl p-6 sm:hidden flex flex-col md:flex-row items-center justify-between gap-4">
-              <div>
-                <h2 className="text-2xl font-bold text-center">
-                  Join Our Community
-                </h2>
-                <p className="text-center">
-                  Sign up to track your reading progress and save your favorite
-                  ayahs.
-                </p>
-              </div>
-              {/* <Link
-                href="/sign-up"
-                className="dark:bg-white bg-[var(--sephia-300)] text-[var(--sephia-400)] dark:text-blue-600 px-4 py-2 rounded-full"
+          <div className="w-full px-4 flex flex-col justify-center items-center space-y-6 h-[calc(100vh-64px)]">
+            <div className="relative">
+              <div
+                className="w-[450px] h-[300px] absolute left-1/2 -translate-x-1/2 -top-20"
+                style={{
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse at center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse at center, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 100%)",
+                }}
               >
-                Get Started
-              </Link> */}
+                <Image
+                  src="/images/bg.png"
+                  alt="bg"
+                  width={1200}
+                  height={1200}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+
+              <h1
+                className={`${inter.className} md:text-6xl text-4xl font-semibold text-center dark:text-white text-black`}
+              >
+                Read. Reflect. Recite.
+              </h1>
+              <p className="md:text-6xl text-4xl font-semibold text-center text-[var(--gray-100)]">
+                A journey through the Holy Quran.
+              </p>
             </div>
           </div>
-          <ScrollingAyah />
-          <Hill />
+
+          <div className="xl:px-64 lg:px-24 px-4">
+            <div
+              className={`${inter.className} w-full grid grid-rows-3 grid-cols-2 gap-5`}
+            >
+              {/* READ */}
+              <div className="flex justify-center flex-col">
+                <p className="text-3xl">Easy Reading</p>
+                <p className="text-[var(--gray-100)] text-xl">
+                  Navigate through content quickly and effortlessly with a
+                  clean, distraction-free layout designed to enhance focus and
+                  understanding.
+                </p>
+              </div>
+              <Image
+                src="/svg/book1.svg"
+                alt="Book with Tasbih"
+                width={512}
+                height={512}
+                className="object-cover"
+              />
+
+              {/* REFLECT */}
+
+              <Image
+                src="/svg/book2.svg"
+                alt="Book with Button Lock"
+                width={412}
+                height={412}
+                className="object-cover"
+              />
+              <div className="flex justify-center flex-col">
+                <p className="text-3xl">Saved Reflections</p>
+                <p className="text-[var(--gray-100)] text-xl">
+                  Signed-in users can save verses or revisit recent surahs
+                  anytime. Reflect deeply by returning to what matters most,
+                  whenever you need.
+                </p>
+              </div>
+
+              {/* RECITE */}
+
+              <div className="flex justify-center flex-col">
+                <p className="text-3xl">Recite with Ease</p>
+                <p className="text-[var(--gray-100)] text-xl">
+                  Follow along with clear audio and text to improve your
+                  recitation. Designed to help you build confidence and fluency,
+                  one verse at a time.
+                </p>
+              </div>
+              <Image
+                src="/svg/book3.svg"
+                alt="Person Holding Open Book"
+                width={512}
+                height={512}
+                className="object-cover"
+              />
+            </div>
+          </div>
         </div>
 
         <SignInPopup />
 
-        <div className="w-full xl:px-64 lg:px-24 px-4 dark:bg-[#0F0F0F] bg-[var(--sephia-200)] pb-12">
-          <div className="text-base flex md:flex-row flex-col gap-4 justify-between">
+        <div className="w-full xl:px-64 lg:px-24 px-4 bg-black pb-12">
+          <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-8">
             <p
               className="dark:text-white text-black text-2xl pb-2 text-left font-open-sans cursor-pointer"
               onClick={!isSignedIn ? () => router.push("/sign-in") : () => {}}
@@ -239,7 +273,7 @@ const SurahsList = () => {
                 : ""}
             </p>
 
-            <div className="dark:bg-zinc-900 bg-[var(--sephia-700)] flex rounded-full p-2 md:text-base text-sm mb-6">
+            <div className="bg-white flex rounded-full p-2 md:text-base text-sm mb-6 border-2 border-[var(--gray-100)]">
               {["Last Read", "Saved", "Collections"].map((section) => (
                 <p
                   key={section}
@@ -249,8 +283,8 @@ const SurahsList = () => {
                   className={cn(
                     "cursor-pointer py-2 md:w-auto md:px-6 text-center w-1/3 rounded-full",
                     activeSection === section
-                      ? "text-blue-500 bg-black/45"
-                      : "text-white"
+                      ? "text-black bg-[var(--gray-100)]"
+                      : "text-[var(--gray-100)]"
                   )}
                 >
                   {section}
@@ -351,29 +385,29 @@ const SurahsList = () => {
             )}
           </div>
         </div>
-        <div className="w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 dark:bg-[#0F0F0F] bg-[var(--sephia-200)] gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24">
+        <div
+          className={`w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 bg-black gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24 ${inter.className}`}
+        >
           {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="group min-h-12 dark:bg-zinc-900 bg-[var(--sephia-300)] dark:border border-[#262629ff] rounded-xl px-4 py-2 cursor-pointer transition-discrete text-gray-400 flex dark:hover:brightness-110 hover:brightness-105">
-                <div className="flex items-center justify-between gap-3 px-2 py-4 rounded-xl w-full">
-                  <div className="dark:group-hover:bg-blue-500 group-hover:bg-[var(--sephia-800)] size-8 rounded-md dark:bg-black/45 bg-[var(--sephia-700)] flex justify-center items-center rotate-45">
+              <div className="border border-[var(--gray-100)] group cursor-pointer rounded-xl backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="size-8 rounded-md bg-[var(--gray-100)] flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
                     <p className="-rotate-45 text-white text-sm font-bold">
                       {surah.number}
                     </p>
                   </div>
 
-                  <div className="flex flex-col text-sm flex-1">
-                    <p className="font-semibold dark:text-white text-black">
+                  <div className="flex flex-col flex-1 space-y-0.5 text-sm">
+                    <p className="font-semibold text-white">
                       {surah.englishName}
                     </p>
-                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">
+                    <p className="text-xs text-[var(--gray-100)]">
                       {surah.englishNameTranslation}
                     </p>
                   </div>
 
-                  <p
-                    className={`${amiri.className} text-sm leading-relaxed tracking-wide dark:text-white text-black`}
-                  >
+                  <p className={`surah-font text-sm text-white tracking-wide`}>
                     {surah.name}
                   </p>
                 </div>
@@ -381,44 +415,40 @@ const SurahsList = () => {
             </Link>
           ))}
         </div>
-        <div className="w-full flex justify-center dark:bg-[#0F0F0F] bg-[var(--sephia-200)] py-6">
-          <div className="dark:bg-zinc-900 bg-[var(--sephia-700)] rounded-md shadow-lg px-4 py-2 flex items-center border border-gray-700">
+        <div className="w-full flex justify-center bg-black py-6">
+          <div className="bg-black rounded-md shadow-lg px-4 py-2 flex items-center border border-gray-700">
             <button
               className={`
         relative overflow-hidden rounded-md
         px-5 py-2 text-sm font-medium
         transition
-        before:absolute before:inset-0 before:rounded-md before:bg-gradient-to-r before:from-blue-500 before:to-purple-600
+        before:absolute before:inset-0 before:rounded-md before:bg-gradient-to-r before:from-blue-500 before:to-[var(--gray-100)]
         before:opacity-0 before:scale-90 before:transition-all
         hover:before:opacity-30 hover:before:scale-100
         text-white
       `}
               onClick={() => (amount < 22 ? setAmount(114) : setAmount(21))}
             >
-              {amount < 22 ? "Show More ⬇" : "Show Less ⬆"}
+              {amount < 22 ? "Expand" : "Collapse"}
             </button>
           </div>
         </div>
 
-        {/* move up later */}
-
-        <Hills />
-        <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center dark:bg-[#18181B] bg-var(--sephia-primary)] text-white">
+        {/* <Hills /> */}
+        <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center bg-black text-white">
           <div className="flex flex-col md:flex-row justify-center w-full xl:px-64 lg:px-24 px-4 gap-4">
             {/* Column 1 */}
             <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
               <div className="flex gap-3 items-center">
                 <LogoIcon className="dark:text-[var(--sephia-200)] text-[var(--sephia-800)]" />
                 <div className="flex flex-col">
-                  <p className="font-bold dark:text-[var(--sephia-100)] text-[var(--sephia-600)]">
-                    QuranNet
-                  </p>
-                  <p className="text-[12px] dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
+                  <p className="font-bold text-white">QuranNet</p>
+                  <p className="text-[12px] text-[var(--gray-100)]">
                     Read, and Study The Quran
                   </p>
                 </div>
               </div>
-              <p className="text-sm dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
+              <p className="text-sm dark:text-[var(--sephia-200)] text-white">
                 QuranNet is providing free, easy, and ad-free access to the Holy
                 Quran — beautifully designed, always available, and built with
                 love for every heart.
@@ -428,9 +458,7 @@ const SurahsList = () => {
 
             {/* Column 2 */}
             <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-              <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
-                Quick Navigation
-              </p>
+              <p className="font-semibold text-white">Quick Navigation</p>
               <div className="underline space-y-1 dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
                 <p
                   onClick={() => openUserProfile()}
@@ -452,9 +480,7 @@ const SurahsList = () => {
 
             {/* Column 3 */}
             <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-              <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
-                Quick Links
-              </p>
+              <p className="font-semibold text-white">Quick Links</p>
               <div className="underline space-y-1 dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
                 <p>
                   <Link
@@ -479,9 +505,7 @@ const SurahsList = () => {
 
             {/* Column 4 */}
             <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-              <p className="font-semibold dark:text-[var(--sephia-300)] text-[var(--sephia-600)]">
-                Latest News
-              </p>
+              <p className="font-semibold text-white">Latest News</p>
               <div className="underline dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
                 <p>
                   <Link
