@@ -24,19 +24,18 @@ import { cn } from "@/lib/utils"; // ⭐
 
 // ICONS START ⭐
 import BismillahIcon from "@/components/svg/icons/BismillahIcon";
-import { Check, ChevronUp, Pause } from "lucide-react";
-import DocumentIcon from "@/components/svg/icons/DocumentIcon";
-import PlayIcon from "@/components/svg/icons/PlayIcon";
-import CopyIcon from "@/components/svg/icons/CopyIcon";
+import {
+  Check,
+  ChevronUp,
+  Copy,
+  Loader,
+  Pause,
+  Play,
+  Save,
+} from "lucide-react";
 // ICONS END ⭐
 
 // SHADCN UI START ⭐
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import ActionButton from "@/components/ActionButton";
 import SurahPlayer from "@/components/SurahPlayer";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 import { amiri } from "@/app/fonts";
@@ -90,11 +89,11 @@ const Surah = () => {
 
         const combinedAyahs = surahResponse.data.ayahs.map((ayah: Ayah) => {
           const translated = translationResponse.ayahs.find(
-            (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah // gets translation for each ayah. (may refactor)
+            (t: EnglishAyah) => t.numberInSurah === ayah.numberInSurah // gets translation for each ayah. slow and (may refactor)
           );
           return {
-            ...ayah, // spreads the contents of ayah but also adds the translation as another property.
-            translation: translated?.text || "", // Merge translation directly into the ayah
+            ...ayah, // spreads the contents of ayah in this new object
+            translation: translated?.text || "", // append translation directly into the object /w ayah
           };
         });
 
@@ -192,29 +191,16 @@ const Surah = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleCopyAyah = (
-    type: string,
-    { numberInSurah, text, translation }: Ayah
-  ) => {
+  const handleCopyAyah = ({ numberInSurah, text, translation }: Ayah) => {
     // setCopied(true);
-    if (type === "english") {
-      navigator.clipboard.writeText(
-        `${translation} [${params.surah}:${numberInSurah}]`
-      );
-    } else if (type === "arabic") {
-      navigator.clipboard.writeText(
-        `${text} [${params.surah}:${numberInSurah}]`
-      );
-    } else {
-      navigator.clipboard.writeText(
-        `${text} ${translation} [${params.surah}:${numberInSurah}]`
-      );
-    }
+    navigator.clipboard.writeText(
+      `${text} ${translation} [${params.surah}:${numberInSurah}]`
+    );
     toast(
       <div className="flex items-center gap-3">
         <Check size={22} />
         <div>
-          <p className="font-semibold">Copied {type} Ayah to Clipboard</p>
+          <p className="font-semibold">Copied Verse to Clipboard</p>
         </div>
       </div>,
       {
@@ -230,13 +216,13 @@ const Surah = () => {
     const response = await fetchAyahAudio(surahNumber, ayah.numberInSurah);
     if (!response?.data?.audio) return;
 
-    // Pause any currently playing audio
+    // halt/stop any currently playing audio
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
 
-    // If clicking the same ayah that's currently playing, stop and return
+    // if clicking the same ayah that was currently playing stop and return
     if (currentlyPlayingAyah === ayah.numberInSurah) {
       setCurrentlyPlayingAyah(null);
       return;
@@ -246,11 +232,11 @@ const Surah = () => {
     const audio = new Audio(response.data.audio);
     audioRef.current = audio;
 
-    // Play the new audio
+    // play the audio
     audio.play();
     setCurrentlyPlayingAyah(ayah.numberInSurah);
 
-    // When it ends, clear
+    // clear currently playing ayah when audio ends
     audio.addEventListener("ended", () => {
       setCurrentlyPlayingAyah(null);
     });
@@ -295,10 +281,7 @@ const Surah = () => {
       );
     } else {
       toast(
-        <Link
-          href='/sign-in'
-          className="flex items-center gap-3"
-        >
+        <Link href="/sign-in" className="flex items-center gap-3">
           <p className="text-3xl">☹</p>
           <div>
             <p className="font-semibold">
@@ -316,24 +299,7 @@ const Surah = () => {
   if (loading)
     return (
       <div className="w-full h-screen bg-zinc-900 flex justify-center items-center">
-        <div className="flex flex-col bg-zinc-900 w-72 h-80 animate-pulse rounded-xl p-6 gap-4">
-          {/* Surah Header */}
-          <div className="bg-neutral-500/45 w-3/4 h-6 animate-bounce rounded-md"></div>
-          <div className="bg-neutral-400/50 w-2/4 h-4 animate-pulse rounded-md"></div>
-
-          {/* Surah Details */}
-          <div className="flex flex-col gap-3 mt-4">
-            <div className="bg-neutral-400/50 w-full h-4 animate-pulse rounded-md"></div>
-            <div className="bg-neutral-400/50 w-5/6 h-4 animate-pulse rounded-md"></div>
-            <div className="bg-neutral-400/50 w-3/4 h-4 animate-pulse rounded-md"></div>
-          </div>
-
-          {/* Ayah Section */}
-          <div className="mt-6 flex flex-col gap-2">
-            <div className="bg-neutral-400/50 w-5/6 h-4 animate-pulse rounded-md"></div>
-            <div className="bg-neutral-400/50 w-3/4 h-4 animate-pulse rounded-md"></div>
-          </div>
-        </div>
+        <Loader className="size-12 text-white animate-spin" />
       </div>
     );
 
@@ -360,14 +326,14 @@ const Surah = () => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full min-h-screen lg:px-24 md:px-16 sm:px-8 px-2">
+      <div className="flex flex-col w-full min-h-screen lg:px-24 px-4">
         <div className="flex items-center text-center w-full flex-col">
           <div className="relative">
-            <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  sm:mt-0 mt-16" />
+            <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  md:mt-0 mt-16" />
 
             <button
               onClick={() => setCollapsed((prev) => !prev)}
-              // dark:bg-zinc-800 bg-[var(--sephia-200)] 
+              // dark:bg-zinc-800 bg-[var(--sephia-200)]
               className="dark:text-white text-black rounded-full hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
             >
               <ChevronUp
@@ -441,7 +407,7 @@ const Surah = () => {
             <div
               key={ayah.number}
               className="border-b-[0.1px] border-b-[var(--sephia-500)] dark:border-b-[#262629ff]
- p-2 py-12 md:px-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
+ sm:px-4 px-2 py-12 flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
@@ -449,29 +415,21 @@ const Surah = () => {
                   {params.surah}:{ayah.numberInSurah}
                 </p>
 
-                <Popover>
-                  <PopoverTrigger>
-                    <div className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center">
-                      <CopyIcon />
-                    </div>
-                    <PopoverContent className="w-48 p-2 rounded-xl dark:bg-zinc-800 bg-[var(--sephia-200)] shadow-xl space-y-1">
-                      {["Arabic", "English", "Arabic + English"].map(
-                        (option) => (
-                          <ActionButton
-                            key={option}
-                            text={option}
-                            onClick={() => handleCopyAyah(option, ayah)}
-                          />
-                        )
-                      )}
-                    </PopoverContent>
-                  </PopoverTrigger>
-                </Popover>
+                <div className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center">
+                  <Copy
+                    className="dark:text-gray-400 text-[#72603F]"
+                    size={18}
+                    onClick={() => handleCopyAyah(ayah)}
+                  />
+                </div>
                 <div
                   onClick={() => handleSaveAyah(ayah)}
                   className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
-                  <DocumentIcon />
+                  <Save
+                    className="dark:text-gray-400 text-[#72603F]"
+                    size={18}
+                  />
                 </div>
                 <div
                   onClick={() => handleFetchAudio(ayah)}
@@ -483,25 +441,34 @@ const Surah = () => {
                       size={22}
                     />
                   ) : (
-                    <PlayIcon />
+                    <Play
+                      className="dark:text-gray-400 text-[#72603F]"
+                      size={18}
+                    />
                   )}
                 </div>
               </div>
 
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
-                <p 
-                  className={cn(
-                    `font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8`,
-                    {
-                      "text-lg": fontSize === 0,
-                      "text-2xl": fontSize === 1,
-                      "text-3xl": fontSize === 2,
-                      "text-4xl": fontSize === 3,
-                      "sm:text-5xl text-4xl": fontSize === 4,
-                      "text-6xl": fontSize === 5,
-                      "text-7xl": fontSize > 5,
-                    }
-                  )}
+                <p
+                  lang="ar"
+                  className={`${
+                    amiri.className
+                  } tracking-wide leading-loose font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8 ${
+                    fontSize === 0
+                      ? "text-lg"
+                      : fontSize === 1
+                      ? "text-2xl"
+                      : fontSize === 2
+                      ? "text-3xl"
+                      : fontSize === 3
+                      ? "text-3xl"
+                      : fontSize === 4
+                      ? "sm:text-5xl text-4xl"
+                      : fontSize === 5
+                      ? "text-6xl"
+                      : "text-7xl"
+                  }`}
                 >
                   {ayah.text.startsWith("بِسۡمِ")
                     ? ayah.text.replace(
@@ -518,8 +485,8 @@ const Surah = () => {
                       {
                         "text-sm": fontSize === 0,
                         "text-base": fontSize === 1,
-                        "text-lg": fontSize === 2,
-                        "text-xl": fontSize === 3,
+                        "text-lgj": fontSize === 2,
+                        "text-lg": fontSize === 3,
                         "sm:text-2xl text-xl": fontSize === 4,
                         "text-3xl": fontSize === 5,
                         "text-4xl": fontSize === 6,
@@ -539,7 +506,7 @@ const Surah = () => {
       </div>
 
       <div className="mb-2 md:w-4/6  lg:w-[500px] w-full flex justify-center items-center flex-col p-4 sm:p-8">
-        <div className={cn("flex flex-row w-full", loading && "mt-16")}>
+        <div className={cn("flex flex-row w-full gap-3", loading && "mt-16")}>
           <NavigatorButton
             direction="Previous"
             surahNumber={params.surah ? surahNumber - 1 : 1}

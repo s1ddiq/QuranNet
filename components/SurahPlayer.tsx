@@ -1,10 +1,20 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from 'framer-motion';
-import { Pause, SkipForwardIcon, SkipBackIcon, ChevronDown, ChevronUp } from "lucide-react";
-import PlayIcon from "./svg/icons/PlayIcon";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Pause,
+  SkipForwardIcon,
+  SkipBackIcon,
+  ChevronDown,
+  ChevronUp,
+  Play,
+} from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 interface SurahPlayerProps {
   surahNumber: number;
@@ -26,25 +36,25 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
     const audio = new Audio(
       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
     );
-  
+
     audioRef.current?.pause();
     audioRef.current = audio;
     audio.preload = "auto";
     audio.playbackRate = playbackRate;
-  
+
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
     const handleEnded = () => setPlaying(false);
-  
+
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
     audio.addEventListener("ended", handleEnded);
-  
+
     // ← Remove this autoplay
     // audio.play().then(() => {
     //   if (!isCancelled) setPlaying(true);
     // });
-  
+
     return () => {
       isCancelled = true;
       audio.pause();
@@ -53,7 +63,6 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
       audio.removeEventListener("ended", handleEnded);
     };
   }, [surahNumber]);
-  
 
   // Apply new playback rate immediately
   useEffect(() => {
@@ -74,13 +83,20 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
   const skip = (sec: number) => {
     if (audioRef.current) {
       const t = audioRef.current.currentTime + sec;
-      audioRef.current.currentTime = Math.max(0, Math.min(t, audioRef.current.duration));
+      audioRef.current.currentTime = Math.max(
+        0,
+        Math.min(t, audioRef.current.duration)
+      );
     }
   };
 
   const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60).toString().padStart(2, "0");
-    const s = Math.floor(sec % 60).toString().padStart(2, "0");
+    const m = Math.floor(sec / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = Math.floor(sec % 60)
+      .toString()
+      .padStart(2, "0");
     return `${m}:${s}`;
   };
 
@@ -102,16 +118,26 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
           >
             <ChevronDown className="size-6 dark:text-white text-black" />
           </button>
-          <button onClick={() => skip(-10)} className="text-white p-2 hover:bg-white/10 rounded-full">
+          <button
+            onClick={() => skip(-10)}
+            className="text-white p-2 hover:bg-white/10 rounded-full"
+          >
             <SkipBackIcon className="size-5 dark:text-white text-black cursor-pointer" />
           </button>
           <button
             onClick={handlePlayPause}
             className="text-white p-2 dark:bg-white/10 hover:opacity-80 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer bg-[var(--sephia-300)]"
           >
-            {playing ? <Pause className="size-5 dark:text-white text-black" /> : <PlayIcon className="size-5 dark:text-white text-black" />}
+            {playing ? (
+              <Pause className="size-5 dark:text-white text-black" />
+            ) : (
+              <Play className="size-5 dark:text-white text-black" />
+            )}
           </button>
-          <button onClick={() => skip(10)} className="text-white p-2 hover:bg-white/10 rounded-full">
+          <button
+            onClick={() => skip(10)}
+            className="text-white p-2 hover:bg-white/10 rounded-full"
+          >
             <SkipForwardIcon className="size-5 dark:text-white text-black cursor-pointer" />
           </button>
           <span className="text-xs font-mono dark:text-gray-300 text-black">
@@ -127,8 +153,9 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
                   key={rate}
                   onClick={() => setPlaybackRate(rate)}
                   className={`px-3 py-1 rounded cursor-pointer hover:bg-white/20 ${
-                    playbackRate === rate ? 'bg-white/20' : ''
-                  }`}>
+                    playbackRate === rate ? "bg-white/20" : ""
+                  }`}
+                >
                   {rate}×
                 </div>
               ))}

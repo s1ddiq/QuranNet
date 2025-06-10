@@ -13,6 +13,12 @@ const Settings = () => {
   return (
     <div className="p-6 rounded-xl bg-transparent space-y-6 max-w-md">
       <section className="space-y-2">
+        <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">
+          Theme
+        </h2>
+        <ThemeToggleButton />
+      </section>
+      <section className="space-y-2">
         <div className="flex justify-between">
           <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">
             Font Size
@@ -32,13 +38,6 @@ const Settings = () => {
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
           Adjust the font size to your preference.
         </p>
-      </section>
-
-      <section className="space-y-2">
-        <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">
-          Theme
-        </h2>
-        <ThemeToggleButton />
       </section>
     </div>
   );

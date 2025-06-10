@@ -140,7 +140,6 @@ const SurahsList = () => {
           <span
             className="cursor-pointer hover:text-gray-300 transition"
             onClick={() => {
-             
               setIsOpen(true);
             }}
           >
@@ -324,12 +323,12 @@ const SurahsList = () => {
                 )}
 
                 <div className="w-full rounded-full p-2 flex justify-center items-center">
-                  <Link
+                  {/* <Link
                     href="/saved"
                     className="bg-zinc-900 border border-gray-400 text-white rounded-full px-8 py-2 w-44 text-center flex justify-center items-center"
                   >
                     View All Saved
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             )}

@@ -13,7 +13,6 @@ import {
 import { useRouter } from "next/navigation";
 import MenuIcon from "../svg/icons/MenuIcon";
 import LogoIcon from "../svg/icons/LogoIcon";
-import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Settings from "../Settings";
 
@@ -25,7 +24,7 @@ const MobileSheet = ({
   setSearchQuery,
   // amount,
   surahs,
-  surahNumber
+  surahNumber,
 }: MobileSheetProps) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("search");
@@ -35,26 +34,28 @@ const MobileSheet = ({
   );
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999">
-        <MenuIcon
-          onClick={() => setIsOpen(true)}
-          className="dark:text-white text-black"
-        />
-        <UserButton />
-
+      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 px-4 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999">
         <LogoIcon
           onClick={() => router.push("/")}
+          className="dark:text-white text-black"
+        />
+        <MenuIcon
+          onClick={() => setIsOpen(true)}
           className="dark:text-white text-black"
         />
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="z-999999 dark:bg-zinc-900 bg-[var(--sephia-200)] dark:text-white text-black px-4 border-l dark:border-[#262629ff] border-black sm:min-w-[75%] min-w-[90%]" // maybe make transparent and add backdrop MAYBE REVERT BACK TO NOT  bg-transparent backdrop-blur-md
+        className="z-999999 dark:bg-zinc-900 bg-[var(--sephia-200)] dark:text-white text-black px-4 border-l dark:border-[#262629ff] border-black sm:min-w-[75%] min-w-[100%]" // maybe make transparent and add backdrop MAYBE REVERT BACK TO NOT  bg-transparent backdrop-blur-md
       >
         <VisuallyHidden>
           <SheetTitle>Menu</SheetTitle>
           <SheetHeader>Menu</SheetHeader>
         </VisuallyHidden>
+
+        <div className="mt-2 px-2">
+          <p className="text-gray-400 text-xl">Menu</p>
+        </div>
         <div className="relative mt-4 mx-1">
           {/* Sliding pill */}
           <div
