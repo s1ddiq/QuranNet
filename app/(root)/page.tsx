@@ -206,13 +206,13 @@ const SurahsList = () => {
                   understanding.
                 </p>
               </div>
-              <div className="flex justify-end order-1 md:order-2">
+              <div className="flex md:justify-end justify-center order-1 md:order-2">
                 <Image
                   src="/svg/book4.svg"
                   alt="Book with Tasbih"
-                  width={512}
-                  height={512}
-                  className="object-cover sm:ml-12"
+                  width={412}
+                  height={412}
+                  className="object-cover md:ml-12"
                 />
               </div>
             </div>
@@ -223,8 +223,8 @@ const SurahsList = () => {
               <Image
                 src="/svg/book2.svg"
                 alt="Book with Button Lock"
-                width={412}
-                height={412}
+                width={386}
+                height={386}
                 className="object-cover order-1 md:order-2"
               />
               <div className="flex justify-center flex-col order-1 md:order-2">
@@ -248,13 +248,13 @@ const SurahsList = () => {
                   one verse at a time.
                 </p>
               </div>
-              <div className="flex justify-end order-1 md:order-2">
+              <div className="flex md:justify-end justify-center order-1 md:order-2">
                 <Image
                   src="/svg/book3.svg"
                   alt="Person Holding Open Book"
-                  width={512}
-                  height={512}
-                  className="object-cover order-1 md:order-2 sm:ml-12"
+                  width={386}
+                  height={386}
+                  className="object-cover order-1 md:order-2 md:ml-12"
                 />
               </div>
             </div>
