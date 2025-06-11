@@ -77,6 +77,7 @@ const SurahsList = () => {
         const parsedSaved = JSON.parse(resC);
         setRecent(parsedRecent);
         setSavedAyahs(parsedSaved);
+        // console.log(parsedRecent);
       } else {
         console.log("No recent data found");
       }
@@ -105,11 +106,11 @@ const SurahsList = () => {
         surahs={surahs}
       />
 
-      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] hidden md:flex items-center justify-between xl:px-64 lg:px-24 px-4">
-        <LogoIcon className="dark:text-white text-[var(--sephia-700)] hidden md:block" />
+      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] hidden md:flex items-center justify-between xl:px-48 lg:px-24 px-4">
+        <LogoIcon className="dark:text-white text-black hidden md:block" />
         <div className="sm:hidden flex items-center">
           <MenuIcon
-            className="dark:text-white text-[var(--sephia-700)]"
+            className="dark:text-white text-black"
             onClick={() => setIsOpen((prev) => !prev)}
           />
         </div>
@@ -117,7 +118,7 @@ const SurahsList = () => {
         {/* Sheet for Mobile Menu */}
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-6 text-gray-200 text-sm">
+        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-6 text-[var(--gray-100)] text-sm">
           <span className="cursor-pointer hover:text-gray-300 transition text-white">
             Home
           </span>
@@ -155,7 +156,7 @@ const SurahsList = () => {
         <SignedOut>
           <Link
             href="/sign-in"
-            className="px-5 py-2 dark:bg-blue-500 bg-[var(--sephia-700)] hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+            className="px-5 py-2 dark:bg-blue-500  hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
           >
             Sign in
           </Link>
@@ -163,7 +164,7 @@ const SurahsList = () => {
       </div>
 
       <div className="w-full flex-items-center flex-col flex-1 text-white ">
-        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between dark:bg-black bg-[var(--sephia-primary)]">
+        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between dark:bg-black bg-white">
           <div className="w-full px-4 flex flex-col justify-center items-center space-y-6 h-[calc(100vh-64px)]">
             <div className="relative">
               <div
@@ -195,7 +196,7 @@ const SurahsList = () => {
             </div>
           </div>
 
-          <div className={`${inter.className}  xl:px-64 lg:px-24 px-4`}>
+          <div className={`${inter.className}  xl:px-48 lg:px-24 px-4`}>
             <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
               {/* READ */}
               <div className="flex justify-center flex-col order-2 md:order-1">
@@ -210,9 +211,9 @@ const SurahsList = () => {
                 <Image
                   src="/svg/book4.svg"
                   alt="Book with Tasbih"
-                  width={412}
-                  height={412}
-                  className="object-cover md:ml-12"
+                  width={356}
+                  height={356}
+                  className="object-cover md:ml-12 dark:text-blue-300 text-blue-500"
                 />
               </div>
             </div>
@@ -223,8 +224,8 @@ const SurahsList = () => {
               <Image
                 src="/svg/book2.svg"
                 alt="Book with Button Lock"
-                width={386}
-                height={386}
+                width={356}
+                height={356}
                 className="object-cover order-1 md:order-2"
               />
               <div className="flex justify-center flex-col order-1 md:order-2">
@@ -252,8 +253,8 @@ const SurahsList = () => {
                 <Image
                   src="/svg/book3.svg"
                   alt="Person Holding Open Book"
-                  width={386}
-                  height={386}
+                  width={356}
+                  height={356}
                   className="object-cover order-1 md:order-2 md:ml-12"
                 />
               </div>
@@ -263,7 +264,7 @@ const SurahsList = () => {
 
         <SignInPopup />
 
-        <div className="w-full xl:px-64 lg:px-24 px-4 bg-black pb-12">
+        <div className="w-full xl:px-48 lg:px-24 px-4 bg-black pb-12">
           <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-16">
             <p
               className="dark:text-white text-black text-2xl pb-2 text-left font-open-sans cursor-pointer"
@@ -280,7 +281,7 @@ const SurahsList = () => {
                 : ""}
             </p>
 
-            <div className="bg-white flex rounded-full p-2 md:text-base text-sm mb-6 border-2 border-[var(--gray-100)]">
+            <div className="border border-[#262629ff] flex rounded-md p-2 md:text-base text-sm mb-6 ">
               {["Last Read", "Saved", "Collections"].map((section) => (
                 <p
                   key={section}
@@ -288,7 +289,7 @@ const SurahsList = () => {
                     setActiveSection(section as typeof activeSection)
                   }
                   className={cn(
-                    "cursor-pointer py-2 md:w-auto md:px-6 text-center w-1/3 rounded-full",
+                    "cursor-pointer py-2 md:w-auto md:px-6 text-center w-1/3 rounded-md",
                     activeSection === section
                       ? "text-black bg-[var(--gray-100)]"
                       : "text-[var(--gray-100)]"
@@ -393,7 +394,7 @@ const SurahsList = () => {
           </div>
         </div>
         <div
-          className={`w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 bg-black gap-3 xl:px-64 lg:px-24 px-4 lg:pt-24 ${inter.className}`}
+          className={`w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 bg-black gap-3 xl:px-48 lg:px-24 px-4 lg:pt-24 ${inter.className}`}
         >
           {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
@@ -432,12 +433,12 @@ const SurahsList = () => {
         </div>
 
         {/* <Hills /> */}
-        <footer className="w-full min-h-32 flex flex-col px-4 sm:px-6 items-center bg-black text-white">
+        <footer className="w-full min-h-32 flex flex-col px-4 sm:px-6 items-center bg-black text-white border-t border-[#262629ff]">
           <div className="relative w-full">
             {/* Gradient Mask */}
             <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-70 pointer-events-none z-0" />
 
-            <div className="relative z-10 flex flex-col md:flex-row justify-center py-12 w-full xl:px-64 lg:px-24 px-4 gap-4 bg-[url('/images/bg.png')] bg-repeat-x bg-[length:450px_300px]">
+            <div className="relative z-10 flex flex-col md:flex-row justify-center py-12 w-full xl:px-48 lg:px-24 px-4 gap-4">
               {/* Column 1 */}
               <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
                 <div className="flex gap-3 items-center">

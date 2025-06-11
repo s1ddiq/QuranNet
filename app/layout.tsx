@@ -34,9 +34,7 @@ export default function RootLayout({
               content="width=device-width, initial-scale=1"
             />
           </Head>
-          <body
-            className={`${inter.className} dark:bg-[#08080a] bg-[var(--sephia-primary)]`}
-          >
+          <body className={`${inter.className} dark:bg-[#08080a] bg-white`}>
             {children}
             <Toaster />
           </body>
