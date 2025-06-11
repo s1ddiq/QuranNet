@@ -485,7 +485,7 @@ const Surah = () => {
                 <div>
                   <p
                     className={cn(
-                      `dark:text-zinc-200 text-black md:leading-[1.2] leading-[1.8] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
+                      `text-white md:leading-[1.2] leading-[1.8] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
                       {
                         "text-sm": fontSize === 0,
                         "text-base": fontSize === 1,
