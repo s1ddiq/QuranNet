@@ -33,6 +33,7 @@ import useSurahNavigation from "@/hooks/useSurahNavigation";
 import { amiri, inter } from "@/app/fonts";
 import MobileSheet from "@/components/sidebar/MobileSheet";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const SurahsList = () => {
   // organize later
@@ -194,12 +195,10 @@ const SurahsList = () => {
             </div>
           </div>
 
-          <div className="xl:px-64 lg:px-24 px-4">
-            <div
-              className={`${inter.className} w-full grid grid-rows-3 grid-cols-2 gap-5`}
-            >
+          <div className={`${inter.className}  xl:px-64 lg:px-24 px-4`}>
+            <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
               {/* READ */}
-              <div className="flex justify-center flex-col">
+              <div className="flex justify-center flex-col order-2 md:order-1">
                 <p className="text-3xl">Easy Reading</p>
                 <p className="text-[var(--gray-100)] text-xl">
                   Navigate through content quickly and effortlessly with a
@@ -207,24 +206,28 @@ const SurahsList = () => {
                   understanding.
                 </p>
               </div>
-              <Image
-                src="/svg/book1.svg"
-                alt="Book with Tasbih"
-                width={512}
-                height={512}
-                className="object-cover"
-              />
+              <div className="flex justify-end order-1 md:order-2">
+                <Image
+                  src="/svg/book4.svg"
+                  alt="Book with Tasbih"
+                  width={512}
+                  height={512}
+                  className="object-cover sm:ml-12"
+                />
+              </div>
+            </div>
 
-              {/* REFLECT */}
+            {/* REFLECT */}
 
+            <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
               <Image
                 src="/svg/book2.svg"
                 alt="Book with Button Lock"
                 width={412}
                 height={412}
-                className="object-cover"
+                className="object-cover order-1 md:order-2"
               />
-              <div className="flex justify-center flex-col">
+              <div className="flex justify-center flex-col order-1 md:order-2">
                 <p className="text-3xl">Saved Reflections</p>
                 <p className="text-[var(--gray-100)] text-xl">
                   Signed-in users can save verses or revisit recent surahs
@@ -232,10 +235,12 @@ const SurahsList = () => {
                   whenever you need.
                 </p>
               </div>
+            </div>
 
-              {/* RECITE */}
+            {/* RECITE */}
 
-              <div className="flex justify-center flex-col">
+            <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
+              <div className="flex justify-center flex-col order-2 md:order-1">
                 <p className="text-3xl">Recite with Ease</p>
                 <p className="text-[var(--gray-100)] text-xl">
                   Follow along with clear audio and text to improve your
@@ -243,13 +248,15 @@ const SurahsList = () => {
                   one verse at a time.
                 </p>
               </div>
-              <Image
-                src="/svg/book3.svg"
-                alt="Person Holding Open Book"
-                width={512}
-                height={512}
-                className="object-cover"
-              />
+              <div className="flex justify-end order-1 md:order-2">
+                <Image
+                  src="/svg/book3.svg"
+                  alt="Person Holding Open Book"
+                  width={512}
+                  height={512}
+                  className="object-cover order-1 md:order-2 sm:ml-12"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -257,7 +264,7 @@ const SurahsList = () => {
         <SignInPopup />
 
         <div className="w-full xl:px-64 lg:px-24 px-4 bg-black pb-12">
-          <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-8">
+          <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-16">
             <p
               className="dark:text-white text-black text-2xl pb-2 text-left font-open-sans cursor-pointer"
               onClick={!isSignedIn ? () => router.push("/sign-in") : () => {}}
@@ -295,7 +302,7 @@ const SurahsList = () => {
 
           <div className="min-h-32">
             {isSignedIn && activeSection === "Last Read" && recent && (
-              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer text-gray-400 flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
+              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
                 <Link href={`/surah/${recent.number}`} key={recent.number}>
                   <div className="flex w-full justify-between text-sm">
                     <p className="text-lg font-semibold">
@@ -390,9 +397,9 @@ const SurahsList = () => {
         >
           {surahs.slice(0, amount).map((surah: Surah) => (
             <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="border border-[var(--gray-100)] group cursor-pointer rounded-xl backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg">
+              <div className="border border-[#262629ff] group cursor-pointer rounded-md backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg">
                 <div className="flex items-center justify-between gap-4">
-                  <div className="size-8 rounded-md bg-[var(--gray-100)] flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
+                  <div className="size-8 rounded-sm border border-[#262629ff] flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
                     <p className="-rotate-45 text-white text-sm font-bold">
                       {surah.number}
                     </p>
@@ -415,107 +422,102 @@ const SurahsList = () => {
             </Link>
           ))}
         </div>
-        <div className="w-full flex justify-center bg-black py-6">
-          <div className="bg-black rounded-md shadow-lg px-4 py-2 flex items-center border border-gray-700">
-            <button
-              className={`
-        relative overflow-hidden rounded-md
-        px-5 py-2 text-sm font-medium
-        transition
-        before:absolute before:inset-0 before:rounded-md before:bg-gradient-to-r before:from-blue-500 before:to-[var(--gray-100)]
-        before:opacity-0 before:scale-90 before:transition-all
-        hover:before:opacity-30 hover:before:scale-100
-        text-white
-      `}
-              onClick={() => (amount < 22 ? setAmount(114) : setAmount(21))}
-            >
-              {amount < 22 ? "Expand" : "Collapse"}
-            </button>
-          </div>
+        <div className="w-full flex justify-center bg-black pb-16 pt-6">
+          <Button
+            onClick={() => (amount < 22 ? setAmount(114) : setAmount(21))}
+            className="px-5 py-2 dark:bg-blue-500 bg-[var(--sephia-700)] hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+          >
+            {amount < 22 ? "Expand" : "Collapse"}
+          </Button>
         </div>
 
         {/* <Hills /> */}
-        <footer className="w-full min-h-32 pb-8 flex flex-col px-4 sm:px-6 items-center bg-black text-white">
-          <div className="flex flex-col md:flex-row justify-center w-full xl:px-64 lg:px-24 px-4 gap-4">
-            {/* Column 1 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
-              <div className="flex gap-3 items-center">
-                <LogoIcon className="dark:text-[var(--sephia-200)] text-[var(--sephia-800)]" />
-                <div className="flex flex-col">
-                  <p className="font-bold text-white">QuranNet</p>
-                  <p className="text-[12px] text-[var(--gray-100)]">
-                    Read, and Study The Quran
+        <footer className="w-full min-h-32 flex flex-col px-4 sm:px-6 items-center bg-black text-white">
+          <div className="relative w-full">
+            {/* Gradient Mask */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-70 pointer-events-none z-0" />
+
+            <div className="relative z-10 flex flex-col md:flex-row justify-center py-12 w-full xl:px-64 lg:px-24 px-4 gap-4 bg-[url('/images/bg.png')] bg-repeat-x bg-[length:450px_300px]">
+              {/* Column 1 */}
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
+                <div className="flex gap-3 items-center">
+                  <LogoIcon className="text-white" />
+                  <div className="flex flex-col">
+                    <p className="font-bold text-white">QuranNet</p>
+                    <p className="text-[12px] text-gray-400">
+                      Read, and Study The Quran
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-white">
+                  QuranNet is providing free, easy, and ad-free access to the
+                  Holy Quran — beautifully designed, always available, and built
+                  with love for every heart.
+                </p>
+                <UserButton />
+              </div>
+
+              {/* Column 2 */}
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
+                <p className="font-semibold text-white">Quick Navigation</p>
+                <div className="underline space-y-1 text-white">
+                  <p
+                    onClick={() => openUserProfile()}
+                    className="cursor-pointer hover:text-gray-300 transition"
+                  >
+                    Profile
+                  </p>
+                  <p>
+                    <Link
+                      href="/surah/1"
+                      target="_blank"
+                      className="hover:text-gray-300 transition"
+                    >
+                      Start reading
+                    </Link>
                   </p>
                 </div>
               </div>
-              <p className="text-sm dark:text-[var(--sephia-200)] text-white">
-                QuranNet is providing free, easy, and ad-free access to the Holy
-                Quran — beautifully designed, always available, and built with
-                love for every heart.
-              </p>
-              <UserButton />
-            </div>
 
-            {/* Column 2 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-              <p className="font-semibold text-white">Quick Navigation</p>
-              <div className="underline space-y-1 dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
-                <p
-                  onClick={() => openUserProfile()}
-                  className="cursor-pointer dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
-                >
-                  Profile
-                </p>
-                <p>
-                  <Link
-                    href="/surah/1"
-                    target="_blank"
-                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
-                  >
-                    Start reading
-                  </Link>
-                </p>
+              {/* Column 3 */}
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
+                <p className="font-semibold text-white">Quick Links</p>
+                <div className="underline space-y-1 text-white">
+                  <p>
+                    <Link
+                      href="https://github.com/s1ddiq/Qurannet"
+                      target="_blank"
+                      className="hover:text-gray-300 transition"
+                    >
+                      QuranNet GitHub
+                    </Link>
+                  </p>
+                  <p>
+                    <Link
+                      href="/surah/1"
+                      target="_blank"
+                      className="hover:text-gray-300 transition"
+                    >
+                      Start reading
+                    </Link>
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Column 3 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-              <p className="font-semibold text-white">Quick Links</p>
-              <div className="underline space-y-1 dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
-                <p>
-                  <Link
-                    href="https://github.com/s1ddiq/Qurannet"
-                    target="_blank"
-                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
-                  >
-                    QuranNet GitHub
-                  </Link>
-                </p>
-                <p>
-                  <Link
-                    href="/surah/1"
-                    target="_blank"
-                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
-                  >
-                    Start reading
-                  </Link>
-                </p>
-              </div>
-            </div>
-
-            {/* Column 4 */}
-            <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-              <p className="font-semibold text-white">Latest News</p>
-              <div className="underline dark:text-[var(--sephia-200)] text-[var(--sephia-800)]">
-                <p>
-                  <Link
-                    href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.0.0"
-                    target="_blank"
-                    className="dark:hover:text-[var(--sephia-100)] hover:text-[var(--sephia-700)] transition"
-                  >
-                    v1.0.0 Latest Release
-                  </Link>
-                </p>
+              {/* Column 4 */}
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
+                <p className="font-semibold text-white">Latest News</p>
+                <div className="underline text-white">
+                  <p>
+                    <Link
+                      href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.0.0"
+                      target="_blank"
+                      className="hover:text-gray-300 transition"
+                    >
+                      v1.0.0 Latest Release
+                    </Link>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
