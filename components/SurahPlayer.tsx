@@ -237,7 +237,6 @@ export default function SurahPlayer({
           setTimeout(() => {
             router.push(`/surah/${surahNumber + 1}`);
           }, 1500);
-          return;
         }
         correct.play();
         currentTextEl?.classList.remove("text-red-500");
