@@ -44,10 +44,12 @@ export default function SurahPlayer({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [recording, setRecording] = useState(false);
 
-  const wrong = new Audio("/sounds/wrong.mp3");
   const correct = new Audio("/sounds/correct.mp3");
+  const wrong = new Audio("/sounds/wrong.mp3");
 
-  // TODO: Refactor and clean up code, change it from highlighting background to highlighting the text instead. 6.12.25
+  correct.volume = 0.5;
+  wrong.volume = 0.5;
+  // TODO: Refactor and clean up code, change it from highlighting background to highlighting the text instead. 6.12.25 (✅)
 
   // TRANSCRIPTION
   // const expectedText = ayahText;
@@ -146,11 +148,11 @@ export default function SurahPlayer({
           .getElementById(`ayah-${currentAyah + 1}`)
           ?.classList.add("bg-gray-200/25");
         toast.success(
-          "This is a beta feauture. Please open issues on our github to report a bug."
+          "This is a beta feature. Please open issues on our github to report a bug."
         );
         setTimeout(() => {
           toast.success(
-            "Please start reading the Ayah aloud. \n Please do not click off this page. \n You can click on the mic icon to stop recording."
+            "Please start reading the Ayah aloud. \n You can click on the mic icon to stop recording."
           );
         }, 3000);
         setRecording(true);
@@ -196,49 +198,50 @@ export default function SurahPlayer({
       );
       const similarity = 1 - distance / maxLen;
 
-      // console.log("Similarity:", similarity);
-
       // ✅ If match > 0.6:
 
       // ✅ Remove red background.
 
-      // ✅ Add green to current ayah.
+      // ✅ Add green to current ayah
 
       // ✅ Scroll down.
 
-      // ✅ Add blue to next ayah.
+      // ✅ Add blue to next ayah
 
       // ❌ If incorrect:
 
       // ✅ Just show red.
 
+      const currentAyahId = `ayah-${currentAyah + 1}`;
+      const currentTextId = `atext-${currentAyah + 1}`;
+      const nextAyahId = `ayah-${currentAyah + 2}`;
+
+      const currentEl = document.getElementById(currentAyahId);
+      const currentTextEl = document.getElementById(currentTextId);
+      const nextEl = document.getElementById(nextAyahId);
+
       if (similarity > 0.6) {
         if (currentAyah >= lastAyahNumber - 1) {
           toast.success("You have completed the Surah!");
-          router.push(`/surah/${surahNumber + 1}`);
+          setTimeout(() => {
+            router.push(`/surah/${surahNumber + 1}`);
+          }, 1500);
           return;
         }
         correct.play();
-        const currentEl = document.getElementById(`ayah-${currentAyah + 1}`);
-        const nextEl = document.getElementById(`ayah-${currentAyah + 2}`);
-
-        currentEl?.classList.remove("bg-red-500/50");
-        currentEl?.classList.add("bg-green-500/50");
-        document.getElementById(`ayah-${currentAyah + 1}`)?.scrollIntoView({
-          behavior: "smooth",
-        });
+        currentTextEl?.classList.remove("text-red-500");
+        currentTextEl?.classList.add("text-green-500");
+        currentEl?.scrollIntoView({ behavior: "smooth" });
+        currentEl?.classList.remove("bg-gray-200/25", "bg-gray-200/50");
         currentAyah++;
-
-        // highlight the next one in blue (change maybe)
         nextEl?.classList.remove(
-          "bg-green-500/50",
-          "bg-red-500/50",
-          "bg-gray-300/50"
+          "text-green-500",
+          "text-red-500",
+          "bg-gray-200/25"
         );
         nextEl?.classList.add("bg-gray-200/25");
       } else {
-        const currentEl = document.getElementById(`ayah-${currentAyah + 1}`);
-        currentEl?.classList.add("bg-red-500/50");
+        currentEl?.classList.add("text-red-500");
         wrong.play();
       }
     };

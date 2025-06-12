@@ -460,6 +460,7 @@ const Surah = () => {
               <div className="text-right sm:order-2 order-1 flex flex-col w-full">
                 <p
                   lang="ar"
+                  id={`atext-${ayah.numberInSurah}`}
                   className={`${
                     amiri.className
                   } tracking-wide leading-loose font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8 ${
