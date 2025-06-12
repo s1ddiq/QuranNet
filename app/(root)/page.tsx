@@ -262,7 +262,7 @@ const SurahsList = () => {
           </div>
         </div>
 
-        <SignInPopup />
+        {/* <SignInPopup /> */}
 
         <div className="w-full xl:px-48 lg:px-24 px-4 bg-black pb-12">
           <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-16">
