@@ -231,7 +231,7 @@ export default function SurahPlayer({
         correct.play();
         currentTextEl?.classList.remove("text-red-500");
         currentTextEl?.classList.add("text-green-500");
-        currentEl?.scrollIntoView({ behavior: "smooth" });
+        nextEl?.scrollIntoView({ behavior: "smooth", block: "center" });
         currentEl?.classList.remove("bg-gray-200/25", "bg-gray-200/50");
         currentAyah++;
         nextEl?.classList.remove(
