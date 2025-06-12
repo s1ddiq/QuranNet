@@ -9,6 +9,7 @@ interface Surah {
 }
 
 interface Ayah {
+  cleanText: any;
   number: number;
   text: string;
   numberInSurah: number;
@@ -132,7 +133,4 @@ interface SurahSummary {
   revelationType: string;
 }
 
-
 // REWRITE ENTIRE PROPS AND ORGANIZE WITH STARS
-
- 
