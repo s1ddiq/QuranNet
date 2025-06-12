@@ -78,6 +78,10 @@ const Surah = () => {
   const router = useRouter();
   // END
 
+  const removeDiacritics = (text: string) => {
+    return text.replace(/[\u064B-\u065F\u0670]/g, ""); // removes harakat + dagger alif
+  };
+
   useEffect(() => {
     const fetchSurahData = async () => {
       if (!params.surah || !surahNumber) return; // 🚨
@@ -93,13 +97,16 @@ const Surah = () => {
           );
           return {
             ...ayah, // spreads the contents of ayah in this new object
+            cleanText: removeDiacritics(ayah.text), // removes harakat from arabic text
             translation: translated?.text || "", // append translation directly into the object /w ayah
           };
         });
 
         setAyahs(combinedAyahs); // Now ayahs[] has both Arabic + English
-        console.log(translationResponse);
+        // console.log(translationResponse);
         localStorage.setItem(`recent`, JSON.stringify(surahResponse.data));
+        // console.log("hi");
+        // console.log(combinedAyahs);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -474,12 +481,7 @@ const Surah = () => {
                   <span className="inline-flex items-center justify-center size-8 rounded-full border border-gray-400 text-2xl mr-4">
                     {convertNumberToArabicNumeral(ayah.numberInSurah)}
                   </span>
-                  {ayah.text.startsWith("بِسۡمِ")
-                    ? ayah.text.replace(
-                        "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ",
-                        ""
-                      )
-                    : ayah.text}
+                  {ayah.text}
                 </p>
 
                 <div>
@@ -528,7 +530,12 @@ const Surah = () => {
         </div>
       </div>
       <div className="sticky bottom-0 bg-transparent p-4 w-full flex justify-center items-center">
-        <SurahPlayer surahNumber={surahNumber} />
+        <SurahPlayer
+          surahNumber={surahNumber}
+          ayahText={ayahs.map((a) => a.cleanText)}
+          lastAyahNumber={surah?.numberOfAyahs || 0}
+          router={router}
+        />
       </div>
     </section>
   );

@@ -9,30 +9,62 @@ import {
   ChevronDown,
   ChevronUp,
   Play,
+  Mic,
+  MicOff,
 } from "lucide-react";
+import levenshtein from "js-levenshtein";
+
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import { toast } from "sonner";
 
 interface SurahPlayerProps {
   surahNumber: number;
+  ayahText: any;
+  lastAyahNumber: number;
+  router: any;
 }
 
 const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
-export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
+export default function SurahPlayer({
+  surahNumber,
+  ayahText,
+  lastAyahNumber,
+  router,
+}: SurahPlayerProps) {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [collapsed, setCollapsed] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [recording, setRecording] = useState(false);
 
-  // Load and setup audio
+  const wrong = new Audio("/sounds/wrong.mp3");
+  const correct = new Audio("/sounds/correct.mp3");
+
+  // TODO: Refactor and clean up code, change it from highlighting background to highlighting the text instead. 6.12.25
+
+  // TRANSCRIPTION
+  // const expectedText = ayahText;
+  let currentAyah = 0;
+  // load audio
+  function normalizeArabic(text: string) {
+    return text
+      .replace(/[\u064B-\u0652\u0670\u06D6-\u06ED]/g, "") // remove tashkeel
+      .replace(/[\u200F\u200E\u06DD]/g, "") // remove markers
+      .replace(/\s+/g, "") // remove whitespace
+      .trim();
+  }
+
   useEffect(() => {
+    // console.log(ayahText);
     let isCancelled = false;
+
     const audio = new Audio(
       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
     );
@@ -100,6 +132,125 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
     return `${m}:${s}`;
   };
 
+  const requestMicPermission = async () => {
+    if (recording) {
+      setRecording(false);
+      return;
+    } else {
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Permission granted
+        startTranscription();
+
+        document
+          .getElementById(`ayah-${currentAyah + 1}`)
+          ?.classList.add("bg-gray-200/25");
+        toast.success(
+          "This is a beta feauture. Please open issues on our github to report a bug."
+        );
+        setTimeout(() => {
+          toast.success(
+            "Please start reading the Ayah aloud. \n Please do not click off this page. \n You can click on the mic icon to stop recording."
+          );
+        }, 3000);
+        setRecording(true);
+      } catch (error) {
+        // Permission not granted
+        setRecording(false);
+      }
+    }
+  };
+
+  const startTranscription = async () => {
+    if (recording) return;
+    // alert("You are about to start recording. please speak clearly.");
+
+    const SpeechRecongition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecongition) {
+      toast.error("Speech recognition is not supported in this browser.");
+    }
+
+    const recognition = new SpeechRecongition();
+    recognition.lang = "ar-SA"; // Arabic Saudi
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = true; // keep listening even after person stopp talking
+
+    recognition.onresult = (event: any) => {
+      // TODO: change later
+      const transcript = event.results[event.resultIndex][0].transcript;
+      console.log("Transcript:", transcript);
+
+      // simplify both values
+      const normalizedTranscript = normalizeArabic(transcript);
+      const normalizedExpected = normalizeArabic(ayahText[currentAyah]);
+
+      // Levenshtein distance + similarity score (stackoverflow.com/a/10543930)
+      const distance = levenshtein(normalizedTranscript, normalizedExpected);
+      const maxLen = Math.max(
+        normalizedTranscript.length,
+        normalizedExpected.length
+      );
+      const similarity = 1 - distance / maxLen;
+
+      // console.log("Similarity:", similarity);
+
+      // ✅ If match > 0.6:
+
+      // ✅ Remove red background.
+
+      // ✅ Add green to current ayah.
+
+      // ✅ Scroll down.
+
+      // ✅ Add blue to next ayah.
+
+      // ❌ If incorrect:
+
+      // ✅ Just show red.
+
+      if (similarity > 0.6) {
+        if (currentAyah >= lastAyahNumber - 1) {
+          toast.success("You have completed the Surah!");
+          router.push(`/surah/${surahNumber + 1}`);
+          return;
+        }
+        correct.play();
+        const currentEl = document.getElementById(`ayah-${currentAyah + 1}`);
+        const nextEl = document.getElementById(`ayah-${currentAyah + 2}`);
+
+        currentEl?.classList.remove("bg-red-500/50");
+        currentEl?.classList.add("bg-green-500/50");
+        document.getElementById(`ayah-${currentAyah + 1}`)?.scrollIntoView({
+          behavior: "smooth",
+        });
+        currentAyah++;
+
+        // highlight the next one in blue (change maybe)
+        nextEl?.classList.remove(
+          "bg-green-500/50",
+          "bg-red-500/50",
+          "bg-gray-300/50"
+        );
+        nextEl?.classList.add("bg-gray-200/25");
+      } else {
+        const currentEl = document.getElementById(`ayah-${currentAyah + 1}`);
+        currentEl?.classList.add("bg-red-500/50");
+        wrong.play();
+      }
+    };
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error:", event.error);
+    };
+
+    recognition.start();
+  };
+
+  // console.log(ayahText[0]);
+
   return (
     <AnimatePresence initial={false} mode="wait">
       {!collapsed && (
@@ -118,6 +269,22 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
           >
             <ChevronDown className="size-6 dark:text-white text-black" />
           </button>
+
+          <div className="relative flex justify-center items-center flex-col">
+            {recording ? (
+              <Mic
+                className="size-5 dark:text-white text-black cursor-pointer animate-pulse"
+                onClick={() => requestMicPermission()}
+              />
+            ) : (
+              <MicOff onClick={() => requestMicPermission()} />
+            )}
+
+            <p className=" bg-blue-500 rounded-md text-sm px-2 absolute opacity-10 pointer-events-none -z-9">
+              BETA
+            </p>
+          </div>
+
           <button
             onClick={() => skip(-10)}
             className="text-white p-2 hover:bg-white/10 rounded-full"
@@ -172,7 +339,7 @@ export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
           exit={{ opacity: 0 }}
           transition={{ opacity: { duration: 0.2 } }}
           onClick={() => setCollapsed(false)}
-          className="dark:bg-zinc-800 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg bg-[var(--sephia-500)] transition cursor-pointer"
+          className="dark:bg-zinc-800 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg transition cursor-pointer"
         >
           <ChevronUp className="size-6" />
         </motion.button>
