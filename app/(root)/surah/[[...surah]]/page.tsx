@@ -415,7 +415,7 @@ const Surah = () => {
             <div
               key={ayah.number}
               className="border-b-[0.1px] border-b-[var(--sephia-500)] dark:border-b-[#262629ff]
- sm:px-4 px-2 py-12 flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
+ sm:px-4 px-2 sm:py-12 py-4 rounded-md sm:rounded-none flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
@@ -471,7 +471,7 @@ const Surah = () => {
                       : fontSize === 2
                       ? "text-3xl"
                       : fontSize === 3
-                      ? "text-3xl"
+                      ? "sm:text-3xl text-2xl"
                       : fontSize === 4
                       ? "sm:text-5xl text-4xl"
                       : fontSize === 5
@@ -491,9 +491,9 @@ const Surah = () => {
                       `text-white md:leading-[1.2] leading-[1.8] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
                       {
                         "text-sm": fontSize === 0,
-                        "text-base": fontSize === 1,
-                        "text-lgj": fontSize === 2,
-                        "text-lg": fontSize === 3,
+                        "text-[12px]": fontSize === 1,
+                        "text-lg": fontSize === 2,
+                        "text-base": fontSize === 3,
                         "sm:text-2xl text-xl": fontSize === 4,
                         "text-3xl": fontSize === 5,
                         "text-4xl": fontSize === 6,
