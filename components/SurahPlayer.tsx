@@ -134,6 +134,17 @@ export default function SurahPlayer({
     return `${m}:${s}`;
   };
 
+  const unlockAudio = () => {
+    // This is a helper function to unlock audio in browsers that require user interaction
+    const ctx = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+  };
+
   const requestMicPermission = async () => {
     if (recording) {
       setRecording(false);
@@ -277,10 +288,18 @@ export default function SurahPlayer({
             {recording ? (
               <Mic
                 className="size-5 dark:text-white text-black cursor-pointer animate-pulse"
-                onClick={() => requestMicPermission()}
+                onClick={() => {
+                  unlockAudio();
+                  requestMicPermission();
+                }}
               />
             ) : (
-              <MicOff onClick={() => requestMicPermission()} />
+              <MicOff
+                onClick={() => {
+                  unlockAudio();
+                  requestMicPermission();
+                }}
+              />
             )}
 
             <p className=" bg-blue-500 rounded-md text-sm px-2 absolute opacity-10 pointer-events-none -z-9">
