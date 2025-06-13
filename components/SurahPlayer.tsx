@@ -208,7 +208,7 @@ export default function SurahPlayer({
         normalizedExpected.length
       );
       const similarity = 1 - distance / maxLen;
-
+      console.log(similarity);
       // ✅ If match > 0.6:
 
       // ✅ Remove red background.

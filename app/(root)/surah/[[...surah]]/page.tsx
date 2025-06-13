@@ -116,7 +116,7 @@ const Surah = () => {
     fetchSurahData();
   }, [params.surah]);
 
-  // Scroll to the selected ayah (if provided via the "ayah" search param)
+  // Scroll to the selected ayah (if provided via the "ayah" search param) (use when search is implemented)
   useEffect(() => {
     if (ayahParam && !loading) {
       const element = document.getElementById(`ayah-${ayahParam}`);

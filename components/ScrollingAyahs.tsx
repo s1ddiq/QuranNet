@@ -30,7 +30,7 @@ export default function ScrollingAyah() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
-  // Auto-advance every 3 seconds
+  // change every 3 seconds
   useEffect(() => {
     const iv = setInterval(() => {
       setActive((i) => (i + 1) % ayahs.length);
@@ -38,7 +38,7 @@ export default function ScrollingAyah() {
     return () => clearInterval(iv);
   }, []);
 
-  // When `active` changes, scroll the container
+  // when active changes, scroll the container
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
