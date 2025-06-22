@@ -39,6 +39,7 @@ import {
 import SurahPlayer from "@/components/SurahPlayer";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 import { amiri } from "@/app/fonts";
+import GettingStarted from "@/components/popups/GettingStarted";
 
 // SHADCN UI END
 

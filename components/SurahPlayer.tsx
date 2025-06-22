@@ -20,6 +20,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
+import GettingStarted from "./popups/GettingStarted";
 
 interface SurahPlayerProps {
   surahNumber: number;
@@ -43,6 +44,7 @@ export default function SurahPlayer({
   const [collapsed, setCollapsed] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [recording, setRecording] = useState(false);
+  const [showReciteGuide, setShowReciteGuide] = useState(false);
 
   const correct = new Audio("/sounds/correct.mp3");
   const wrong = new Audio("/sounds/wrong.mp3");
@@ -158,14 +160,14 @@ export default function SurahPlayer({
         document
           .getElementById(`ayah-${currentAyah + 1}`)
           ?.classList.add("bg-gray-200/25");
+        // toast.success(
+        //   "This is a beta feature. Please open issues on our github to report a bug."
+        // );
+        // setTimeout(() => {
         toast.success(
-          "This is a beta feature. Please open issues on our github to report a bug."
+          "Please start reading the Ayah aloud. \n You can click on the mic icon to stop recording."
         );
-        setTimeout(() => {
-          toast.success(
-            "Please start reading the Ayah aloud. \n You can click on the mic icon to stop recording."
-          );
-        }, 3000);
+        // }, 3000);
         setRecording(true);
       } catch (error) {
         // Permission not granted
@@ -266,6 +268,19 @@ export default function SurahPlayer({
 
   return (
     <AnimatePresence initial={false} mode="wait">
+      {showReciteGuide && (
+        <GettingStarted
+          onStart={() => {
+            document
+              .getElementById("ayah-1")
+              ?.scrollIntoView({ block: "center", behavior: "smooth" });
+
+            localStorage.setItem("hasSeenReciteGuide", "true");
+            unlockAudio();
+            requestMicPermission();
+          }}
+        />
+      )}
       {!collapsed && (
         <motion.div
           key="expanded"
@@ -274,7 +289,7 @@ export default function SurahPlayer({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ opacity: { duration: 0.2 } }}
-          className="flex justify-center items-center space-x-3 dark:bg-zinc-800/90 bg-[var(--sephia-200)] backdrop-blur-md p-3 rounded-full shadow-lg overflow-hidden"
+          className="flex justify-center items-center space-x-3 dark:bg-zinc-800/90  backdrop-blur-md p-3 rounded-full shadow-lg overflow-hidden"
         >
           <button
             onClick={() => setCollapsed(true)}
@@ -284,22 +299,25 @@ export default function SurahPlayer({
           </button>
 
           <div className="relative flex justify-center items-center flex-col">
-            {recording ? (
-              <Mic
-                className="size-5 dark:text-white text-black cursor-pointer animate-pulse"
-                onClick={() => {
+            <button
+              onClick={() => {
+                if (
+                  !recording &&
+                  localStorage.getItem("hasSeenReciteGuide") !== "true"
+                ) {
+                  setShowReciteGuide(true);
+                } else {
                   unlockAudio();
                   requestMicPermission();
-                }}
-              />
-            ) : (
-              <MicOff
-                onClick={() => {
-                  unlockAudio();
-                  requestMicPermission();
-                }}
-              />
-            )}
+                }
+              }}
+            >
+              {recording ? (
+                <Mic className="size-5 dark:text-white text-black cursor-pointer animate-pulse" />
+              ) : (
+                <MicOff className="size-5 dark:text-white text-black cursor-pointer" />
+              )}
+            </button>
 
             <p className=" bg-blue-500 rounded-md text-sm px-2 absolute opacity-10 pointer-events-none -z-9">
               BETA
