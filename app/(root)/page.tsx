@@ -14,13 +14,8 @@ import {
   useUser,
 } from "@clerk/nextjs";
 // Components ⭐
-import SearchIcon from "@/components/svg/icons/SearchIcon";
-import SignInPopup from "@/components/popups/SignInPopup";
 import LogoIcon from "@/components/svg/icons/LogoIcon";
 import { useRouter } from "next/navigation";
-import Hills from "@/components/svg/illustrations/Hills";
-import Hill from "@/components/svg/illustrations/Hill";
-import ScrollingAyah from "@/components/ScrollingAyahs";
 // ShadCN ⭐
 import { cn } from "@/lib/utils";
 
@@ -30,7 +25,7 @@ import { X } from "lucide-react";
 // Hooks ⭐
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 // Fonts ⭐
-import { amiri, inter } from "@/app/fonts";
+import { inter } from "@/app/fonts";
 import MobileSheet from "@/components/sidebar/MobileSheet";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
