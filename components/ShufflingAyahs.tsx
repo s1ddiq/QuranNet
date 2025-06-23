@@ -26,7 +26,7 @@ const ayahs = [
   "And He is over all things competent.",
 ];
 
-export default function ScrollingAyah() {
+export default function ShufflingAyahs() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 

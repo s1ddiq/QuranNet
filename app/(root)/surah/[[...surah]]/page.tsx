@@ -39,7 +39,6 @@ import {
 import SurahPlayer from "@/components/SurahPlayer";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 import { amiri } from "@/app/fonts";
-import GettingStarted from "@/components/popups/GettingStarted";
 
 // SHADCN UI END
 
@@ -335,8 +334,8 @@ const Surah = () => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full min-h-screen lg:px-24 px-4">
-        <div className="flex items-center text-center w-full flex-col">
+      <div className="flex flex-col w-full min-h-screen blg:px-24 bpx-4">
+        <div className="flex items-center text-center w-full flex-col mb-4">
           <div className="relative">
             <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  md:mt-0 mt-16" />
 
@@ -358,7 +357,7 @@ const Surah = () => {
             <div
               className={`mx-2 rounded-2xl ${
                 collapsed ? "" : "px-4 py-6"
-              } border dark:border-zinc-700 border-white shadow-xl bg-[var(--sephia-100)] dark:bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
+              } border dark:border-zinc-700 border-white shadow-xl bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
                 collapsed ? "h-0 opacity-0" : "h-56"
               }`}
             >
@@ -416,7 +415,7 @@ const Surah = () => {
             <div
               key={ayah.number}
               className="border-b-[0.1px] border-b-[var(--sephia-500)] dark:border-b-[#262629ff]
- sm:px-4 px-2 sm:py-12 py-4 rounded-md sm:rounded-none flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
+ sm:px-8 px-4 sm:py-12 py-4 rounded-md sm:rounded-none flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">

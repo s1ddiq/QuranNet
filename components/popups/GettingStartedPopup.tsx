@@ -3,12 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Button } from "../ui/button";
 import { ArrowRight, TriangleAlert } from "lucide-react";
+import { Switch } from "../ui/switch";
+import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 
-const GettingStarted = ({ onStart }: { onStart: () => void }) => {
+const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
   if (localStorage.getItem("hasSeenReciteGuide") === "true") return;
+  const { repeatOnMistake, setRepeatOnMistake } = useGlobalState();
   const [current, setCurrent] = useState("1");
   const containerRef = useRef(null);
-  const headingRef = useRef(null);
   const stepsRef = useRef<(HTMLLIElement | null)[]>([]);
   const buttonRef = useRef(null);
 
@@ -47,7 +49,7 @@ const GettingStarted = ({ onStart }: { onStart: () => void }) => {
   return (
     <div
       ref={containerRef}
-      className="z-[999] fixed top-1/2 left-1/2 md:max-w-md mx-4 w-full -translate-x-1/2 -translate-y-1/2 rounded-lg bg-zinc-800 p-4 shadow-lg space-y-6"
+      className="z-9999999999999999999999 fixed top-1/2 left-1/2 md:max-w-md mx-4 w-full -translate-x-1/2 -translate-y-1/2 rounded-lg bg-zinc-800 p-4 shadow-lg space-y-6"
     >
       <h1
         // ref={headingRef}
@@ -71,17 +73,42 @@ const GettingStarted = ({ onStart }: { onStart: () => void }) => {
           ))}
         </ul>
       ) : (
-        <div className="bg-blue-500 bg-opacity-20 border-l-4 border-blue-400 p-4 rounded-md text-yellow-100 text-sm leading-relaxed shadow-md">
-          <strong className="block mb-2 font-semibold text-orange-50">
-            <TriangleAlert className="inline-block mr-2" size={20} /> Beta
-            Feature
-          </strong>
-          <p>
-            This feature is in beta and may not always assess pronunciation
-            perfectly. Please use it as a helpful guide for practice, but not as
-            a substitute/replacement for expert recitation or instruction.
-          </p>
-        </div>
+        <>
+          <div className="bg-blue-500 bg-opacity-20 border-l-4 border-blue-400 p-4 rounded-md text-yellow-100 text-sm leading-relaxed shadow-md">
+            <strong className="block mb-2 font-semibold text-orange-50">
+              <TriangleAlert className="inline-block mr-2" size={20} /> Beta
+              Feature
+            </strong>
+            <p>
+              This feature is in beta and may not always assess pronunciation
+              perfectly. Please use it as a helpful guide for practice, but not
+              as a substitute/replacement for expert recitation or instruction.
+            </p>
+            {/* <div className="w-full h-[1px] bg-white"></div> */}
+            <p className="text-[12px]">
+              Sign in to access personalized feedback and track your progress
+              for improvement tips.
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <Switch
+              checked={repeatOnMistake}
+              onCheckedChange={() => setRepeatOnMistake((prev) => !prev)}
+            />
+            <p className="text-[12px] text-black dark:text-zinc-400">
+              Enable this to replay the ayah if you make a mistake while
+              reciting.
+            </p>
+          </div>
+
+          <div>
+            {/* <Switch
+              className="bg-blue-500"
+              checked={repeatOnMistake}
+              onCheckedChange={setRepeatOnMistake}
+            /> */}
+          </div>
+        </>
       )}
 
       <Button
@@ -101,4 +128,4 @@ const GettingStarted = ({ onStart }: { onStart: () => void }) => {
   );
 };
 
-export default GettingStarted;
+export default GettingStartedPopup;

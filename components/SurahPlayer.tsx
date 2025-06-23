@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+//  ^^^ React Basic Imports
 import { motion, AnimatePresence } from "framer-motion";
+// Framer Motion for Animations
+
+// Icons
 import {
   Pause,
   SkipForwardIcon,
@@ -12,24 +16,33 @@ import {
   Mic,
   MicOff,
 } from "lucide-react";
-import levenshtein from "js-levenshtein";
 
+// Package/Library to check similarity between sentences
+import levenshtein from "js-levenshtein";
+// ShadCN UI
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
-import GettingStarted from "./popups/GettingStarted";
+
+// Components
+import GettingStartedPopup from "./popups/GettingStartedPopup";
+// API
+import { fetchAyahAudio } from "@/api/api";
+// Utilities
+import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
+import { formatTime, normalizeArabic, unlockAudio } from "@/lib/utils";
 
 interface SurahPlayerProps {
   surahNumber: number;
-  ayahText: any;
+  ayahText: string[];
   lastAyahNumber: number;
   router: any;
 }
 
-const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
+const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2, 3];
 
 export default function SurahPlayer({
   surahNumber,
@@ -37,328 +50,286 @@ export default function SurahPlayer({
   lastAyahNumber,
   router,
 }: SurahPlayerProps) {
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [collapsed, setCollapsed] = useState(false);
+  // Audio effects
+  const correct = useRef(new Audio("/sounds/correct.mp3")).current;
+  const wrong = useRef(new Audio("/sounds/wrong.mp3")).current;
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [playbackRate, setPlaybackRate] = useState(1);
+
   const [recording, setRecording] = useState(false);
   const [showReciteGuide, setShowReciteGuide] = useState(false);
 
-  const correct = new Audio("/sounds/correct.mp3");
-  const wrong = new Audio("/sounds/wrong.mp3");
+  const { repeatOnMistake } = useGlobalState();
+  const repeatOnMistakeRef = useRef(repeatOnMistake);
 
-  correct.volume = 0.5;
-  wrong.volume = 0.5;
-  // TODO: Refactor and clean up code, change it from highlighting background to highlighting the text instead. 6.12.25 (✅)
+  const [playingCorrectAudio, setPlayingCorrectAudio] = useState(false);
+  const [currentAyah, setCurrentAyah] = useState(0);
+  const currentAyahRef = useRef(currentAyah);
 
-  // TRANSCRIPTION
-  // const expectedText = ayahText;
-  let currentAyah = 0;
-  // load audio
-  function normalizeArabic(text: string) {
-    return text
-      .replace(/[\u064B-\u0652\u0670\u06D6-\u06ED]/g, "") // remove tashkeel
-      .replace(/[\u200F\u200E\u06DD]/g, "") // remove markers
-      .replace(/\s+/g, "") // remove whitespace
-      .trim();
-  }
+  const [collapsed, setCollapsed] = useState(false);
 
+  // +=============- User Experience UseEffects -=============+
+  // Set user-friendly volumes
   useEffect(() => {
-    // console.log(ayahText);
-    let isCancelled = false;
+    correct.volume = 0.5;
+    wrong.volume = 0.5;
+  }, [correct, wrong]);
 
+  // Keep ref in sync
+  useEffect(() => {
+    currentAyahRef.current = currentAyah;
+  }, [currentAyah]);
+
+  // Keep repeatOnMistakeRef in sync
+  useEffect(() => {
+    repeatOnMistakeRef.current = repeatOnMistake;
+  }, [repeatOnMistake]);
+
+  /** Preload and current Surah audio */
+  useEffect(() => {
     const audio = new Audio(
       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
     );
-
-    audioRef.current?.pause();
-    audioRef.current = audio;
     audio.preload = "auto";
     audio.playbackRate = playbackRate;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
-    const handleEnded = () => setPlaying(false);
+    const onTime = () => setCurrentTime(audio.currentTime);
+    const onLoaded = () => setDuration(audio.duration);
+    const onEnded = () => setPlaying(false);
 
-    audio.addEventListener("timeupdate", updateTime);
-    audio.addEventListener("loadedmetadata", updateDuration);
-    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("timeupdate", onTime);
+    audio.addEventListener("loadedmetadata", onLoaded);
+    audio.addEventListener("ended", onEnded);
 
-    // ← Remove this autoplay
-    // audio.play().then(() => {
-    //   if (!isCancelled) setPlaying(true);
-    // });
+    audioRef.current?.pause();
+    audioRef.current = audio;
 
     return () => {
-      isCancelled = true;
       audio.pause();
-      audio.removeEventListener("timeupdate", updateTime);
-      audio.removeEventListener("loadedmetadata", updateDuration);
-      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("timeupdate", onTime);
+      audio.removeEventListener("loadedmetadata", onLoaded);
+      audio.removeEventListener("ended", onEnded);
     };
-  }, [surahNumber]);
+  }, [surahNumber, playbackRate]);
 
-  // Apply new playback rate immediately
-  useEffect(() => {
-    if (audioRef.current) audioRef.current.playbackRate = playbackRate;
-  }, [playbackRate]);
-
+  // Audio Controls
   const handlePlayPause = () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
     if (playing) {
-      audioRef.current.pause();
+      audio.pause();
       setPlaying(false);
     } else {
-      audioRef.current.play();
+      audio.play();
       setPlaying(true);
     }
   };
 
   const skip = (sec: number) => {
-    if (audioRef.current) {
-      const t = audioRef.current.currentTime + sec;
-      audioRef.current.currentTime = Math.max(
-        0,
-        Math.min(t, audioRef.current.duration)
-      );
-    }
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = Math.max(
+      0,
+      Math.min(audio.currentTime + sec, duration)
+    );
   };
 
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = Math.floor(sec % 60)
-      .toString()
-      .padStart(2, "0");
-    return `${m}:${s}`;
-  };
-
-  const unlockAudio = () => {
-    // This is a helper function to unlock audio in browsers that require user interaction
-    const ctx = new (window.AudioContext ||
-      (window as any).webkitAudioContext)();
-    const buffer = ctx.createBuffer(1, 1, 22050);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(ctx.destination);
-    source.start(0);
-  };
-
-  const requestMicPermission = async () => {
-    if (recording) {
-      setRecording(false);
-      return;
-    } else {
+  // Handle Incorrect Pronounciation of Verse
+  const handleIncorrect = async () => {
+    if (playingCorrectAudio) return;
+    setPlayingCorrectAudio(true);
+    wrong.play();
+    if (repeatOnMistakeRef.current) {
       try {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
-        // Permission granted
-        startTranscription();
-
-        document
-          .getElementById(`ayah-${currentAyah + 1}`)
-          ?.classList.add("bg-gray-200/25");
-        // toast.success(
-        //   "This is a beta feature. Please open issues on our github to report a bug."
-        // );
-        // setTimeout(() => {
-        toast.success(
-          "Please start reading the Ayah aloud. \n You can click on the mic icon to stop recording."
+        const resp = await fetchAyahAudio(
+          surahNumber,
+          currentAyahRef.current + 1
         );
-        // }, 3000);
-        setRecording(true);
-      } catch (error) {
-        // Permission not granted
-        setRecording(false);
+        if (!resp?.data?.audio) throw new Error("Missing audio URL");
+        const audio = new Audio(resp.data.audio);
+        await audio.play();
+        await new Promise((r) =>
+          audio.addEventListener("ended", r, { once: true })
+        );
+      } catch (err) {
+        toast.error("Failed to replay Ayah.");
+      } finally {
+        setPlayingCorrectAudio(false);
       }
+    } else {
+      setPlayingCorrectAudio(false);
     }
   };
 
-  const startTranscription = async () => {
-    if (recording) return;
-    // alert("You are about to start recording. please speak clearly.");
-
-    const SpeechRecongition =
+  // ================- SPEECH RECOGNITION FUNCTION -================!
+  // TODO: Clean up this function and organize.
+  const startRecognition = () => {
+    const SpeechRecognition =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition;
-
-    if (!SpeechRecongition) {
-      toast.error("Speech recognition is not supported in this browser.");
+    if (!SpeechRecognition) {
+      toast.error("Speech recognition not supported.");
+      return;
     }
+    // Check SR Compatibility ^^
 
-    const recognition = new SpeechRecongition();
-    recognition.lang = "ar-SA"; // Arabic Saudi
+    const recognition = new SpeechRecognition();
+    recognition.lang = "ar-SA";
     recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognition.continuous = true; // keep listening even after person stopp talking
+    recognition.continuous = true;
+    // Initialize SR ^^
 
-    recognition.onresult = (event: any) => {
-      // TODO: change later
-      const transcript = event.results[event.resultIndex][0].transcript;
-      console.log("Transcript:", transcript);
+    recognition.onresult = (e: any) => {
+      const transcript = e.results[e.resultIndex][0].transcript;
+      const expected = normalizeArabic(ayahText[currentAyahRef.current]);
+      const actual = normalizeArabic(transcript);
+      const similarity =
+        1 -
+        levenshtein(actual, expected) /
+          Math.max(actual.length, expected.length);
 
-      // simplify both values
-      const normalizedTranscript = normalizeArabic(transcript);
-      const normalizedExpected = normalizeArabic(ayahText[currentAyah]);
-
-      // Levenshtein distance + similarity score (stackoverflow.com/a/10543930)
-      const distance = levenshtein(normalizedTranscript, normalizedExpected);
-      const maxLen = Math.max(
-        normalizedTranscript.length,
-        normalizedExpected.length
+      const currentAyahId = `ayah-${currentAyahRef.current + 1}`;
+      const arabicTextElement = document.getElementById(
+        `atext-${currentAyahRef.current + 1}`
       );
-      const similarity = 1 - distance / maxLen;
-      console.log(similarity);
-      // ✅ If match > 0.6:
-
-      // ✅ Remove red background.
-
-      // ✅ Add green to current ayah
-
-      // ✅ Scroll down.
-
-      // ✅ Add blue to next ayah
-
-      // ❌ If incorrect:
-
-      // ✅ Just show red.
-
-      const currentAyahId = `ayah-${currentAyah + 1}`;
-      const currentTextId = `atext-${currentAyah + 1}`;
-      const nextAyahId = `ayah-${currentAyah + 2}`;
-
-      const currentEl = document.getElementById(currentAyahId);
-      const currentTextEl = document.getElementById(currentTextId);
-      const nextEl = document.getElementById(nextAyahId);
 
       if (similarity > 0.6) {
-        if (currentAyah >= lastAyahNumber - 1) {
-          toast.success("You have completed the Surah!");
-          setTimeout(() => {
-            router.push(`/surah/${surahNumber + 1}`);
-          }, 1500);
-        }
         correct.play();
-        currentTextEl?.classList.remove("text-red-500");
-        currentTextEl?.classList.add("text-green-500");
-        nextEl?.scrollIntoView({ behavior: "smooth", block: "center" });
-        currentEl?.classList.remove("bg-gray-200/25", "bg-gray-200/50");
-        currentAyah++;
-        nextEl?.classList.remove(
-          "text-green-500",
-          "text-red-500",
-          "bg-gray-200/25"
-        );
-        nextEl?.classList.add("bg-gray-200/25");
+        arabicTextElement?.classList.add("text-green-500");
+        arabicTextElement?.classList.remove("text-red-500");
+        document
+          .getElementById(currentAyahId)
+          ?.classList.remove("bg-gray-200/25");
+
+        setCurrentAyah((prev) => prev + 1);
+
+        if (currentAyahRef.current + 2 <= lastAyahNumber) {
+          document
+            .getElementById(`ayah-${currentAyahRef.current + 2}`)
+            ?.scrollIntoView({ behavior: "smooth", block: "center" });
+          document
+            .getElementById(`ayah-${currentAyahRef.current + 2}`)
+            ?.classList.add("bg-gray-200/25");
+        } else {
+          toast.success("You completed the Surah!");
+          setTimeout(() => router.push(`/surah/${surahNumber + 1}`), 1500);
+        }
       } else {
-        currentEl?.classList.add("text-red-500");
-        wrong.play();
+        handleIncorrect();
+        document.getElementById(currentAyahId)?.classList.add("text-red-500");
       }
     };
-    recognition.onerror = (event: any) => {
-      console.error("Speech recognition error:", event.error);
-    };
 
+    recognition.onerror = (e: any) =>
+      console.error("Speech recognition error:", e.error);
     recognition.start();
   };
 
-  // console.log(ayahText[0]);
+  const requestMic = async () => {
+    if (recording) {
+      setRecording(false);
+      return;
+    }
+
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      setRecording(true);
+      startRecognition();
+      document
+        .getElementById(`ayah-${currentAyahRef.current + 1}`)
+        ?.classList.add("bg-gray-200/25");
+      toast.success("Start reciting aloud. Tap mic again to stop.");
+    } catch {
+      setRecording(false);
+    }
+  };
 
   return (
     <AnimatePresence initial={false} mode="wait">
       {showReciteGuide && (
-        <GettingStarted
+        <GettingStartedPopup
           onStart={() => {
-            document
-              .getElementById("ayah-1")
-              ?.scrollIntoView({ block: "center", behavior: "smooth" });
-
-            localStorage.setItem("hasSeenReciteGuide", "true");
             unlockAudio();
-            requestMicPermission();
+            requestMic();
+            setShowReciteGuide(false);
+            localStorage.setItem("hasSeenReciteGuide", "true");
           }}
         />
       )}
-      {!collapsed && (
+      {!collapsed ? (
         <motion.div
-          key="expanded"
+          key="controls"
           layout
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ opacity: { duration: 0.2 } }}
-          className="flex justify-center items-center space-x-3 dark:bg-zinc-800/90  backdrop-blur-md p-3 rounded-full shadow-lg overflow-hidden"
+          className="flex items-center space-x-3 backdrop-blur-md dark:bg-zinc-800/90 p-3 rounded-full shadow-lg"
         >
           <button
             onClick={() => setCollapsed(true)}
-            className="text-white p-1 hover:bg-white/10 rounded-full transition cursor-pointer"
+            className="p-1 text-white hover:bg-white/10 rounded-full"
           >
             <ChevronDown className="size-6 dark:text-white text-black" />
           </button>
-
-          <div className="relative flex justify-center items-center flex-col">
-            <button
-              onClick={() => {
-                if (
-                  !recording &&
-                  localStorage.getItem("hasSeenReciteGuide") !== "true"
-                ) {
-                  setShowReciteGuide(true);
-                } else {
-                  unlockAudio();
-                  requestMicPermission();
-                }
-              }}
-            >
+          <div className="flex flex-col items-center relative">
+            <button className="p-1">
               {recording ? (
-                <Mic className="size-5 dark:text-white text-black cursor-pointer animate-pulse" />
+                <Mic className="size-5 animate-pulse" onClick={requestMic} />
               ) : (
-                <MicOff className="size-5 dark:text-white text-black cursor-pointer" />
+                <MicOff
+                  className="size-5"
+                  onClick={() => {
+                    setShowReciteGuide(true);
+                  }}
+                />
               )}
             </button>
-
-            <p className=" bg-blue-500 rounded-md text-sm px-2 absolute opacity-10 pointer-events-none -z-9">
+            <span className="absolute -top-5 scale-75 rounded bg-blue-500 px-2 text-sm text-white pointer-events-none">
               BETA
-            </p>
+            </span>
           </div>
-
           <button
             onClick={() => skip(-10)}
-            className="text-white p-2 hover:bg-white/10 rounded-full"
+            className="p-2 text-white hover:bg-white/10 rounded-full"
           >
-            <SkipBackIcon className="size-5 dark:text-white text-black cursor-pointer" />
+            <SkipBackIcon className="size-5" />
           </button>
           <button
             onClick={handlePlayPause}
-            className="text-white p-2 dark:bg-white/10 hover:opacity-80 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer bg-[var(--sephia-300)]"
+            className="p-2 text-white hover:bg-white/10 rounded-full"
           >
             {playing ? (
-              <Pause className="size-5 dark:text-white text-black" />
+              <Pause className="size-5" />
             ) : (
-              <Play className="size-5 dark:text-white text-black" />
+              <Play className="size-5" />
             )}
           </button>
           <button
             onClick={() => skip(10)}
-            className="text-white p-2 hover:bg-white/10 rounded-full"
+            className="p-2 text-white hover:bg-white/10 rounded-full"
           >
-            <SkipForwardIcon className="size-5 dark:text-white text-black cursor-pointer" />
+            <SkipForwardIcon className="size-5" />
           </button>
-          <span className="text-xs font-mono dark:text-gray-300 text-black">
-            {formatTime(currentTime)} / {formatTime(duration || 0)}
+          <span className="font-mono text-xs text-white">
+            {formatTime(currentTime)} / {formatTime(duration)}
           </span>
           <Popover>
-            <PopoverTrigger className="dark:text-white text-black p-2 hover:bg-white/10 rounded-full cursor-pointer">
+            <PopoverTrigger className="p-2 text-white hover:bg-white/10 rounded-full">
               {playbackRate}×
             </PopoverTrigger>
-            <PopoverContent className="dark:bg-zinc-800 bg-[var(--sephia-200)] rounded-lg p-2 space-y-1 shadow-lg">
+            <PopoverContent className="space-y-1 rounded-lg bg-zinc-800 p-2 shadow-lg">
               {playbackRates.map((rate) => (
                 <div
                   key={rate}
                   onClick={() => setPlaybackRate(rate)}
-                  className={`px-3 py-1 rounded cursor-pointer hover:bg-white/20 ${
+                  className={`cursor-pointer rounded px-3 py-1 hover:bg-white/20 ${
                     playbackRate === rate ? "bg-white/20" : ""
                   }`}
                 >
@@ -368,8 +339,7 @@ export default function SurahPlayer({
             </PopoverContent>
           </Popover>
         </motion.div>
-      )}
-      {collapsed && (
+      ) : (
         <motion.button
           key="collapsed"
           layout
@@ -378,7 +348,7 @@ export default function SurahPlayer({
           exit={{ opacity: 0 }}
           transition={{ opacity: { duration: 0.2 } }}
           onClick={() => setCollapsed(false)}
-          className="dark:bg-zinc-800 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg transition cursor-pointer"
+          className="rounded-full px-4 py-2 bg-zinc-800/80 text-white shadow-lg"
         >
           <ChevronUp className="size-6" />
         </motion.button>

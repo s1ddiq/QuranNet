@@ -134,3 +134,10 @@ interface SurahSummary {
 }
 
 // REWRITE ENTIRE PROPS AND ORGANIZE WITH STARS
+
+interface SurahPlayerProps {
+  surahNumber: number;
+  ayahText: any;
+  lastAyahNumber: number;
+  router: any;
+}

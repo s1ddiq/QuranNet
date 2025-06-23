@@ -1,14 +1,19 @@
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
-import React from "react";
+import React, { useEffect } from "react";
 import { Slider } from "./ui/slider";
 import ThemeToggleButton from "./ThemeToggleButton";
+import { Switch } from "./ui/switch";
 
 const Settings = () => {
-  const { fontSize, setFontSize } = useGlobalState();
-
+  const { fontSize, setFontSize, repeatOnMistake, setRepeatOnMistake } =
+    useGlobalState();
   const handleFontSizeChange = (value: number[]) => {
     setFontSize(value[0]);
   };
+
+  useEffect(() => {
+    console.log(repeatOnMistake);
+  }, [repeatOnMistake]);
 
   return (
     <div className="p-6 rounded-xl bg-transparent space-y-6 max-w-md">
@@ -38,6 +43,19 @@ const Settings = () => {
         <p className="text-sm text-black dark:text-zinc-400">
           Adjust the font size to your preference.
         </p>
+
+        <div>
+          <h2 className="text-lg font-semibold text-zinc-800 dark:text-white">
+            Recite Guide
+          </h2>
+          <Switch
+            checked={repeatOnMistake}
+            onCheckedChange={() => setRepeatOnMistake((prev) => !prev)}
+          />
+          <p className="text-sm text-black dark:text-zinc-400">
+            Enable this to replay the ayah if you make a mistake while reciting.
+          </p>
+        </div>
       </section>
     </div>
   );
