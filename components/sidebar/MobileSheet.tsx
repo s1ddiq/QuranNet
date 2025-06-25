@@ -39,7 +39,7 @@ const MobileSheet = ({
   );
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="fixed w-full md:hidden flex justify-between items-center p-2 px-4 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999">
+      <SheetTrigger className="fixed w-full lg:hidden flex justify-between items-center p-2 px-4 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999">
         <LogoIcon
           onClick={() => router.push("/")}
           className="dark:text-white text-black"
@@ -51,7 +51,7 @@ const MobileSheet = ({
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="z-999999 dark:bg-zinc-900 bg-[var(--sephia-200)] dark:text-white text-black px-4 border-l dark:border-[#262629ff] border-black sm:min-w-[75%] min-w-[100%]" // maybe make transparent and add backdrop MAYBE REVERT BACK TO NOT  bg-transparent backdrop-blur-md
+        className="z-999999 dark:bg-zinc-900 bg-[var(--sephia-200)] dark:text-white text-black px-4 border-l dark:border-[#262629ff] border-black sm:min-w-[25%] min-w-[90%]" // maybe make transparent and add backdrop MAYBE REVERT BACK TO NOT  bg-transparent backdrop-blur-md
       >
         <VisuallyHidden>
           <SheetTitle>Menu</SheetTitle>
@@ -96,7 +96,7 @@ const MobileSheet = ({
                     setSearchQuery(e.target.value);
                   }} // Update search query on input change
                   placeholder="Search by Surah"
-                  className="dark:bg-zinc-800 bg-[var(--sephia-300)] dark:text-white text-[var(--)] border-0"
+                  className="bg-zinc-800 text-white border-0"
                 />
               </div>
             </div>
@@ -108,21 +108,19 @@ const MobileSheet = ({
                   href={`/surah/${surah.number}`}
                   title={`${surah.englishName} — ${surah.englishNameTranslation}`}
                   className={cn(
-                    "block rounded-md py-2 hover:bg-[var(--sephia-300)]  transition items-center gap-6 w-full",
+                    "inline-block rounded-md p-2 transition items-center gap-4 w-full space-x-4",
                     surah.number === surahNumber &&
-                      "dark:bg-zinc-800 bg-[var(--sephia-300)] font-bold"
+                      "dark:bg-zinc-800 bg-[var(--sephia-300)] font-semibold"
                   )}
                 >
-                  <span className="dark:text-gray-400 text-black w-6 text-right">
+                  <span className="dark:text-gray-400 text-black w-6 text-right inline">
                     {surah.number}
                   </span>
-                  <div className="flex flex-col">
-                    <span className="dark:text-white text-black">
-                      {surah.englishName}
-                    </span>
-                    {/* may have to use this again */}
-                    {/* <span className="text-sm text-gray-400">{surah.englishNameTranslation}</span> */}
-                  </div>
+                  <span className="dark:text-white text-black inline">
+                    {surah.englishName}
+                  </span>
+                  {/* may have to use this again */}
+                  {/* <span className="text-sm text-gray-400">{surah.englishNameTranslation}</span> */}
                 </Link>
               ))}
             </div>

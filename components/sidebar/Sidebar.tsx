@@ -56,7 +56,7 @@ const Sidebar = () => {
     <div>
       <div
         className={cn(
-          "min-h-screen md:block hidden sticky top-0 z-50 border-r dark:border-[#262629ff] border-[var(--sephia-500)] dark:bg-zinc-900 bg-[var(--sephia-200)] text-white transition-all duration-300 shadow-sm",
+          "min-h-screen lg:block hidden sticky top-0 z-40 border-r dark:border-[#262629ff] border-[var(--sephia-500)] bg-zinc-900 text-white transition-all duration-300 shadow-sm",
           isCollapsed ? "w-16" : "md:w-[350px]" // fix mobilesheet hiding before MD (yk)
         )}
       >
@@ -118,7 +118,7 @@ const Sidebar = () => {
                 href={`/surah/${surah.number}`}
                 title={`${surah.englishName} — ${surah.englishNameTranslation}`}
                 className={cn(
-                  "block rounded-md py-2 hover:bg-[var(--sephia-300)] dark:hover:bg-zinc-800  transition flex items-center gap-6 w-full",
+                  "rounded-md py-2 hover:bg-zinc-800  transition flex items-center gap-6 w-full",
                   surah.number === surahNumber &&
                     "dark:bg-zinc-800 bg-[var(--sephia-300)] font-bold"
                 )}

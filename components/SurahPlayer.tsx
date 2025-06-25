@@ -281,19 +281,22 @@ export default function SurahPlayer({
           <div className="flex flex-col items-center relative">
             <button className="p-1">
               {recording ? (
-                <Mic className="size-5 animate-pulse" onClick={requestMic} />
+                <Mic
+                  className="size-5 animate-pulse text-blue-400"
+                  onClick={requestMic}
+                />
               ) : (
                 <MicOff
-                  className="size-5"
+                  className="size-5 text-blue-500"
                   onClick={() => {
                     setShowReciteGuide(true);
                   }}
                 />
               )}
             </button>
-            <span className="absolute -top-5 scale-75 rounded bg-blue-500 px-2 text-sm text-white pointer-events-none">
-              BETA
-            </span>
+            {/* <span className="absolute -top-4 scale-75 rounded bg-blue-500 px-2 text-xs text-white pointer-events-none">
+              Beta feature
+            </span> */}
           </div>
           <button
             onClick={() => skip(-10)}

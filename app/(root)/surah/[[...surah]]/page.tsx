@@ -337,7 +337,7 @@ const Surah = () => {
       <div className="flex flex-col w-full min-h-screen blg:px-24 bpx-4">
         <div className="flex items-center text-center w-full flex-col mb-4">
           <div className="relative">
-            <BismillahIcon className="dark:text-white text-black md:max-w-128 max-w-72  md:mt-0 mt-16" />
+            <BismillahIcon className="dark:text-white text-black lg:max-w-96 md:max-w-86 max-w-72  md:mt-0 mt-16" />
 
             <button
               onClick={() => setCollapsed((prev) => !prev)}
@@ -357,8 +357,8 @@ const Surah = () => {
             <div
               className={`mx-2 rounded-2xl ${
                 collapsed ? "" : "px-4 py-6"
-              } border dark:border-zinc-700 border-white shadow-xl bg-zinc-900 text-sm sm:text-base space-y-2 overflow-hidden transition-all delay-300 duration-300 ${
-                collapsed ? "h-0 opacity-0" : "h-56"
+              } border border-zinc-700 shadow-xl bg-zinc-800 text-sm sm:text-base overflow-hidden transition-all delay-300 duration-300 ${
+                collapsed ? "h-0 opacity-0" : "min-h-48"
               }`}
             >
               {juzParam ? (
@@ -367,41 +367,41 @@ const Surah = () => {
                   <span className="text-blue-500">{juzParam}</span>
                 </p>
               ) : (
-                <div className="space-y-1 text-zinc-800 dark:text-gray-200">
-                  <p>
+                <div className="space-y-2 text-zinc-800 dark:text-gray-200 py-2">
+                  <div className="flex-between">
                     <span className="font-medium">Surah Number:</span>&nbsp;
                     <span className="text-blue-500">{surah?.number}</span>
-                  </p>
-                  <p>
+                  </div>
+                  <div className="flex-between">
                     <span className="font-medium">Surah Name:</span>&nbsp;
                     <span className={`${amiri.className} text-blue-500`}>
                       {surah?.name}
                     </span>
-                  </p>
-                  <p>
+                  </div>
+                  <div className="flex-between">
                     <span className="font-medium">English Name:</span>&nbsp;
                     <span className="text-blue-500">{surah?.englishName}</span>
-                  </p>
-                  <p>
+                  </div>
+                  <div className="flex-between">
                     <span className="font-medium">Translation:</span>&nbsp;
                     <span className="text-blue-500">
                       {surah?.englishNameTranslation}
                     </span>
-                  </p>
-                  <p>
+                  </div>
+                  <div className="flex-between">
                     <span className="font-medium">Number of Ayahs:</span>
                     &nbsp;
                     <span className="text-blue-500">
                       {surah?.numberOfAyahs}
                     </span>
-                  </p>
-                  <p>
+                  </div>
+                  <div className="flex-between">
                     <span className="font-medium">Revelation Type:</span>
                     &nbsp;
                     <span className="text-blue-500">
                       {surah?.revelationType}
                     </span>
-                  </p>
+                  </div>
                 </div>
               )}
             </div>
@@ -415,7 +415,7 @@ const Surah = () => {
             <div
               key={ayah.number}
               className="border-b-[0.1px] border-b-[var(--sephia-500)] dark:border-b-[#262629ff]
- sm:px-8 px-4 sm:py-12 py-4 rounded-md sm:rounded-none flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
+              sm:px-8 px-4 sm:py-12 py-4 flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
@@ -479,7 +479,7 @@ const Surah = () => {
                       : "text-7xl"
                   }`}
                 >
-                  <span className="inline-flex items-center justify-center size-8 rounded-full border border-gray-400 text-2xl mr-4">
+                  <span className="inline-flex items-center justify-center size-8 rounded-full text-3xl mr-4">
                     {convertNumberToArabicNumeral(ayah.numberInSurah)}
                   </span>
                   {ayah.text}
@@ -512,18 +512,21 @@ const Surah = () => {
         <div></div>
       </div>
 
-      <div className="mb-2 md:w-4/6  lg:w-[500px] w-full flex justify-center items-center flex-col p-4 sm:p-8">
-        <div className={cn("flex flex-row w-full gap-3", loading && "mt-16")}>
+      <div className="mb-6 w-full flex justify-center items-center">
+        <div className="flex gap-4 w-full max-w-md px-2 justify-center mt-4">
           <NavigatorButton
             direction="Previous"
             surahNumber={params.surah ? surahNumber - 1 : 1}
           />
-          <Link
-            href={`/`}
-            className="flex-center navigator-styles dark:bg-zinc-800 bg-[var(--sephia-200)]"
+          {/* <Link
+            href="/"
+            className="flex items-center gap-2 px-5 py-3 font-semibold transition
+      shadow-md rounded-xl
+      bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700
+      hover:bg-zinc-100 dark:hover:bg-zinc-700"
           >
-            Go Home
-          </Link>
+            Home
+          </Link> */}
           <NavigatorButton
             direction="Next"
             surahNumber={params.surah ? surahNumber + 1 : 1}

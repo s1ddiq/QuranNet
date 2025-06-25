@@ -169,6 +169,10 @@
   @apply min-h-8 font-semibold px-2 py-2 text-center text-sm w-1/3  transition-all duration-300 transition-discrete;
 }
 
+.flex-between {
+  @apply flex justify-between;
+}
+
 /* Scrollable container */
 .scrollable-container {
   overflow-y: auto;
@@ -191,4 +195,9 @@
 /* Arabic text styling */
 .arabic-text {
   font-family: var(--font-arabic), sans-serif;
+}
+
+
+.gtp {
+  left: calc(100vw - 350px) !important;
 }

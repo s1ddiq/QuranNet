@@ -18,7 +18,6 @@ const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
     "Ensure your microphone is enabled and working.",
     "Recite each word clearly and at a steady pace.",
     "Listen to the ayah playback for guidance before reciting.",
-    "Coming soon, we'll guide and give you feedback!",
   ];
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
   return (
     <div
       ref={containerRef}
-      className="z-9999999999999999999999 fixed top-1/2 left-1/2 md:max-w-md mx-4 w-full -translate-x-1/2 -translate-y-1/2 rounded-lg bg-zinc-800 p-4 shadow-lg space-y-6"
+      className="fixed top-1/2 left-1/2 z-50 w-11/12 sm:w-10/12 md:w-3/5 lg:w-[400px] xl:w-[450px] transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-zinc-800 p-4 shadow-lg space-y-4"
     >
       <h1
         // ref={headingRef}
@@ -59,7 +58,7 @@ const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
       </h1>
 
       {current === "1" ? (
-        <ul className="space-y-4 bg-blue-500 bg-opacity-20 border-l-4 border-blue-400 p-4 rounded-md text-yellow-100 text-sm leading-relaxed shadow-md">
+        <ul className="space-y-2 bg-blue-500 bg-opacity-20 border-l-2 border-blue-400 p-2 rounded-md text-yellow-100 text-sm leading-relaxed shadow-md">
           {steps.map((text, i) => (
             <li
               key={i}
@@ -74,7 +73,7 @@ const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
         </ul>
       ) : (
         <>
-          <div className="bg-blue-500 bg-opacity-20 border-l-4 border-blue-400 p-4 rounded-md text-yellow-100 text-sm leading-relaxed shadow-md">
+          <div className="bg-blue-500 bg-opacity-20 border-l-2 border-blue-400 p-4 rounded-md text-yellow-100 text-sm leading-relaxed shadow-md">
             <strong className="block mb-2 font-semibold text-orange-50">
               <TriangleAlert className="inline-block mr-2" size={20} /> Beta
               Feature
@@ -90,7 +89,7 @@ const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
               for improvement tips.
             </p>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-4">
             <Switch
               checked={repeatOnMistake}
               onCheckedChange={() => setRepeatOnMistake((prev) => !prev)}
@@ -118,7 +117,7 @@ const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
         }}
         className="group flex items-center justify-center gap-2 w-full bg-blue-500 py-4 text-white font-medium rounded-lg shadow hover:bg-blue-600 border-blue-400"
       >
-        Next {current}/2{" "}
+        {current !== "2" ? "Next" : "Continue"} {current}/2{" "}
         <ArrowRight
           size={20}
           className="group-hover:translate-x-2 transition-all"
