@@ -58,9 +58,9 @@ const MobileSheet = ({
           <SheetHeader>Menu</SheetHeader>
         </VisuallyHidden>
 
-        <div className="mt-2 px-2">
+        {/* <div className="mt-2 px-2">
           <p className="text-gray-400 text-xl">Menu</p>
-        </div>
+        </div> */}
         <div className="relative mt-4 mx-1">
           {/* Sliding pill */}
           <div
