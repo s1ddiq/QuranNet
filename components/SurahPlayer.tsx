@@ -289,7 +289,14 @@ export default function SurahPlayer({
                 <MicOff
                   className="size-5 text-blue-500"
                   onClick={() => {
-                    setShowReciteGuide(true);
+                    if (localStorage.getItem("hasSeenReciteGuide") === "true") {
+                      unlockAudio();
+                      requestMic();
+                      console.log("has seen it!");
+                    } else {
+                      console.log("has seen it2!");
+                      setShowReciteGuide(true);
+                    }
                   }}
                 />
               )}

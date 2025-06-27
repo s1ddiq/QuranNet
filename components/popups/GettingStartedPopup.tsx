@@ -7,7 +7,6 @@ import { Switch } from "../ui/switch";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 
 const GettingStartedPopup = ({ onStart }: { onStart: () => void }) => {
-  if (localStorage.getItem("hasSeenReciteGuide") === "true") return;
   const { repeatOnMistake, setRepeatOnMistake } = useGlobalState();
   const [current, setCurrent] = useState("1");
   const containerRef = useRef(null);
