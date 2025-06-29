@@ -479,8 +479,8 @@ const Surah = () => {
                       : "text-7xl"
                   }`}
                 >
-                  <span className="inline-flex items-center justify-center size-8 rounded-full text-3xl mr-4">
-                    {convertNumberToArabicNumeral(ayah.numberInSurah)}
+                  <span className="inline-flex items-center justify-center size-6 rounded-full text-2xl mr-4">
+                    ({convertNumberToArabicNumeral(ayah.numberInSurah)})
                   </span>
                   {ayah.text}
                 </p>

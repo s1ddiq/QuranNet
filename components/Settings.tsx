@@ -66,54 +66,9 @@ const Settings = () => {
       />
 
       <SettingSection
-        title="Tajweed Highlighting"
-        control={<Switch />}
-        description="Enable color-coded tajweed rules to assist with correct pronunciation."
-      />
-
-      <SettingSection
-        title="Reciter"
-        control={
-          <Select>
-            <SelectTrigger className="w-full" />
-            <SelectContent>
-              <SelectItem value="mishary">Mishary Alafasy</SelectItem>
-              <SelectItem value="husary">Al-Husary</SelectItem>
-              <SelectItem value="ajmy">Ahmed Al-Ajmy</SelectItem>
-            </SelectContent>
-          </Select>
-        }
-        description="Select your preferred Qur’an reciter for audio playback."
-      />
-
-      <SettingSection
-        title="Auto-Scroll with Audio"
-        control={<Switch />}
-        description="Automatically scroll to the current ayah being recited."
-      />
-
-      <SettingSection
-        title="Repeat Ayah"
-        control={<Switch />}
-        description="Enable this to automatically repeat each ayah after it finishes playing."
-      />
-
-      <SettingSection
-        title="Loop Current Surah"
-        control={<Switch />}
-        description="Keep replaying the current surah continuously for memorization."
-      />
-
-      <SettingSection
         title="Zen Mode"
         control={<Switch />}
         description="Enter a distraction-free mode that hides all UI except the Qur’an."
-      />
-
-      <SettingSection
-        title="Theme"
-        control={<ThemeToggleButton />}
-        description="Switch between light and dark theme for better visibility."
       />
 
       <SettingSection

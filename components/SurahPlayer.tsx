@@ -193,36 +193,37 @@ export default function SurahPlayer({
         1 -
         levenshtein(actual, expected) /
           Math.max(actual.length, expected.length);
+      // ^ Uses the levenshtein algorithm to check similarties between senteces!
 
-      const currentAyahId = `ayah-${currentAyahRef.current + 1}`;
+      const currentAyahId = `ayah-${currentAyahRef.current + 1}`; // uses a ref to be safe
       const arabicTextElement = document.getElementById(
-        `atext-${currentAyahRef.current + 1}`
+        `atext-${currentAyahRef.current + 1}` // current arabicTextElement for highlighting
       );
 
       if (similarity > 0.6) {
         correct.play();
-        arabicTextElement?.classList.add("text-green-500");
-        arabicTextElement?.classList.remove("text-red-500");
+        arabicTextElement?.classList.add("text-green-500"); // adds if correct
+        arabicTextElement?.classList.remove("text-red-500"); // removes just in case user got it wrong before
         document
           .getElementById(currentAyahId)
-          ?.classList.remove("bg-gray-200/25");
+          ?.classList.remove("bg-zinc-800/75"); // removes highlight
 
-        setCurrentAyah((prev) => prev + 1);
+        setCurrentAyah((prev) => prev + 1); // next ayah
 
         if (currentAyahRef.current + 2 <= lastAyahNumber) {
           document
             .getElementById(`ayah-${currentAyahRef.current + 2}`)
-            ?.scrollIntoView({ behavior: "smooth", block: "center" });
+            ?.scrollIntoView({ behavior: "smooth", block: "center" }); // scrolls into view
           document
             .getElementById(`ayah-${currentAyahRef.current + 2}`)
-            ?.classList.add("bg-gray-200/25");
+            ?.classList.add("bg-zinc-800/75"); // highlights it
         } else {
           toast.success("You completed the Surah!");
-          setTimeout(() => router.push(`/surah/${surahNumber + 1}`), 1500);
+          setTimeout(() => router.push(`/surah/${surahNumber + 1}`), 1500); // if completed surah, go to next surah
         }
       } else {
-        handleIncorrect();
-        document.getElementById(currentAyahId)?.classList.add("text-red-500");
+        handleIncorrect(); // calls incorrect function
+        document.getElementById(currentAyahId)?.classList.add("text-red-500"); // highlights red
       }
     };
 
@@ -233,18 +234,20 @@ export default function SurahPlayer({
 
   const requestMic = async () => {
     if (recording) {
+      // if the user presses while recording, set it to false
       setRecording(false);
       return;
     }
 
     try {
+      // attempt to get userMedia, once that's done setRecording to true and call speech recognition
       await navigator.mediaDevices.getUserMedia({ audio: true });
       setRecording(true);
       startRecognition();
       document
         .getElementById(`ayah-${currentAyahRef.current + 1}`)
-        ?.classList.add("bg-gray-200/25");
-      toast.success("Start reciting aloud. Tap mic again to stop.");
+        ?.classList.add("bg-zinc-800/75"); // highlight it
+      toast.success("Start reciting aloud. Tap mic again to stop."); // toast user
     } catch {
       setRecording(false);
     }
@@ -358,7 +361,7 @@ export default function SurahPlayer({
           exit={{ opacity: 0 }}
           transition={{ opacity: { duration: 0.2 } }}
           onClick={() => setCollapsed(false)}
-          className="rounded-full px-4 py-2 bg-zinc-800/80 text-white shadow-lg"
+          className="rounded-full p-2 bg-zinc-800/80 text-white shadow-lg"
         >
           <ChevronUp className="size-6" />
         </motion.button>
