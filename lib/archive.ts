@@ -1,458 +1,581 @@
+// // //   useEffect(() => {
+// //     const fetchSearchResults = async () => {
+// //         if (!searchQuery.trim()) {
+// //           setSearchResults([]);
+// //           return;
+// //         }
+
+// //         setLoading(true);
+// //         try {
+// //           const res = await searchQuran(searchQuery);
+// //           setSearchResults(res.data.matches); // Adjust this depending on your API response
+// //           // Debug statement removed for production
+// //         } catch (err: unknown) {
+// //           if (err instanceof Error) {
+// //             console.error("Search error:", err.message);
+// //           } else {
+// //             console.error("Search error:", err);
+// //           }
+// //         } finally {
+// //           setLoading(false);
+// //         }
+// //       };
+
+// //       const debounceTimer = setTimeout(fetchSearchResults, 300); // debounce 300ms
+// //       return () => clearTimeout(debounceTimer);
+// //     }, [searchQuery]);
+
+// //  {/* {isSearchModalOpen && (
+// //     <div
+// //     className="fixed top-0 bg-transparent backdrop-blur-sm w-full h-screen flex justify-center items-center"
+// //     onClick={() => setIsSearchModalOpen(false)}
+// //   >
+// //     <div className="min-w-[680px] border h-72 bg-zinc-800 rounded-xl">
+// //       <div className="relative w-full">
+// //         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-white w-5 h-5" />
+// //         <Input
+// //           type="text"
+// //           placeholder="Search the Quran"
+// //           onClick={() => setIsSearchModalOpen(true)}
+// //           className="w-full pl-10 border-0 border-b !bg-transparent rounded-none h-14 focus:ring-0 focus:ring-offset-0 text-white"
+// //         />
+// //       </div>
+
+// //       <div className="p-4">
+// //         <p className="text-gray-200 text-sm">Quick Navigation</p>
+// //         <div className="w-full flex gap-3 pt-2">
+// //           {["Al-Fatihaa", "Al-Kahf", "Juz 1",].map((i) => (
+// //             <div className="bg-zinc-900 rounded-md px-2 text-sm" key={i}>
+// //               <Link href='/surah/1' className="text-gray-200">{i}</Link>
+// //             </div>
+// //           ))}
+// //         </div>
+// //       </div>
+// //       <div className="p-4">
+// //       <p className="text-gray-200 text-sm">Recent Navigations</p>
+// //       😢
+// //       <p>Nothing...</p>
+// //       </div>
+// //     </div>
+// //   </div>
+// // )} */}
+
+// //  className="border-b-[0.1px] dark:border-[#262629ff] dark:border-gray-400 border-[var(--sephia-500)] border-opacity-50 p-2 py-12 md:px-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
+
+// //          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+//         //     {/* Example Page Content */}
+//         //     {/* <p className="text-xl text-white">Font Size</p> */}
+//         //     <p className="text-xl mb-2 text-gray-400">Adjust Font Size</p>
+
+//         //     <div className="space-y-4">
+//         //       <Slider
+//         //         value={[fontSize]}
+//         //         defaultValue={[6]}
+//         //         max={8}
+//         //         step={1}
+//         //         onValueChange={handleFontSizeChange}
+//         //         className="relative flex w-full touch-none select-none items-center"
+//         //       >
+//         //       </Slider>
+//         //     </div>
+
+//         //     <p className="text-sm mb-2 text-gray-400">...More settings coming soon</p>
+//         //   </div>
+
+// //         "use client";
+
+// // import React, { useEffect, useRef, useState } from "react";
+// // import { Pause, SkipForwardIcon, SkipBackIcon, ChevronDown, ChevronUp } from "lucide-react";
+// // import PlayIcon from "./svg/PlayIcon";
+// // import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+
+// // interface SurahPlayerProps {
+// //   surahNumber: number;
+// // }
+
+// // const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
+
+// // export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
+// //   const [playing, setPlaying] = useState(false);
+// //   const [currentTime, setCurrentTime] = useState(0);
+// //   const [duration, setDuration] = useState(0);
+// //   const [playbackRate, setPlaybackRate] = useState(1);
+// //   const [collapsed, setCollapsed] = useState(false);
+// //   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+// //   // Load and setup audio
 // //   useEffect(() => {
-//     const fetchSearchResults = async () => {
-//         if (!searchQuery.trim()) {
-//           setSearchResults([]);
-//           return;
-//         }
-  
-//         setLoading(true);
-//         try {
-//           const res = await searchQuran(searchQuery);
-//           setSearchResults(res.data.matches); // Adjust this depending on your API response
-//           // Debug statement removed for production
-//         } catch (err: unknown) {
-//           if (err instanceof Error) {
-//             console.error("Search error:", err.message);
-//           } else {
-//             console.error("Search error:", err);
-//           }
-//         } finally {
-//           setLoading(false);
-//         }
-//       };
-  
-//       const debounceTimer = setTimeout(fetchSearchResults, 300); // debounce 300ms
-//       return () => clearTimeout(debounceTimer);
-//     }, [searchQuery]);
+// //     let isCancelled = false;
+// //     const audio = new Audio(
+// //       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
+// //     );
 
+// //     audioRef.current?.pause();
+// //     audioRef.current = null;
 
+// //     audioRef.current = audio;
+// //     audio.preload = "auto";
+// //     audio.playbackRate = playbackRate;
 
-//  {/* {isSearchModalOpen && (
-//     <div
-//     className="fixed top-0 bg-transparent backdrop-blur-sm w-full h-screen flex justify-center items-center"
-//     onClick={() => setIsSearchModalOpen(false)}
-//   >
-//     <div className="min-w-[680px] border h-72 bg-zinc-800 rounded-xl">
-//       <div className="relative w-full">
-//         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-white w-5 h-5" />
-//         <Input
-//           type="text"
-//           placeholder="Search the Quran"
-//           onClick={() => setIsSearchModalOpen(true)}
-//           className="w-full pl-10 border-0 border-b !bg-transparent rounded-none h-14 focus:ring-0 focus:ring-offset-0 text-white"
-//         />
-//       </div>
+// //     const updateTime = () => setCurrentTime(audio.currentTime);
+// //     const updateDuration = () => setDuration(audio.duration);
+// //     const handleEnded = () => setPlaying(false);
 
-//       <div className="p-4">
-//         <p className="text-gray-200 text-sm">Quick Navigation</p>
-//         <div className="w-full flex gap-3 pt-2">
-//           {["Al-Fatihaa", "Al-Kahf", "Juz 1",].map((i) => (
-//             <div className="bg-zinc-900 rounded-md px-2 text-sm" key={i}>
-//               <Link href='/surah/1' className="text-gray-200">{i}</Link>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//       <div className="p-4">
-//       <p className="text-gray-200 text-sm">Recent Navigations</p>
-//       😢
-//       <p>Nothing...</p>
-//       </div>
-//     </div>
-//   </div>
-// )} */}
+// //     audio.addEventListener("timeupdate", updateTime);
+// //     audio.addEventListener("loadedmetadata", updateDuration);
+// //     audio.addEventListener("ended", handleEnded);
 
+// //     // Optional: auto-play when switching surahs
+// //     audio.play().then(() => {
+// //       if (!isCancelled) setPlaying(true);
+// //     }).catch(() => {
+// //       if (!isCancelled) setPlaying(false);
+// //     });
 
-//  className="border-b-[0.1px] dark:border-[#262629ff] dark:border-gray-400 border-[var(--sephia-500)] border-opacity-50 p-2 py-12 md:px-4 flex flex-col items-end justify-end sm:flex-row justify-between gap-12 transition-all duration-300"
+// //     return () => {
+// //       isCancelled = true;
+// //       audio.pause();
+// //       audio.removeEventListener("timeupdate", updateTime);
+// //       audio.removeEventListener("loadedmetadata", updateDuration);
+// //       audio.removeEventListener("ended", handleEnded);
+// //     };
+// //   }, [surahNumber]);
 
-//          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
-        //     {/* Example Page Content */}
-        //     {/* <p className="text-xl text-white">Font Size</p> */}
-        //     <p className="text-xl mb-2 text-gray-400">Adjust Font Size</p>
+// //   // Apply new playback rate immediately
+// //   useEffect(() => {
+// //     if (audioRef.current) audioRef.current.playbackRate = playbackRate;
+// //   }, [playbackRate]);
 
-        //     <div className="space-y-4">
-        //       <Slider
-        //         value={[fontSize]}
-        //         defaultValue={[6]}
-        //         max={8}
-        //         step={1}
-        //         onValueChange={handleFontSizeChange}
-        //         className="relative flex w-full touch-none select-none items-center"
-        //       >
-        //       </Slider>
-        //     </div>
+// //   const handlePlayPause = () => {
+// //     if (!audioRef.current) return;
+// //     if (playing) {
+// //       audioRef.current.pause();
+// //       setPlaying(false);
+// //     } else {
+// //       audioRef.current.play();
+// //       setPlaying(true);
+// //     }
+// //   };
 
+// //   const skip = (sec: number) => {
+// //     if (audioRef.current) {
+// //       const t = audioRef.current.currentTime + sec;
+// //       audioRef.current.currentTime = Math.max(0, Math.min(t, audioRef.current.duration));
+// //     }
+// //   };
 
-        //     <p className="text-sm mb-2 text-gray-400">...More settings coming soon</p>
-        //   </div>
+// //   const formatTime = (sec: number) => {
+// //     const m = Math.floor(sec / 60).toString().padStart(2, "0");
+// //     const s = Math.floor(sec % 60).toString().padStart(2, "0");
+// //     return `${m}:${s}`;
+// //   };
 
-//         "use client";
+// //   return (
+// //     <div>
+// //               <button
+// //                     onClick={() => setCollapsed((prev) => !prev)}
+// //                     className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black rounded-full shadow-lg hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
+// //                   >
+// //                     <ChevronUp
+// //                       className={`${
+// //                         collapsed ? "rotate-180" : ""
+// //                       } size-6 cursor-pointer transition-all transition-discrete duration-300`}
+// //                     />
+// //                   </button>
+// //       {collapsed ? (
+// //         <button
+// //           onClick={() => setCollapsed(false)}
+// //           className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg hover:bg-zinc-900 transition"
+// //         >
+// //           <ChevronUp className="size-6" />
+// //         </button>
+// //       ) : (
+// //         <div className="flex justify-center items-center space-x-3 dark:bg-zinc-800/90 bg-[var(--sephia-200)] backdrop-blur-md p-3 rounded-full shadow-lg">
+// //           {/* collapse button */}
+// //           <button
+// //             onClick={() => setCollapsed(true)}
+// //             className="text-white p-1 hover:bg-white/10 rounded-full transition"
+// //           >
+// //             <ChevronDown className="size-6 dark:text-white text-black" />
+// //           </button>
 
-// import React, { useEffect, useRef, useState } from "react";
-// import { Pause, SkipForwardIcon, SkipBackIcon, ChevronDown, ChevronUp } from "lucide-react";
-// import PlayIcon from "./svg/PlayIcon";
-// import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+// //           {/* Skip Back 10s */}
+// //           <button onClick={() => skip(-10)} className="text-white p-2 hover:bg-white/10 rounded-full">
+// //             <SkipBackIcon className="size-5 dark:text-white text-black" />
+// //           </button>
 
-// interface SurahPlayerProps {
-//   surahNumber: number;
-// }
+// //           {/* Play/Pause */}
+// //           <button onClick={handlePlayPause} className="text-white p-3 dark:bg-white/10 hover:opacity-80 rounded-full p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer bg-[var(--sephia-300)]">
 
-// const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2];
+// //             {playing ? <Pause className="size-5 dark:text-white text-black" /> : <PlayIcon className="size-5 dark:text-white text-black" />}
+// //           </button>
 
-// export default function SurahPlayer({ surahNumber }: SurahPlayerProps) {
-//   const [playing, setPlaying] = useState(false);
-//   const [currentTime, setCurrentTime] = useState(0);
-//   const [duration, setDuration] = useState(0);
-//   const [playbackRate, setPlaybackRate] = useState(1);
-//   const [collapsed, setCollapsed] = useState(false);
-//   const audioRef = useRef<HTMLAudioElement | null>(null);
+// //           {/* Skip Forward 10s */}
+// //           <button onClick={() => skip(10)} className="text-white p-2 hover:bg-white/10 rounded-full">
+// //             <SkipForwardIcon className="size-5 dark:text-white text-black" />
+// //           </button>
 
-//   // Load and setup audio
-//   useEffect(() => {
-//     let isCancelled = false;
-//     const audio = new Audio(
-//       `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${surahNumber}.mp3`
-//     );
-  
-//     audioRef.current?.pause();
-//     audioRef.current = null;
-  
-//     audioRef.current = audio;
-//     audio.preload = "auto";
-//     audio.playbackRate = playbackRate;
-  
-//     const updateTime = () => setCurrentTime(audio.currentTime);
-//     const updateDuration = () => setDuration(audio.duration);
-//     const handleEnded = () => setPlaying(false);
-  
-//     audio.addEventListener("timeupdate", updateTime);
-//     audio.addEventListener("loadedmetadata", updateDuration);
-//     audio.addEventListener("ended", handleEnded);
-  
-//     // Optional: auto-play when switching surahs
-//     audio.play().then(() => {
-//       if (!isCancelled) setPlaying(true);
-//     }).catch(() => {
-//       if (!isCancelled) setPlaying(false);
-//     });
-  
-//     return () => {
-//       isCancelled = true;
-//       audio.pause();
-//       audio.removeEventListener("timeupdate", updateTime);
-//       audio.removeEventListener("loadedmetadata", updateDuration);
-//       audio.removeEventListener("ended", handleEnded);
-//     };
-//   }, [surahNumber]);
-  
+// //           {/* Time Display */}
+// //           <span className="text-xs font-mono dark:text-gray-300 text-black">
+// //             {formatTime(currentTime)} / {formatTime(duration || 0)}
+// //           </span>
 
-//   // Apply new playback rate immediately
-//   useEffect(() => {
-//     if (audioRef.current) audioRef.current.playbackRate = playbackRate;
-//   }, [playbackRate]);
+// //           {/* Playback Speed Popover */}
+// //           <Popover>
+// //             <PopoverTrigger className="dark:text-white text-black p-2 hover:bg-white/10 rounded-full cursor-pointer">
+// //               {playbackRate}×
+// //             </PopoverTrigger>
+// //             <PopoverContent className="dark:bg-zinc-800 bg-[var(--sephia-200)] rounded-lg p-2 space-y-1 shadow-lg">
+// //               {playbackRates.map((rate) => (
+// //                 <div
+// //                   key={rate}
+// //                   onClick={() => setPlaybackRate(rate)}
+// //                   className={`px-3 py-1 rounded cursor-pointer hover:bg-white/20 ${
+// //                     playbackRate === rate ? 'bg-white/20' : ''
+// //                   }`}
+// //                 >
+// //                   {rate}×
+// //                 </div>
+// //               ))}
+// //             </PopoverContent>
+// //           </Popover>
+// //         </div>
+// //       )}
+// //     </div>
+// //   );
+// // }
+// // <Sheet open={isOpen} onOpenChange={setIsOpen}>
+// // <VisuallyHidden>
+// //   <SheetTitle>Menu</SheetTitle>
+// //   <SheetHeader>Mobile Menu</SheetHeader>
+// // </VisuallyHidden>
+// // <SheetContent className="px-2 py-2">
+// //   <div className="w-full flex items-center justify-center">
+// //     <div className="flex w-full justify-center items-center gap-4 pt-6 border-b border-[#262629ff] pb-2">
+// //       <p
+// //         onClick={() => setActiveSidebarTab("search")}
+// //         className={`cursor-pointer ${
+// //           activeSidebarTab === "search"
+// //             ? "text-white"
+// //             : "text-gray-500"
+// //         }`}
+// //       >
+// //         Search
+// //       </p>
 
-//   const handlePlayPause = () => {
-//     if (!audioRef.current) return;
-//     if (playing) {
-//       audioRef.current.pause();
-//       setPlaying(false);
-//     } else {
-//       audioRef.current.play();
-//       setPlaying(true);
-//     }
-//   };
+// //       <p
+// //         onClick={() => setActiveSidebarTab("overview")}
+// //         className={`cursor-pointer ${
+// //           activeSidebarTab === "overview"
+// //             ? "text-white"
+// //             : "text-gray-500"
+// //         }`}
+// //       >
+// //         Overview
+// //       </p>
+// //     </div>
+// //   </div>
 
-//   const skip = (sec: number) => {
-//     if (audioRef.current) {
-//       const t = audioRef.current.currentTime + sec;
-//       audioRef.current.currentTime = Math.max(0, Math.min(t, audioRef.current.duration));
-//     }
-//   };
+// //   {activeSidebarTab === "search" && (
+// //     <>
+// //       <SearchInput
+// //         searchQuery={searchQuery}
+// //         setSearchQuery={setSearchQuery}
+// //       />
+// //       <div className="flex flex-col gap-8 items-center scrollable-container">
+// //         {searchResults.length > 0 ? (
+// //           searchResults.map((result: SearchResult, index) => (
+// //             <SearchResultCard
+// //               key={`${result.number}-${index}`}
+// //               result={result}
+// //               searchQuery={searchQuery}
+// //               type="desktop"
+// //             />
+// //           ))
+// //         ) : (
+// //           <p className="text-sm font-light ml-2 text-gray-400 pointer-events-none">
+// //             {searchQuery.length > 3 && searchResults.length === 0
+// //               ? `No results found for "${searchQuery}"`
+// //               : null}
+// //           </p>
+// //         )}
+// //       </div>
+// //     </>
+// //   )}
 
-//   const formatTime = (sec: number) => {
-//     const m = Math.floor(sec / 60).toString().padStart(2, "0");
-//     const s = Math.floor(sec % 60).toString().padStart(2, "0");
-//     return `${m}:${s}`;
-//   };
+// //   {activeSidebarTab === "overview" && (
+// //     <Link
+// //       href="/support"
+// //       className="px-5 py-2 bg-blue-500 text-white rounded-xl text-sm font-medium transition relative w-44"
+// //     >
+// //       Support Us ♥
+// //       <span className="absolute -top-[4px] -right-[6px] flex size-4">
+// //         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
+// //         <span className="relative inline-flex size-4 rounded-full bg-indigo-500"></span>
+// //       </span>
+// //     </Link>
+// //   )}
+// // </SheetContent>
+// // </Sheet>
 
-//   return (
-//     <div>
-//               <button
-//                     onClick={() => setCollapsed((prev) => !prev)}
-//                     className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black rounded-full shadow-lg hover:opacity-80 absolute bottom-0 left-1/2 -translate-x-1/2"
-//                   >
-//                     <ChevronUp
-//                       className={`${
-//                         collapsed ? "rotate-180" : ""
-//                       } size-6 cursor-pointer transition-all transition-discrete duration-300`}
-//                     />
-//                   </button>
-//       {collapsed ? (
-//         <button
-//           onClick={() => setCollapsed(false)}
-//           className="dark:bg-zinc-900/80 bg-[var(--sephia-200)] dark:text-white text-black p-2 rounded-full shadow-lg hover:bg-zinc-900 transition"
-//         >
-//           <ChevronUp className="size-6" />
-//         </button>
-//       ) : (
-//         <div className="flex justify-center items-center space-x-3 dark:bg-zinc-800/90 bg-[var(--sephia-200)] backdrop-blur-md p-3 rounded-full shadow-lg">
-//           {/* collapse button */}
-//           <button
-//             onClick={() => setCollapsed(true)}
-//             className="text-white p-1 hover:bg-white/10 rounded-full transition"
-//           >
-//             <ChevronDown className="size-6 dark:text-white text-black" />
-//           </button>
+// // "use client";
+// // import React, { useEffect, useState } from "react";
+// // import { fetchAyahAudio } from "@/api/api";
+// // import HighlighterPen from "./svg/HighlighterPenIcon";
+// // import PlayIcon from "./svg/PlayIcon";
+// // import DocumentIcon from "./svg/DocumentIcon";
+// // import { toast } from "sonner";
+// // import CopyIcon from "./svg/CopyIcon";
+// // import { PauseIcon } from "lucide-react";
 
-//           {/* Skip Back 10s */}
-//           <button onClick={() => skip(-10)} className="text-white p-2 hover:bg-white/10 rounded-full">
-//             <SkipBackIcon className="size-5 dark:text-white text-black" />
-//           </button>
+// // const AyahCard = ({ surah, ayah, params, currentAudio, setCurrentAudio }: AyahCardProps) => {
+// //   // Find the translation for this ayah based on its number in the surah.
+// //   const [playing, setPlaying] = useState(false);
+// //   const [highlighted, setHighlighted] = useState(false);
+// //   const [preloadedAudio, setPreloadedAudio] = useState<HTMLAudioElement | null>(null)
 
-//           {/* Play/Pause */}
-//           <button onClick={handlePlayPause} className="text-white p-3 dark:bg-white/10 hover:opacity-80 rounded-full p-2 rounded-full hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer bg-[var(--sephia-300)]">
-          
-//             {playing ? <Pause className="size-5 dark:text-white text-black" /> : <PlayIcon className="size-5 dark:text-white text-black" />}
-//           </button>
+// //   useEffect(() => {
+// //     const preload = async () => {
+// //       const response = await fetchAyahAudio(surah.number, ayah.numberInSurah)
+// //       if (response && response.data.audio) {
+// //         const audio = new Audio(response.data.audio)
+// //         audio.preload = "auto"
+// //         setPreloadedAudio(audio)
+// //       }
+// //     }
 
-//           {/* Skip Forward 10s */}
-//           <button onClick={() => skip(10)} className="text-white p-2 hover:bg-white/10 rounded-full">
-//             <SkipForwardIcon className="size-5 dark:text-white text-black" />
-//           </button>
+// //     preload()
+// //   }, [surah.number, ayah.numberInSurah])
 
-//           {/* Time Display */}
-//           <span className="text-xs font-mono dark:text-gray-300 text-black">
-//             {formatTime(currentTime)} / {formatTime(duration || 0)}
-//           </span>
+// //   const handleFetchAudio = () => {
+// //     if (!preloadedAudio || preloadedAudio.src === "") {
+// //       toast.error("Audio not ready.");
+// //       return;
+// //     }
 
-//           {/* Playback Speed Popover */}
-//           <Popover>
-//             <PopoverTrigger className="dark:text-white text-black p-2 hover:bg-white/10 rounded-full cursor-pointer">
-//               {playbackRate}×
-//             </PopoverTrigger>
-//             <PopoverContent className="dark:bg-zinc-800 bg-[var(--sephia-200)] rounded-lg p-2 space-y-1 shadow-lg">
-//               {playbackRates.map((rate) => (
-//                 <div
-//                   key={rate}
-//                   onClick={() => setPlaybackRate(rate)}
-//                   className={`px-3 py-1 rounded cursor-pointer hover:bg-white/20 ${
-//                     playbackRate === rate ? 'bg-white/20' : ''
-//                   }`}
+// //     if (playing) {
+// //       preloadedAudio.pause();
+// //       setPlaying(false);
+// //       return;
+// //     }
+
+// //     // Stop other audio
+// //     if (currentAudio && currentAudio !== preloadedAudio) {
+// //       currentAudio.pause();
+// //       currentAudio.currentTime = 0;
+// //     }
+
+// //     preloadedAudio
+// //       .play()
+// //       .then(() => {
+// //         setPlaying(true);
+// //         setCurrentAudio(preloadedAudio);
+
+// //         preloadedAudio.onended = () => {
+// //           setPlaying(false);
+// //           setCurrentAudio(null);
+// //         };
+// //       })
+// //       .catch((err) => {
+// //         console.error("Playback failed", err);
+// //         toast.error("Playback failed.");
+// //         setPlaying(false);
+// //       });
+// //   };
+
+// //   const handleHighlightAyah = async () => {
+// //     const e = document.getElementById(`ayah-${ayah.numberInSurah}`);
+// //     const f = [
+// //       "dark:bg-[#1c1c1cff]",
+// //       "bg-gray-200",
+// //       "border-l-4",
+// //       "dark:border-l-white",
+// //       "border-l-gray-400",
+// //     ];
+// //     // turn into globals.css just class for all these
+// //     if (highlighted) {
+// //       //   @apply dark:bg-[#1c1c1cff] bg-gray-200 border-l-4 dark:border-l-white border-l-gray-400;
+// //       e?.classList.remove(...f);
+// //       setHighlighted(false);
+// //     } else {
+// //       e?.classList.add(...f);
+// //       setHighlighted(true);
+// //     }
+// //   };
+// //   const handleCopyAyah = async () => {
+// //     let copyText = ayah.translation?.toString();
+// //     if (copyText !== undefined) {
+// //       navigator.clipboard.writeText(copyText);
+// //       toast("Copied text", { description: `${copyText}` });
+// //     }
+// //   };
+
+// //   return (
+// //     <div
+// //     key={ayah.number}
+// //     className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-6 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
+// //     id={`ayah-${ayah.numberInSurah}`}
+// //     >
+// //       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
+// //         <p className="text-lg font-light text-gray-600 dark:text-gray-400 ">
+// //           {params.surah}:{ayah.numberInSurah}
+// //         </p>
+
+// //         <CopyIcon onClick={() => handleCopyAyah()}/>
+// //         <HighlighterPen onClick={() => handleHighlightAyah()} />
+// //         <DocumentIcon />
+// //         {/* <PlayIcon onClick={() => handleFetchAudio()} /> */}
+// //           {playing ? <PauseIcon fill="white" onClick={() => handleFetchAudio()} /> : <PlayIcon onClick={() => handleFetchAudio()} />}
+// //       </div>
+
+// //       <div className="text-right sm:order-2 order-1 flex flex-col w-full">
+// //         <p
+// //           className="md:text-3xl lg:text-4xl text-xl font-light tracking-wider arabic-text
+// //           sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] cursor-pointer"
+// //           onClick={() => handleFetchAudio()}
+// //         >
+// //           {ayah.text.startsWith("بِسۡمِ")
+// //             ? ayah.text.replace("بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ", "")
+// //             : ayah.text}
+// //         </p>
+// //         <div>
+// //           <p className="dark:text-gray-400 text-gray-600 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-1/2 md:w-4/6">
+// //             {ayah.translation}
+// //           </p>
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default AyahCard;
+
+// <div className="w-full pb-12">
+//           <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-16">
+//             <p
+//               className="dark:text-white text-black text-2xl pb-2 text-left font-open-sans cursor-pointer"
+//               onClick={!isSignedIn ? () => router.push("/sign-in") : () => {}}
+//             >
+//               {!isSignedIn
+//                 ? "Sign in to unlock this feature 🔒"
+//                 : activeSection === "Last Read"
+//                 ? "Continue Reading"
+//                 : activeSection === "Saved"
+//                 ? "Your saved"
+//                 : activeSection === "Collections"
+//                 ? "Your Collections"
+//                 : ""}
+//             </p>
+
+//             <div className="border border-[#262629ff] flex rounded-md p-2 md:text-base text-sm mb-6 ">
+//               {["Last Read", "Saved", "Collections"].map((section) => (
+//                 <p
+//                   key={section}
+//                   onClick={() =>
+//                     setActiveSection(section as typeof activeSection)
+//                   }
+//                   className={cn(
+//                     "cursor-pointer py-2 md:w-auto md:px-6 text-center w-1/3 rounded-md",
+//                     activeSection === section
+//                       ? "text-black bg-[var(--gray-100)]"
+//                       : "text-[var(--gray-100)]"
+//                   )}
 //                 >
-//                   {rate}×
-//                 </div>
+//                   {section}
+//                 </p>
 //               ))}
-//             </PopoverContent>
-//           </Popover>
+//             </div>
+//           </div>
+
+//           <div className="min-h-32">
+//             {isSignedIn && activeSection === "Last Read" && recent && (
+//               <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
+//                 <Link href={`/surah/${recent.number}`} key={recent.number}>
+//                   <div className="flex w-full justify-between text-sm">
+//                     <p className="text-lg font-semibold">
+//                       {recent.englishName}
+//                     </p>
+//                     <p>{recent.number}</p>
+//                   </div>
+
+//                   <div className="flex w-full justify-between text-sm">
+//                     <p>{recent.englishNameTranslation}</p>
+//                     <p>{recent.numberOfAyahs} Ayahs</p>
+//                   </div>
+//                 </Link>
+//               </div>
+//             )}
+
+//             {isSignedIn && activeSection === "Saved" && (
+//               <div className="flex flex-wrap w-full gap-5">
+//                 {savedAyahs && savedAyahs.length > 0 ? (
+//                   savedAyahs.slice(0, 5).map(
+//                     (
+//                       ayah: Ayah // destructure later
+//                     ) => (
+//                       <div
+//                         key={ayah.number}
+//                         className={cn(
+//                           "min-h-12 lg:w-fit w-full rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative",
+//                           deletedAyah?.number === ayah.number ? "hidden" : ""
+//                         )}
+//                       >
+//                         <Link
+//                           href={`surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
+//                         >
+//                           <p className="text-lg">{ayah.text}</p>
+//                           <p className="text-gray-400">{ayah.translation}</p>
+//                           <div className="flex justify-between">
+//                             <div className="bg-black/45 p-[8px] rounded-full w-fit">
+//                               {ayah.surahNumber}:{ayah.numberInSurah}
+//                             </div>
+//                           </div>
+//                         </Link>
+//                         <X
+//                           className="text-blue-500 cursor-pointer absolute right-4 top-4"
+//                           onClick={() => handleRemoveSavedAyah(ayah)}
+//                           size={24}
+//                         />
+//                       </div>
+//                     )
+//                   )
+//                 ) : (
+//                   <div>
+//                     <p className="text-xl text-gray-200 hover:text-gray-100 text-center">
+//                       No saved ayahs
+//                       <Link href="/surah/1" className="text-blue-500 text-lg">
+//                         &nbsp;Start Reading
+//                       </Link>
+//                     </p>
+//                   </div>
+//                 )}
+
+//                 <div className="w-full rounded-full p-2 flex justify-center items-center">
+//                   {/* <Link
+//                     href="/saved"
+//                     className="bg-zinc-900 border border-gray-400 text-white rounded-full px-8 py-2 w-44 text-center flex justify-center items-center"
+//                   >
+//                     View All Saved
+//                   </Link> */}
+//                 </div>
+//               </div>
+//             )}
+
+//             {isSignedIn && activeSection === "Collections" && (
+//               <div>
+//                 <p className="text-xl">😢</p>
+//                 <p className="text-gray-200 hover:text-gray-100">
+//                   We're sorry, but the Collections is currently unavailable.
+//                   We're actively working to bring this feature to you as soon as
+//                   possible.{" "}
+//                   <Link
+//                     href="https://github.com/s1ddiq/QuranNet"
+//                     className="text-blue-500 text-lg"
+//                   >
+//                     Learn More
+//                   </Link>
+//                 </p>
+//               </div>
+//             )}
+//           </div>
 //         </div>
-//       )}
-//     </div>
-//   );
-// }
-// <Sheet open={isOpen} onOpenChange={setIsOpen}>
-// <VisuallyHidden>
-//   <SheetTitle>Menu</SheetTitle>
-//   <SheetHeader>Mobile Menu</SheetHeader>
-// </VisuallyHidden>
-// <SheetContent className="px-2 py-2">
-//   <div className="w-full flex items-center justify-center">
-//     <div className="flex w-full justify-center items-center gap-4 pt-6 border-b border-[#262629ff] pb-2">
-//       <p
-//         onClick={() => setActiveSidebarTab("search")}
-//         className={`cursor-pointer ${
-//           activeSidebarTab === "search"
-//             ? "text-white"
-//             : "text-gray-500"
-//         }`}
-//       >
-//         Search
-//       </p>
-
-//       <p
-//         onClick={() => setActiveSidebarTab("overview")}
-//         className={`cursor-pointer ${
-//           activeSidebarTab === "overview"
-//             ? "text-white"
-//             : "text-gray-500"
-//         }`}
-//       >
-//         Overview
-//       </p>
-//     </div>
-//   </div>
-
-//   {activeSidebarTab === "search" && (
-//     <>
-//       <SearchInput
-//         searchQuery={searchQuery}
-//         setSearchQuery={setSearchQuery}
-//       />
-//       <div className="flex flex-col gap-8 items-center scrollable-container">
-//         {searchResults.length > 0 ? (
-//           searchResults.map((result: SearchResult, index) => (
-//             <SearchResultCard
-//               key={`${result.number}-${index}`}
-//               result={result}
-//               searchQuery={searchQuery}
-//               type="desktop"
-//             />
-//           ))
-//         ) : (
-//           <p className="text-sm font-light ml-2 text-gray-400 pointer-events-none">
-//             {searchQuery.length > 3 && searchResults.length === 0
-//               ? `No results found for "${searchQuery}"`
-//               : null}
-//           </p>
-//         )}
-//       </div>
-//     </>
-//   )}
-
-//   {activeSidebarTab === "overview" && (
-//     <Link
-//       href="/support"
-//       className="px-5 py-2 bg-blue-500 text-white rounded-xl text-sm font-medium transition relative w-44"
-//     >
-//       Support Us ♥
-//       <span className="absolute -top-[4px] -right-[6px] flex size-4">
-//         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-//         <span className="relative inline-flex size-4 rounded-full bg-indigo-500"></span>
-//       </span>
-//     </Link>
-//   )}
-// </SheetContent>
-// </Sheet>
-
-// "use client";
-// import React, { useEffect, useState } from "react";
-// import { fetchAyahAudio } from "@/api/api";
-// import HighlighterPen from "./svg/HighlighterPenIcon";
-// import PlayIcon from "./svg/PlayIcon";
-// import DocumentIcon from "./svg/DocumentIcon";
-// import { toast } from "sonner";
-// import CopyIcon from "./svg/CopyIcon";
-// import { PauseIcon } from "lucide-react";
-
-// const AyahCard = ({ surah, ayah, params, currentAudio, setCurrentAudio }: AyahCardProps) => {
-//   // Find the translation for this ayah based on its number in the surah.
-//   const [playing, setPlaying] = useState(false);
-//   const [highlighted, setHighlighted] = useState(false);
-//   const [preloadedAudio, setPreloadedAudio] = useState<HTMLAudioElement | null>(null)
-
-//   useEffect(() => {
-//     const preload = async () => {
-//       const response = await fetchAyahAudio(surah.number, ayah.numberInSurah)
-//       if (response && response.data.audio) {
-//         const audio = new Audio(response.data.audio)
-//         audio.preload = "auto"
-//         setPreloadedAudio(audio)
-//       }
-//     }
-  
-//     preload()
-//   }, [surah.number, ayah.numberInSurah])
-  
-//   const handleFetchAudio = () => {
-//     if (!preloadedAudio || preloadedAudio.src === "") {
-//       toast.error("Audio not ready.");
-//       return;
-//     }
-  
-//     if (playing) {
-//       preloadedAudio.pause();
-//       setPlaying(false);
-//       return;
-//     }
-  
-//     // Stop other audio
-//     if (currentAudio && currentAudio !== preloadedAudio) {
-//       currentAudio.pause();
-//       currentAudio.currentTime = 0;
-//     }
-  
-//     preloadedAudio
-//       .play()
-//       .then(() => {
-//         setPlaying(true);
-//         setCurrentAudio(preloadedAudio);
-  
-//         preloadedAudio.onended = () => {
-//           setPlaying(false);
-//           setCurrentAudio(null);
-//         };
-//       })
-//       .catch((err) => {
-//         console.error("Playback failed", err);
-//         toast.error("Playback failed.");
-//         setPlaying(false);
-//       });
-//   };
-  
-  
-  
-//   const handleHighlightAyah = async () => {
-//     const e = document.getElementById(`ayah-${ayah.numberInSurah}`);
-//     const f = [
-//       "dark:bg-[#1c1c1cff]",
-//       "bg-gray-200",
-//       "border-l-4",
-//       "dark:border-l-white",
-//       "border-l-gray-400",
-//     ];
-//     // turn into globals.css just class for all these
-//     if (highlighted) {
-//       //   @apply dark:bg-[#1c1c1cff] bg-gray-200 border-l-4 dark:border-l-white border-l-gray-400;
-//       e?.classList.remove(...f);
-//       setHighlighted(false);
-//     } else {
-//       e?.classList.add(...f);
-//       setHighlighted(true);
-//     }
-//   };
-//   const handleCopyAyah = async () => {
-//     let copyText = ayah.translation?.toString();
-//     if (copyText !== undefined) {
-//       navigator.clipboard.writeText(copyText);
-//       toast("Copied text", { description: `${copyText}` });
-//     }
-//   };
-  
-//   return (
-//     <div
-//     key={ayah.number}
-//     className="border-b border-px dark:border-[#262629ff] border-gray-400 p-2 md:p-6 flex flex-col sm:flex-row justify-between gap-12 transition-all duration-300"
-//     id={`ayah-${ayah.numberInSurah}`}
-//     >
-//       <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center justify-end">
-//         <p className="text-lg font-light text-gray-600 dark:text-gray-400 ">
-//           {params.surah}:{ayah.numberInSurah}
-//         </p>
-
-//         <CopyIcon onClick={() => handleCopyAyah()}/>
-//         <HighlighterPen onClick={() => handleHighlightAyah()} />
-//         <DocumentIcon />
-//         {/* <PlayIcon onClick={() => handleFetchAudio()} /> */}
-//           {playing ? <PauseIcon fill="white" onClick={() => handleFetchAudio()} /> : <PlayIcon onClick={() => handleFetchAudio()} />}
-//       </div>
-
-//       <div className="text-right sm:order-2 order-1 flex flex-col w-full">
-//         <p
-//           className="md:text-3xl lg:text-4xl text-xl font-light tracking-wider arabic-text 
-//           sm:pr-8 md:pr-16 lg:pr-26 md:leading-[2] leading-[2.25] cursor-pointer"
-//           onClick={() => handleFetchAudio()}
-//         >
-//           {ayah.text.startsWith("بِسۡمِ")
-//             ? ayah.text.replace("بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ", "")
-//             : ayah.text}
-//         </p>
-//         <div>
-//           <p className="dark:text-gray-400 text-gray-600 md:text-lg md:leading-[1.2] leading-[1.5] text-base md:ml-8 text-left pt-6 lg:w-1/2 md:w-4/6">
-//             {ayah.translation}
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AyahCard;

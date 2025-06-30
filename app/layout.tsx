@@ -6,8 +6,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { GlobalStateProvider } from "@/lib/providers/GlobalStatesProvider";
 import { inter } from "./fonts";
 
-const dm_sans = DM_Sans({ subsets: ["latin"] });
-
 export const metadata = {
   title: "QuranNet",
   description: "Read and listen to quran for free - forever.",
@@ -34,7 +32,7 @@ export default function RootLayout({
               content="width=device-width, initial-scale=1"
             />
           </Head>
-          <body className={`${inter.className} dark:bg-[#08080a] bg-white`}>
+          <body className={`${inter.className}  bg-zinc-900`}>
             {children}
             <Toaster />
           </body>

@@ -32,6 +32,7 @@ import {
   Pause,
   Play,
   Save,
+  SplineIcon,
 } from "lucide-react";
 // ICONS END ⭐
 
@@ -307,7 +308,7 @@ const Surah = () => {
   if (loading)
     return (
       <div className="w-full h-screen bg-zinc-900 flex justify-center items-center">
-        <Loader className="size-12 text-gray-400 animate-spin" />
+        <SplineIcon size={36} className="animate-spin text-zinc-400" />
       </div>
     );
 
@@ -419,13 +420,12 @@ const Surah = () => {
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
-                <p className="text-lg font-light text-[var(--sephia-700)] dark:text-gray-400 ">
+                <p className="text-lg font-light text-zinc-400 ">
                   {params.surah}:{ayah.numberInSurah}
                 </p>
-
-                <div className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center">
+                <div className="p-2 rounded-full hover:bg-zinc-800 transition-colors cursor-pointer inline-flex items-center justify-center">
                   <Copy
-                    className="dark:text-gray-400 text-[#72603F]"
+                    className="text-zinc-400"
                     size={18}
                     onClick={() => handleCopyAyah(ayah)}
                   />
@@ -434,25 +434,16 @@ const Surah = () => {
                   onClick={() => handleSaveAyah(ayah)}
                   className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
-                  <Save
-                    className="dark:text-gray-400 text-[#72603F]"
-                    size={18}
-                  />
+                  <Save className="text-zinc-400" size={18} />
                 </div>
                 <div
                   onClick={() => handleFetchAudio(ayah)}
-                  className="p-2 rounded-full dark:hover:bg-zinc-800 hover:bg-[var(--sephia-500)]/45 transition-colors cursor-pointer inline-flex items-center justify-center"
+                  className="p-2 rounded-full hover:bg-zinc-800  transition-colors cursor-pointer inline-flex items-center justify-center"
                 >
                   {currentlyPlayingAyah === ayah.numberInSurah ? (
-                    <Pause
-                      className="dark:text-gray-400 text-[var(--sephia-700)]"
-                      size={18}
-                    />
+                    <Pause className="text-zinc-400" size={18} />
                   ) : (
-                    <Play
-                      className="dark:text-gray-400 text-[#72603F]"
-                      size={18}
-                    />
+                    <Play className="text-zinc-400" size={18} />
                   )}
                 </div>
               </div>

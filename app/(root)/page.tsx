@@ -21,14 +21,15 @@ import { cn } from "@/lib/utils";
 
 // Icons / Lucide React ⭐
 import MenuIcon from "@/components/svg/icons/MenuIcon";
-import { X } from "lucide-react";
+import { Circle, Sparkle, X } from "lucide-react";
 // Hooks ⭐
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 // Fonts ⭐
-import { inter } from "@/app/fonts";
+import { amiriquran, inter } from "@/app/fonts";
 import MobileSheet from "@/components/sidebar/MobileSheet";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import ShufflingAyahs from "@/components/ShufflingAyahs";
 
 const SurahsList = () => {
   // organize later
@@ -92,7 +93,6 @@ const SurahsList = () => {
 
   return (
     <>
-      {/* <div className="w-full h-44 bg-[var(--sephia-700)]"></div> */}
       <MobileSheet
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -101,19 +101,24 @@ const SurahsList = () => {
         surahs={surahs}
       />
 
-      <div className="sticky top-0 z-50 h-16 w-full backdrop-blur-md bg-transparent border-b border-[#262629ff] hidden md:flex items-center justify-between xl:px-48 lg:px-24 px-4">
-        <LogoIcon className="dark:text-white text-black hidden md:block" />
-        <div className="sm:hidden flex items-center">
-          <MenuIcon
-            className="dark:text-white text-black"
-            onClick={() => setIsOpen((prev) => !prev)}
-          />
+      <div className="sticky top-0 z-50 h-20 w-full backdrop-blur-md bg-transparent bborder-b bborder-[#262629ff] hidden lg:flex items-center justify-between xl:px-32 lg:px-16 px-4">
+        <div className="flex items-end gap-2 text-white">
+          <div className="bg-white p-1.5 rounded-md">
+            <LogoIcon className="hidden lg:block text-black" />
+          </div>
+          <p className="font-bold text-2xl">QuranNet</p>
+
+          <div className="sm:hidden ml-auto">
+            <MenuIcon
+              className="dark:text-white text-black"
+              onClick={() => setIsOpen((prev) => !prev)}
+            />
+          </div>
         </div>
 
         {/* Sheet for Mobile Menu */}
-
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-6 text-[var(--gray-100)] text-sm">
+        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-6 text-zinc-400 text-sm">
           <span className="cursor-pointer hover:text-gray-300 transition text-white">
             Home
           </span>
@@ -127,7 +132,7 @@ const SurahsList = () => {
             className="cursor-pointer hover:text-gray-300 transition"
             onClick={() => setIsOpen((prev) => !prev)}
           >
-            Go to Ayah
+            About
           </span>
           <span
             className="cursor-pointer hover:text-gray-300 transition"
@@ -144,303 +149,268 @@ const SurahsList = () => {
             Overview
           </span>
         </nav>
-
         <SignedIn>
           <UserButton />
         </SignedIn>
         <SignedOut>
-          <Link
-            href="/sign-in"
-            className="px-5 py-2 dark:bg-blue-500  hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+          <Button
+            onClick={() => router.push("/sign-in")}
+            className="px-5 py-2 bg-blue-500 text-white"
           >
             Sign in
-          </Link>
+          </Button>
         </SignedOut>
       </div>
 
-      <div className="w-full flex-items-center flex-col flex-1 text-white ">
-        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between dark:bg-black bg-white">
-          <div className="w-full px-4 flex flex-col justify-center items-center space-y-6 h-[calc(100vh-64px)]">
-            <div className="relative">
-              <div
-                className="w-[450px] h-[300px] absolute left-1/2 -translate-x-1/2 -top-20"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse at center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 100%)",
-                  maskImage:
-                    "radial-gradient(ellipse at center, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 100%)",
-                }}
-              >
+      <div className="space-y-24 w-full flex-col flex-1 text-white xl:px-32 lg:px-16 px-4 ">
+        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between space-y-24">
+          <div className="grid lg:grid-cols-2 grid-cols-1 relative lg:gap-0 gap-6 lg:mt-0 mt-28 xl:gap-12">
+            <Sparkle
+              className="fill-purple-500 text-purple-500 absolute left-62 top-32 animate-pulse rotate-34 z-10"
+              size={36}
+            />
+            <Sparkle
+              className="fill-yellow-400 text-yellow-400 absolute left-12 bottom-32 animate-pulse z-10"
+              size={48}
+            />
+            <Circle
+              className="fill-orange-400 text-orange-400 absolute right-56 -bottom-24 z-0 animate-bounce"
+              size={48}
+            />
+
+            {/* 🆕 Extra sparkles */}
+            <Sparkle
+              className="fill-blue-400 text-blue-400 absolute right-24 bottom-20 animate-caret-blink z-20"
+              size={36}
+            />
+            <Sparkle
+              className="fill-pink-500 text-pink-500 absolute left-[50%] top-[40%] animate-pulse z-10"
+              size={28}
+            />
+            <Circle
+              className="fill-cyan-500 text-cyan-500 absolute right-[30%] top-[80%] blur-sm opacity-70 z-0"
+              size={32}
+            />
+            <Circle
+              className="animate-spin fill-white text-white absolute left-10 top-10 opacity-10 blur-2xl z-0"
+              size={126}
+            />
+
+            <div className="w-full flex flex-col justify-center space-y-6 lg:h-[calc(100vh-64px)] ">
+              <div className={`${inter.className} space-y-6`}>
+                <h1 className="md:text-6xl text-4xl font-semibold text-white ">
+                  Recite the <span className="text-blue-500">Quran</span> in{" "}
+                  <br /> an orderly and clear <br /> manner
+                  <span className="text-sm text-zinc-400"> - [7:4]</span>
+                </h1>
+                <p className="max-w-md md:text-lg text-base font-medium text-zinc-400">
+                  Read, recite, and get it right. With real-time correction and
+                  engaging UI, mastering Pronounciation of the Quran has never
+                  been this simple or rewarding — for all ages
+                </p>
+
+                <div className="flex gap-4">
+                  <Button className="bg-blue-500 text-white">
+                    Start Reading
+                  </Button>
+                  <Button variant="outline">Sign up for Free</Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full flex flex-col md:items-end *:items-center justify-center space-y-6 lg:h-[calc(100vh-64px)] h-64 drop-shadow-[0_0_12px_rgba(255,255,255,0.5)]">
+              <div className="lg:w-106 xl:w-full w-full h-full lg:h-[80%] bg-zinc-800/75 border border-input shadow-xl overflow-hidden rounded-lg relative ">
                 <Image
-                  src="/images/bg.png"
-                  alt="bg"
-                  width={1200}
-                  height={1200}
-                  className="object-cover w-full h-full"
+                  src="/images/quran_book_open-2.jpg"
+                  alt="Quran Book"
+                  fill
+                  className="object-cover"
                 />
               </div>
+            </div>
+          </div>
 
-              <h1
-                className={`${inter.className} md:text-6xl text-4xl font-semibold text-center dark:text-white text-black`}
-              >
-                Read. Reflect. Recite.
+          <div className="space-y-12">
+            <div className="relative space-y-6">
+              <Circle
+                className="fill-white text-blue-500 absolute right-10 top-0 animate-spin opacity-10 blur-2xl z-0 "
+                size={120}
+              />
+              <h1 className="md:text-4xl text-3xl font-semibold text-white">
+                Powering <span className="text-blue-500">success</span> with our
+                Quran Network
               </h1>
-              <p className="md:text-6xl text-4xl font-semibold text-center text-[var(--gray-100)]">
-                A journey through the Holy Quran.
+              <p className="max-w-md md:text-lg text-base font-medium text-zinc-400">
+                Read and Learn with purpose. Our intelligent correction and
+                interactive reading make and Quran memorization simple,
+                engaging, and accessible for every learner.
               </p>
             </div>
-          </div>
+            <div className="space-y-6">
+              <h1 className="md:text-4xl text-3xl font-semibold text-white">
+                Continue Reading
+              </h1>
 
-          <div className={`${inter.className}  xl:px-48 lg:px-24 px-4`}>
-            <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
-              {/* READ */}
-              <div className="flex justify-center flex-col order-2 md:order-1">
-                <p className="text-3xl">Easy Reading</p>
-                <p className="text-[var(--gray-100)] text-xl">
-                  Navigate through content quickly and effortlessly with a
-                  clean, distraction-free layout designed to enhance focus and
-                  understanding.
-                </p>
-              </div>
-              <div className="flex md:justify-end justify-center order-1 md:order-2">
-                <Image
-                  src="/svg/book4.svg"
-                  alt="Book with Tasbih"
-                  width={356}
-                  height={356}
-                  className="object-cover md:ml-12 dark:text-blue-300 text-blue-500"
-                />
-              </div>
-            </div>
+              <Link href={`/surah/${recent?.number}`}>
+                <div className="border border-input bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 group cursor-pointer rounded-md h-full backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg z-4 sm:w-64 w-full">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="size-8 rounded-sm border border-input/30 flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
+                      <p className="-rotate-45 text-white text-sm font-bold">
+                        {recent?.number}
+                      </p>
+                    </div>
 
-            {/* REFLECT */}
+                    <div className="flex flex-col flex-1 space-y-0.5 text-sm">
+                      <p className="font-semibold text-white">
+                        {recent?.englishName}
+                      </p>
+                      <p className="text-xs text-zinc-400">
+                        {recent?.englishNameTranslation}
+                      </p>
+                    </div>
 
-            <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
-              <Image
-                src="/svg/book2.svg"
-                alt="Book with Button Lock"
-                width={356}
-                height={356}
-                className="object-cover order-1 md:order-2"
-              />
-              <div className="flex justify-center flex-col order-1 md:order-2">
-                <p className="text-3xl">Saved Reflections</p>
-                <p className="text-[var(--gray-100)] text-xl">
-                  Signed-in users can save verses or revisit recent surahs
-                  anytime. Reflect deeply by returning to what matters most,
-                  whenever you need.
-                </p>
-              </div>
-            </div>
-
-            {/* RECITE */}
-
-            <div className=" w-full grid md:grid-cols-2 grid-cols-1 gap-5">
-              <div className="flex justify-center flex-col order-2 md:order-1">
-                <p className="text-3xl">Recite with Ease</p>
-                <p className="text-[var(--gray-100)] text-xl">
-                  Follow along with clear audio and text to improve your
-                  recitation. Designed to help you build confidence and fluency,
-                  one verse at a time.
-                </p>
-              </div>
-              <div className="flex md:justify-end justify-center order-1 md:order-2">
-                <Image
-                  src="/svg/book3.svg"
-                  alt="Person Holding Open Book"
-                  width={356}
-                  height={356}
-                  className="object-cover order-1 md:order-2 md:ml-12"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* <SignInPopup /> */}
-
-        <div className="w-full xl:px-48 lg:px-24 px-4 bg-black pb-12">
-          <div className="text-base flex md:flex-row flex-col gap-4 justify-between mt-16">
-            <p
-              className="dark:text-white text-black text-2xl pb-2 text-left font-open-sans cursor-pointer"
-              onClick={!isSignedIn ? () => router.push("/sign-in") : () => {}}
-            >
-              {!isSignedIn
-                ? "Sign in to unlock this feature 🔒"
-                : activeSection === "Last Read"
-                ? "Continue Reading"
-                : activeSection === "Saved"
-                ? "Your saved"
-                : activeSection === "Collections"
-                ? "Your Collections"
-                : ""}
-            </p>
-
-            <div className="border border-[#262629ff] flex rounded-md p-2 md:text-base text-sm mb-6 ">
-              {["Last Read", "Saved", "Collections"].map((section) => (
-                <p
-                  key={section}
-                  onClick={() =>
-                    setActiveSection(section as typeof activeSection)
-                  }
-                  className={cn(
-                    "cursor-pointer py-2 md:w-auto md:px-6 text-center w-1/3 rounded-md",
-                    activeSection === section
-                      ? "text-black bg-[var(--gray-100)]"
-                      : "text-[var(--gray-100)]"
-                  )}
-                >
-                  {section}
-                </p>
-              ))}
-            </div>
-          </div>
-
-          <div className="min-h-32">
-            {isSignedIn && activeSection === "Last Read" && recent && (
-              <div className="md:w-80 sm:w-64 w-full min-h-24 h-auto bg-gradient-to-r from-blue-500 to-blue-400 border-2 dark:border-[#262629ff] rounded-xl p-4 cursor-pointer flex flex-col justify-between text-white hover:scale-105 transition-all duration-100">
-                <Link href={`/surah/${recent.number}`} key={recent.number}>
-                  <div className="flex w-full justify-between text-sm">
-                    <p className="text-lg font-semibold">
-                      {recent.englishName}
-                    </p>
-                    <p>{recent.number}</p>
-                  </div>
-
-                  <div className="flex w-full justify-between text-sm">
-                    <p>{recent.englishNameTranslation}</p>
-                    <p>{recent.numberOfAyahs} Ayahs</p>
-                  </div>
-                </Link>
-              </div>
-            )}
-
-            {isSignedIn && activeSection === "Saved" && (
-              <div className="flex flex-wrap w-full gap-5">
-                {savedAyahs && savedAyahs.length > 0 ? (
-                  savedAyahs.slice(0, 5).map(
-                    (
-                      ayah: Ayah // destructure later
-                    ) => (
-                      <div
-                        key={ayah.number}
-                        className={cn(
-                          "min-h-12 lg:w-fit w-full rounded-xl bg-zinc-900 border border-[#262629ff] p-4 relative",
-                          deletedAyah?.number === ayah.number ? "hidden" : ""
-                        )}
-                      >
-                        <Link
-                          href={`surah/${ayah.surahNumber}?ayah=${ayah.numberInSurah}`}
-                        >
-                          <p className="text-lg">{ayah.text}</p>
-                          <p className="text-gray-400">{ayah.translation}</p>
-                          <div className="flex justify-between">
-                            <div className="bg-black/45 p-[8px] rounded-full w-fit">
-                              {ayah.surahNumber}:{ayah.numberInSurah}
-                            </div>
-                          </div>
-                        </Link>
-                        <X
-                          className="text-blue-500 cursor-pointer absolute right-4 top-4"
-                          onClick={() => handleRemoveSavedAyah(ayah)}
-                          size={24}
-                        />
-                      </div>
-                    )
-                  )
-                ) : (
-                  <div>
-                    <p className="text-xl text-gray-200 hover:text-gray-100 text-center">
-                      No saved ayahs
-                      <Link href="/surah/1" className="text-blue-500 text-lg">
-                        &nbsp;Start Reading
-                      </Link>
+                    <p
+                      className={`${amiriquran.className} text-sm text-white tracking-wide`}
+                    >
+                      {recent?.name}
                     </p>
                   </div>
-                )}
-
-                <div className="w-full rounded-full p-2 flex justify-center items-center">
-                  {/* <Link
-                    href="/saved"
-                    className="bg-zinc-900 border border-gray-400 text-white rounded-full px-8 py-2 w-44 text-center flex justify-center items-center"
-                  >
-                    View All Saved
-                  </Link> */}
                 </div>
-              </div>
-            )}
-
-            {isSignedIn && activeSection === "Collections" && (
-              <div>
-                <p className="text-xl">😢</p>
-                <p className="text-gray-200 hover:text-gray-100">
-                  We're sorry, but the Collections is currently unavailable.
-                  We're actively working to bring this feature to you as soon as
-                  possible.{" "}
-                  <Link
-                    href="https://github.com/s1ddiq/QuranNet"
-                    className="text-blue-500 text-lg"
-                  >
-                    Learn More
-                  </Link>
-                </p>
-              </div>
-            )}
+              </Link>
+            </div>
           </div>
         </div>
-        <div
-          className={`w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 bg-black gap-3 xl:px-48 lg:px-24 px-4 lg:pt-24 ${inter.className}`}
-        >
-          {surahs.slice(0, amount).map((surah: Surah) => (
-            <Link href={`/surah/${surah.number}`} key={surah.number}>
-              <div className="border border-[#262629ff] group cursor-pointer rounded-md backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="size-8 rounded-sm border border-[#262629ff] flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
-                    <p className="-rotate-45 text-white text-sm font-bold">
-                      {surah.number}
-                    </p>
-                  </div>
 
-                  <div className="flex flex-col flex-1 space-y-0.5 text-sm">
-                    <p className="font-semibold text-white">
-                      {surah.englishName}
-                    </p>
-                    <p className="text-xs text-[var(--gray-100)]">
-                      {surah.englishNameTranslation}
-                    </p>
-                  </div>
-
-                  <p className={`surah-font text-sm text-white tracking-wide`}>
-                    {surah.name}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="w-full flex justify-center bg-black pb-16 pt-6">
-          <Button
-            onClick={() => (amount < 22 ? setAmount(114) : setAmount(21))}
-            className="px-5 py-2 dark:bg-blue-500 bg-[var(--sephia-700)] hover:bg-zinc-700 text-white rounded-xl text-sm font-medium transition"
+        <div className="space-y-6">
+          <h2 className="md:text-4xl text-3xl font-semibold text-white">
+            Explore All Surahs
+          </h2>
+          <div
+            className={`w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 relative ${inter.className}`}
           >
-            {amount < 22 ? "Expand" : "Collapse"}
-          </Button>
+            <Sparkle
+              className="fill-purple-500 text-purple-500 absolute left-56 top-32 animate-pulse rotate-45 -z-1"
+              size={36}
+            />
+            <Circle
+              className="fill-green-600 text-green-600 absolute right-56 top-16 z-0 animate-caret-blink"
+              size={16}
+            />
+
+            <Circle
+              className="fill-white text-white absolute left-10 top-10 animate-spin opacity-10 blur-2xl z-0 "
+              size={120}
+            />
+
+            {surahs.map((surah: Surah) => (
+              <Link href={`/surah/${surah.number}`} key={surah.number}>
+                <div className="border border-input bg-input/30 group cursor-pointer rounded-md h-full backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg z-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="size-8 rounded-sm border border-input/30 flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
+                      <p className="-rotate-45 text-white text-sm font-bold">
+                        {surah.number}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col flex-1 space-y-0.5 text-sm">
+                      <p className="font-semibold text-white">
+                        {surah.englishName}
+                      </p>
+                      <p className="text-xs text-zinc-400">
+                        {surah.englishNameTranslation}
+                      </p>
+                    </div>
+
+                    <p
+                      className={`${amiriquran.className} text-sm text-white tracking-wide`}
+                    >
+                      {surah.name}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-12">
+          {/* Section 1: Focus & Purpose */}
+          <div className="relative space-y-6 sm:text-center">
+            <Circle
+              className="fill-white text-white absolute left-10 top-10 animate-spin opacity-10 blur-2xl z-0"
+              size={64}
+            />
+            <h1 className="md:text-4xl text-3xl font-semibold text-white">
+              Focus with{" "}
+              <span className="text-blue-500 hover:text-blue-400 transition-all">
+                intention
+              </span>{" "}
+              — every moment counts.
+            </h1>
+            <p className="md:text-lg text-base font-medium text-zinc-400">
+              Embrace meaningful recitation. Zen Mode keeps distractions out,
+              letting you connect deeply with the Holy Quran — whenever,
+              wherever.
+            </p>
+            {/* 📷 Suggestion: add a subtle animated GIF of someone reading on a tablet, or a mockup of "Zen Mode" */}
+          </div>
+
+          {/* Section 2: Generational Wisdom */}
+          <div className="relative space-y-6 sm:text-center">
+            <h1 className="md:text-4xl text-3xl font-semibold text-white">
+              You're not just learning for{" "}
+              <span className="text-blue-500 hover:text-blue-400 transition-all">
+                you
+              </span>
+              .
+            </h1>
+            <p className="md:text-lg text-base font-medium text-zinc-400">
+              Every verse you master is one you can pass on. Empower future
+              generations with the timeless guidance of the Holy Quran.
+            </p>
+            {/* 📷 Suggestion: image of an elder and child reading together or a Quran passed hand-to-hand */}
+          </div>
+
+          {/* Section 3: Powerful Tech */}
+          <div className="relative space-y-6 sm:text-center">
+            <Circle
+              className="fill-white text-white absolute left-10 top-10 animate-spin opacity-10 blur-2xl z-0"
+              size={64}
+            />
+            <h1 className="md:text-4xl text-3xl font-semibold text-white">
+              More than a{" "}
+              <span className="text-blue-500 hover:text-blue-400 transition-all">
+                web app
+              </span>{" "}
+              — it's a movement.
+            </h1>
+            <p className="md:text-lg text-base font-medium text-zinc-400">
+              Built with precise tarteel detection and smart learning tools,
+              this platform helps you grow — whether you're a beginner or
+              returning reader.
+            </p>
+            {/* 📷 Suggestion: animated waveform, feedback UI, or a gif of the mistake-correction feature in action */}
+          </div>
+
+          <ShufflingAyahs />
+          <div>{/* Saved n stuff here */}</div>
         </div>
 
         {/* <Hills /> */}
-        <footer className="w-full min-h-32 flex flex-col px-4 sm:px-6 items-center bg-black text-white border-t border-[#262629ff]">
+        <footer className="w-full min-h-32 flex flex-col items-center text-white border-t border-[#262629ff]">
           <div className="relative w-full">
             {/* Gradient Mask */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-70 pointer-events-none z-0" />
 
-            <div className="relative z-10 flex flex-col md:flex-row justify-center py-12 w-full xl:px-48 lg:px-24 px-4 gap-4">
+            <div className="relative z-10 flex flex-col md:flex-row md:justify-center py-12 w-full gap-4">
               {/* Column 1 */}
               <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
                 <div className="flex gap-3 items-center">
-                  <LogoIcon className="text-white" />
+                  <div className="bg-white p-1.5 rounded-md">
+                    <LogoIcon className=" text-black" />
+                  </div>
                   <div className="flex flex-col">
                     <p className="font-bold text-white">QuranNet</p>
-                    <p className="text-[12px] text-gray-400">
+                    <p className="text-[12px] text-zinc-400">
                       Read, and Study The Quran
                     </p>
                   </div>
@@ -455,7 +425,7 @@ const SurahsList = () => {
 
               {/* Column 2 */}
               <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-                <p className="font-semibold text-white">Quick Navigation</p>
+                <p className="font-semibold text-blue-500">Quick Navigation</p>
                 <div className="underline space-y-1 text-white">
                   <p
                     onClick={() => openUserProfile()}
@@ -477,7 +447,7 @@ const SurahsList = () => {
 
               {/* Column 3 */}
               <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-                <p className="font-semibold text-white">Quick Links</p>
+                <p className="font-semibold text-blue-500">Quick Links</p>
                 <div className="underline space-y-1 text-white">
                   <p>
                     <Link
@@ -502,7 +472,7 @@ const SurahsList = () => {
 
               {/* Column 4 */}
               <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
-                <p className="font-semibold text-white">Latest News</p>
+                <p className="font-semibold text-blue-500">What's New?</p>
                 <div className="underline text-white">
                   <p>
                     <Link

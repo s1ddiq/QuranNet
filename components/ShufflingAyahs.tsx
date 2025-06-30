@@ -69,7 +69,6 @@ export default function ShufflingAyahs() {
           flex-shrink-0 
           w-full 
           snap-center 
-          p-4 
           text-center 
           text-xl sm:text-2xl
           dark:text-white 
