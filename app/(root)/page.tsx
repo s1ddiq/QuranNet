@@ -221,7 +221,7 @@ const SurahsList = () => {
             <div className="w-full flex flex-col md:items-end *:items-center justify-center space-y-6 lg:h-[calc(100vh-64px)] h-64 drop-shadow-[0_0_12px_rgba(255,255,255,0.5)]">
               <div className="lg:w-106 xl:w-full w-full h-full lg:h-[80%] bg-zinc-800/75 border border-input shadow-xl overflow-hidden rounded-lg relative ">
                 <Image
-                  src="/images/quran_book_open-2.jpg"
+                  src="/assets/images/quran_book_open-2.jpg"
                   alt="Quran Book"
                   fill
                   className="object-cover"

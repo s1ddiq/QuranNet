@@ -10,9 +10,9 @@ export const metadata = {
   title: "QuranNet",
   description: "Read and listen to quran for free - forever.",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon/apple-touch-icon.png",
+    icon: "/assets/favicon.ico",
+    shortcut: "/assets/favicon.ico",
+    apple: "/assets/favicon/apple-touch-icon.png",
   },
 };
 /* This file is used to define the web app manifest for the QuranNet PWA.  */

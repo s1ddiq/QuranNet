@@ -51,8 +51,8 @@ export default function SurahPlayer({
   router,
 }: SurahPlayerProps) {
   // Audio effects
-  const correct = useRef(new Audio("/sounds/correct.mp3")).current;
-  const wrong = useRef(new Audio("/sounds/wrong.mp3")).current;
+  const correct = useRef(new Audio("/assets/sounds/correct.mp3")).current;
+  const wrong = useRef(new Audio("/assets/sounds/wrong.mp3")).current;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
