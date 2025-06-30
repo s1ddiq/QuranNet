@@ -282,7 +282,7 @@ export default function SurahPlayer({
             <ChevronDown className="size-6 dark:text-white text-black" />
           </button>
           <div className="flex flex-col items-center relative">
-            <button className="p-1">
+            <button className="p-1 cursor-pointer">
               {recording ? (
                 <Mic
                   className="size-5 animate-pulse text-blue-400"
