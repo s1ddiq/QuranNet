@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // =========== Shadcn UI and Components ==============
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
@@ -22,6 +22,7 @@ import LogoIcon from "../svg/icons/LogoIcon";
 // =========== Navigation & Routing ==============
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import useScrollDirection from "@/hooks/useScrollDirection";
 
 const MobileSheet = ({
   isOpen,
@@ -33,13 +34,20 @@ const MobileSheet = ({
 }: MobileSheetProps) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("search");
+  const show = useScrollDirection();
 
   const filteredSurahs = surahs?.filter((surah: Surah) =>
     surah.englishName.toLowerCase().includes(searchQuery.toLowerCase())
   );
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="fixed w-full lg:hidden flex justify-between items-center p-2 px-4 top-0 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999">
+      <SheetTrigger
+        className={cn(
+          "fixed w-full lg:hidden flex justify-between items-center transition-all duration-300 p-2 px-4 backdrop-blur-md border-b dark:border-[#262629ff] border-black min-h-16 z-99999",
+          show ? "top-0" : "-top-16"
+        )}
+        id="mobile-menu-trigger"
+      >
         <LogoIcon
           onClick={() => router.push("/")}
           className="dark:text-white text-black"

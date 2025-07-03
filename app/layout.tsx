@@ -32,7 +32,7 @@ export default function RootLayout({
               content="width=device-width, initial-scale=1"
             />
           </Head>
-          <body className={`${inter.className}  bg-zinc-900`}>
+          <body className={`${inter.className}  bg-zinc-900 scroll-smooth`}>
             {children}
             <Toaster />
           </body>

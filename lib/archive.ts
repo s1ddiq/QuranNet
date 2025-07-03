@@ -579,3 +579,35 @@
 //             )}
 //           </div>
 //         </div>
+
+//  useEffect(() => {
+//     const func = async () => {
+//       if (!juzParam) return;
+//       toast(
+//         <div
+//           className="flex items-center gap-3"
+//           onClick={() => router.push("/sign-in")}
+//         >
+//           <p className="text-3xl">⚠</p>
+//           <div>
+//             <p className="font-semibold">Juz functionality is limited</p>
+//           </div>
+//         </div>
+//       );
+//       try {
+//         const res = await fetchJuz(juzParam);
+//         if (res) {
+//           setJuz(res);
+//           setAyahs(
+//             res.arabic.data.ayahs.map((ayah: any, index: number) => ({
+//               ...ayah,
+//               translation: res.english[index]?.text || "",
+//             }))
+//           );
+//         }
+//       } catch (error) {
+//         console.error("Error fetching juz:", error);
+//       }
+//     };
+//     func();
+//   }, [juzParam]);

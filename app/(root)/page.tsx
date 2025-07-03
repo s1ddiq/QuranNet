@@ -101,7 +101,7 @@ const SurahsList = () => {
         surahs={surahs}
       />
 
-      <div className="sticky top-0 z-50 h-20 w-full backdrop-blur-md bg-transparent bborder-b bborder-[#262629ff] hidden lg:flex items-center justify-between xl:px-32 lg:px-16 px-4">
+      <div className="sticky top-0 z-50 h-20 w-full backdrop-blur-md bg-transparent hidden lg:flex items-center justify-between xl:px-32 lg:px-16 px-4">
         <div className="flex items-end gap-2 text-white">
           <div className="bg-white p-1.5 rounded-md">
             <LogoIcon className="hidden lg:block text-black" />
@@ -116,9 +116,7 @@ const SurahsList = () => {
           </div>
         </div>
 
-        {/* Sheet for Mobile Menu */}
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-6 text-zinc-400 text-sm">
+        <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-6 text-zinc-400 lg:text-base text-sm">
           <span className="cursor-pointer hover:text-gray-300 transition text-white">
             Home
           </span>
@@ -162,21 +160,21 @@ const SurahsList = () => {
         </SignedOut>
       </div>
 
-      <div className="space-y-24 w-full flex-col flex-1 text-white xl:px-32 lg:px-16 px-4 ">
+      <div className="space-y-24 w-full flex-col flex-1 text-white xl:px-32 lg:px-16 px-4">
         <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between space-y-24">
-          <div className="grid lg:grid-cols-2 grid-cols-1 relative lg:gap-0 gap-6 lg:mt-0 mt-28 xl:gap-12">
+          <div className="grid md:grid-cols-2 grid-cols-1 relative lg:gap-0 gap-6 lg:mt-0 mt-32 xl:gap-12 md:min-h-[calc(100vh-64px)] ">
             <Sparkle
               className="fill-purple-500 text-purple-500 absolute left-62 top-32 animate-pulse rotate-34 z-10"
               size={36}
             />
             <Sparkle
-              className="fill-yellow-400 text-yellow-400 absolute left-12 bottom-32 animate-pulse z-10"
+              className="fill-yellow-400 text-yellow-400 absolute left-12 sm:bottom-32 -bottom-24 animate-pulse z-10"
               size={48}
             />
-            <Circle
+            {/* <Circle
               className="fill-orange-400 text-orange-400 absolute right-56 -bottom-24 z-0 animate-bounce"
               size={48}
-            />
+            /> */}
 
             {/* 🆕 Extra sparkles */}
             <Sparkle
@@ -195,15 +193,17 @@ const SurahsList = () => {
               className="animate-spin fill-white text-white absolute left-10 top-10 opacity-10 blur-2xl z-0"
               size={126}
             />
-
-            <div className="w-full flex flex-col justify-center space-y-6 lg:h-[calc(100vh-64px)] ">
+            <div className="w-full flex flex-col justify-center md:space-y-6 space-y-8 md:p-0 p-6">
               <div className={`${inter.className} space-y-6`}>
-                <h1 className="md:text-6xl text-4xl font-semibold text-white ">
-                  Recite the <span className="text-blue-500">Quran</span> in{" "}
-                  <br /> an orderly and clear <br /> manner
+                <h1 className="md:text-6xl text-4xl font-semibold text-white group">
+                  Recite the{" "}
+                  <span className="text-blue-500 group-hover:brightness-125 transition-all duration-300">
+                    <Link href="#start_reading">Quran</Link>
+                  </span>{" "}
+                  in <br /> an orderly and clear <br /> manner
                   <span className="text-sm text-zinc-400"> - [7:4]</span>
                 </h1>
-                <p className="max-w-md md:text-lg text-base font-medium text-zinc-400">
+                <p className="max-w-md md:text-lg text-base font-medium text-zinc-400 group">
                   Read, recite, and get it right. With real-time correction and
                   engaging UI, mastering Pronounciation of the Quran has never
                   been this simple or rewarding — for all ages
@@ -218,14 +218,44 @@ const SurahsList = () => {
               </div>
             </div>
 
-            <div className="w-full flex flex-col md:items-end *:items-center justify-center space-y-6 lg:h-[calc(100vh-64px)] h-64 drop-shadow-[0_0_12px_rgba(255,255,255,0.5)]">
-              <div className="lg:w-106 xl:w-full w-full h-full lg:h-[80%] bg-zinc-800/75 border border-input shadow-xl overflow-hidden rounded-lg relative ">
+            <div
+              className="
+            absolute top-0 blur-[2px]
+            md:blur-none
+            md:static group
+            md:z-9 -z-1
+             w-full flex flex-col md:items-end items-center justify-center space-y-6
+             md:opacity-50 opacity-35
+             hover:opacity-30 hover:scale-[0.99]
+             transition-all duration-300
+             cursor-pointer
+            "
+            >
+              <div className="lg:w-106 xl:w-full w-full h-96 md:h-full lg:h-[80%] bg-zinc-800/75 border border-input shadow-2xl overflow-hidden rounded-lg relative group">
                 <Image
                   src="/assets/images/quran_book_open-2.jpg"
                   alt="Quran Book"
                   fill
                   className="object-cover"
                 />
+
+                <div
+                  className="
+                  w-48 
+                  h-screen
+                  bg-zinc-400 
+                  opacity-50 
+                  border border-input/30
+                  absolute 
+                  blur-[2px]
+                  pointer-events-none
+                  
+                  
+                  -rotate-15
+                  -translate-y-24
+                  -translate-x-72 group-hover:translate-x-256 transition-all duration-1500 ease-in-out
+                  "
+                ></div>
               </div>
             </div>
           </div>
@@ -287,6 +317,7 @@ const SurahsList = () => {
           </h2>
           <div
             className={`w-full grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 relative ${inter.className}`}
+            id="start_reading"
           >
             <Sparkle
               className="fill-purple-500 text-purple-500 absolute left-56 top-32 animate-pulse rotate-45 -z-1"
@@ -403,7 +434,7 @@ const SurahsList = () => {
 
             <div className="relative z-10 flex flex-col md:flex-row md:justify-center py-12 w-full gap-4">
               {/* Column 1 */}
-              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 md:items-start items-center">
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-5 ">
                 <div className="flex gap-3 items-center">
                   <div className="bg-white p-1.5 rounded-md">
                     <LogoIcon className=" text-black" />
@@ -424,7 +455,7 @@ const SurahsList = () => {
               </div>
 
               {/* Column 2 */}
-              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 ">
                 <p className="font-semibold text-blue-500">Quick Navigation</p>
                 <div className="underline space-y-1 text-white">
                   <p
@@ -446,7 +477,7 @@ const SurahsList = () => {
               </div>
 
               {/* Column 3 */}
-              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 ">
                 <p className="font-semibold text-blue-500">Quick Links</p>
                 <div className="underline space-y-1 text-white">
                   <p>
@@ -471,7 +502,7 @@ const SurahsList = () => {
               </div>
 
               {/* Column 4 */}
-              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 md:items-start items-center">
+              <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 ">
                 <p className="font-semibold text-blue-500">What's New?</p>
                 <div className="underline text-white">
                   <p>

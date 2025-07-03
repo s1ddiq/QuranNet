@@ -40,7 +40,8 @@ import {
 import SurahPlayer from "@/components/SurahPlayer";
 import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 import { amiri } from "@/app/fonts";
-
+import useScrollDirection from "@/hooks/useScrollDirection";
+import { KeyValue } from "@/components/ui/key-value";
 // SHADCN UI END
 
 const Surah = () => {
@@ -57,7 +58,7 @@ const Surah = () => {
   // Global States
   const { fontSize } = useGlobalState();
   // USESTATES OPEN/CLOSED STATES START ⭐
-  const [showHeader, setShowHeader] = useState(true);
+  const show = useScrollDirection();
   const [collapsed, setCollapsed] = useState(true);
   // Subdivision of O/C;
   const [currentlyPlayingAyah, setCurrentlyPlayingAyah] = useState<
@@ -141,63 +142,6 @@ const Surah = () => {
       }
     }
   }, [ayahParam, ayahs]);
-
-  useEffect(() => {
-    const func = async () => {
-      if (!juzParam) return;
-      toast(
-        <div
-          className="flex items-center gap-3"
-          onClick={() => router.push("/sign-in")}
-        >
-          <p className="text-3xl">⚠</p>
-          <div>
-            <p className="font-semibold">Juz functionality is limited</p>
-          </div>
-        </div>
-      );
-      try {
-        const res = await fetchJuz(juzParam);
-        if (res) {
-          setJuz(res);
-          setAyahs(
-            res.arabic.data.ayahs.map((ayah: any, index: number) => ({
-              ...ayah,
-              translation: res.english[index]?.text || "",
-            }))
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching juz:", error);
-      }
-    };
-    func();
-  }, [juzParam]);
-
-  useEffect(() => {
-    let lastY = window.scrollY;
-    let ticking = false;
-
-    const handleScroll = () => {
-      const currentY = window.scrollY; // was working on juz
-
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (currentY < lastY) {
-            setShowHeader(true);
-          } else if (currentY > lastY) {
-            setShowHeader(false);
-          }
-          lastY = currentY;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleCopyAyah = ({ numberInSurah, text, translation }: Ayah) => {
     // console.log(numberInSurah, text, translation);
@@ -319,7 +263,7 @@ const Surah = () => {
       <div
         className={cn(
           "hidden md:flex items-center justify-between w-full md:min-h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",
-          !showHeader && "-translate-y-24 opacity-0"
+          !show && "-translate-y-24 opacity-0"
         )}
       >
         <div className="flex gap-3 items-center">
@@ -369,40 +313,28 @@ const Surah = () => {
                 </p>
               ) : (
                 <div className="space-y-2 text-zinc-800 dark:text-gray-200 py-2">
-                  <div className="flex-between">
-                    <span className="font-medium">Surah Number:</span>&nbsp;
-                    <span className="text-blue-500">{surah?.number}</span>
-                  </div>
-                  <div className="flex-between">
-                    <span className="font-medium">Surah Name:</span>&nbsp;
-                    <span className={`${amiri.className} text-blue-500`}>
-                      {surah?.name}
-                    </span>
-                  </div>
-                  <div className="flex-between">
-                    <span className="font-medium">English Name:</span>&nbsp;
-                    <span className="text-blue-500">{surah?.englishName}</span>
-                  </div>
-                  <div className="flex-between">
-                    <span className="font-medium">Translation:</span>&nbsp;
-                    <span className="text-blue-500">
-                      {surah?.englishNameTranslation}
-                    </span>
-                  </div>
-                  <div className="flex-between">
-                    <span className="font-medium">Number of Ayahs:</span>
-                    &nbsp;
-                    <span className="text-blue-500">
-                      {surah?.numberOfAyahs}
-                    </span>
-                  </div>
-                  <div className="flex-between">
-                    <span className="font-medium">Revelation Type:</span>
-                    &nbsp;
-                    <span className="text-blue-500">
-                      {surah?.revelationType}
-                    </span>
-                  </div>
+                  <KeyValue label="Surah Number" value={surah?.number} />
+                  <KeyValue
+                    label="Surah Name"
+                    value={
+                      <span className={`${amiri.className}`}>
+                        {surah?.name}
+                      </span>
+                    }
+                  />
+                  <KeyValue label="English Name" value={surah?.englishName} />
+                  <KeyValue
+                    label="Translation"
+                    value={surah?.englishNameTranslation}
+                  />
+                  <KeyValue
+                    label="Number of Ayahs"
+                    value={surah?.numberOfAyahs}
+                  />
+                  <KeyValue
+                    label="Revelation Type"
+                    value={surah?.revelationType}
+                  />
                 </div>
               )}
             </div>
@@ -509,15 +441,6 @@ const Surah = () => {
             direction="Previous"
             surahNumber={params.surah ? surahNumber - 1 : 1}
           />
-          {/* <Link
-            href="/"
-            className="flex items-center gap-2 px-5 py-3 font-semibold transition
-      shadow-md rounded-xl
-      bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700
-      hover:bg-zinc-100 dark:hover:bg-zinc-700"
-          >
-            Home
-          </Link> */}
           <NavigatorButton
             direction="Next"
             surahNumber={params.surah ? surahNumber + 1 : 1}
