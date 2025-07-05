@@ -10,6 +10,7 @@ import JuzList from "../JuzList";
 import { Input } from "../ui/input";
 import { useParams } from "next/navigation";
 import Settings from "../Settings";
+import { useGlobalState } from "@/lib/providers/GlobalStatesProvider";
 
 type TabKey = "surah" | "juz" | "settings";
 const tabs: { key: TabKey; label: string }[] = [
@@ -30,6 +31,7 @@ const Sidebar = () => {
   // Open/Closed States:
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { zenMode } = useGlobalState();
 
   // USESTATES END
 
@@ -56,7 +58,9 @@ const Sidebar = () => {
     <div>
       <div
         className={cn(
-          "min-h-screen lg:block hidden sticky top-0 z-40 border-r dark:border-[#262629ff] border-[var(--sephia-500)] bg-zinc-900 text-white transition-all duration-300 shadow-sm",
+          `min-h-screen lg:block hidden sticky top-0 z-40 border-r dark:border-[#262629ff] border-[var(--sephia-500)] bg-zinc-900 text-white transition-all duration-300 shadow-sm ${
+            zenMode ? "!hidden" : ""
+          }`,
           isCollapsed ? "w-16" : "md:w-[350px]" // fix mobilesheet hiding before MD (yk)
         )}
       >
@@ -111,7 +115,7 @@ const Sidebar = () => {
 
         {/* Surah Panel */}
         {!isCollapsed && activeTab === "surah" && (
-          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+          <div className="p-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
             {filteredSurahs.map((surah) => (
               <Link
                 key={surah.number}
@@ -139,7 +143,7 @@ const Sidebar = () => {
 
         {/* Juz Panel */}
         {!isCollapsed && activeTab === "juz" && (
-          <div className="px-4 py-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
+          <div className="p-4 overflow-y-auto scrollable-container max-h-[calc(100vh-200px)]">
             {/* Example Juz Content */}
             {/* <h2 className="text-lg font-semibold">Juz Content</h2>
             <p className="text-gray-400">Display Juz related content here</p> */}

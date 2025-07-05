@@ -9,6 +9,13 @@ interface GlobalState {
 
   repeatOnMistake: boolean;
   setRepeatOnMistake: React.Dispatch<React.SetStateAction<boolean>>;
+
+  zenMode: boolean;
+  setZenMode: React.Dispatch<React.SetStateAction<boolean>>;
+
+  showBismillah: boolean;
+
+  setShowBismillah: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Create the context with a default value
@@ -27,10 +34,18 @@ export const GlobalStateProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
   const [fontSize, setFontSize] = useState(3);
   const [repeatOnMistake, setRepeatOnMistake] = useState(false);
+  const [zenMode, setZenMode] = useState(false);
 
   return (
     <GlobalStateContext.Provider
-      value={{ fontSize, setFontSize, repeatOnMistake, setRepeatOnMistake }}
+      value={{
+        fontSize,
+        setFontSize,
+        repeatOnMistake,
+        setRepeatOnMistake,
+        zenMode,
+        setZenMode,
+      }}
     >
       {children}
     </GlobalStateContext.Provider>

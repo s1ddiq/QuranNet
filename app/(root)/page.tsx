@@ -67,29 +67,19 @@ const SurahsList = () => {
       const resA = await fetchAllSurahs(); //
       const resB = localStorage.getItem("recent");
       const resC = localStorage.getItem("saved-ayahs");
-      setSurahs(resA.data);
-      if (resB && resC) {
+      if (resB && resC && resA) {
+        setSurahs(resA.data);
         const parsedRecent = JSON.parse(resB);
         const parsedSaved = JSON.parse(resC);
         setRecent(parsedRecent);
         setSavedAyahs(parsedSaved);
-        // console.log(parsedRecent);
+        console.log(parsedRecent);
       } else {
         console.log("No recent data found");
       }
     };
     func();
   }, []);
-
-  // HANDLE remove Saved Ayahs
-  const handleRemoveSavedAyah = (ayah: Ayah) => {
-    const saved = savedAyahs ?? []; // use current state, fallback if needed
-    const updated = saved.filter((a: Ayah) => a.number !== ayah.number);
-
-    localStorage.setItem("saved-ayahs", JSON.stringify(updated));
-    setSavedAyahs(updated); // <- update the state too
-    setDeletedAyah(ayah);
-  };
 
   return (
     <>
@@ -117,7 +107,7 @@ const SurahsList = () => {
         </div>
 
         <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2 gap-6 text-zinc-400 lg:text-base text-sm">
-          <span className="cursor-pointer hover:text-gray-300 transition text-white">
+          <span className="cursor-pointer hover:text-gray-300 transition text-white ">
             Home
           </span>
           <span
@@ -241,9 +231,9 @@ const SurahsList = () => {
 
                 <div
                   className="
-                  w-48 
+                  w-42
                   h-screen
-                  bg-zinc-400 
+                  bg-white/85
                   opacity-50 
                   border border-input/30
                   absolute 
@@ -253,7 +243,7 @@ const SurahsList = () => {
                   
                   -rotate-15
                   -translate-y-24
-                  -translate-x-72 group-hover:translate-x-256 transition-all duration-1500 ease-in-out
+                  -translate-x-72 group-hover:translate-x-256 transition-all duration-750 ease-in-out
                   "
                 ></div>
               </div>
@@ -505,15 +495,37 @@ const SurahsList = () => {
               <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-2 ">
                 <p className="font-semibold text-blue-500">What's New?</p>
                 <div className="underline text-white">
-                  <p>
-                    <Link
-                      href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.0.0"
-                      target="_blank"
-                      className="hover:text-gray-300 transition"
-                    >
-                      v1.0.0 Latest Release
-                    </Link>
-                  </p>
+                  <Link
+                    href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.0.0"
+                    target="_blank"
+                    className="hover:text-gray-300 transition block"
+                  >
+                    v1.0.0
+                  </Link>
+
+                  <Link
+                    href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.1.0"
+                    target="_blank"
+                    className="hover:text-gray-300 transition block"
+                  >
+                    v1.1.0
+                  </Link>
+
+                  <Link
+                    href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.2.0"
+                    target="_blank"
+                    className="hover:text-gray-300 transition block"
+                  >
+                    v1.2.0
+                  </Link>
+
+                  <Link
+                    href="https://github.com/s1ddiq/QuranNet/releases/tag/v1.3.0"
+                    target="_blank"
+                    className="hover:text-gray-300 transition block"
+                  >
+                    v1.2.0 - Latest Release
+                  </Link>
                 </div>
               </div>
             </div>

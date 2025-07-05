@@ -64,9 +64,8 @@ export default function SurahPlayer({
   const [recording, setRecording] = useState(false);
   const [showReciteGuide, setShowReciteGuide] = useState(false);
 
-  const { repeatOnMistake } = useGlobalState();
+  const { repeatOnMistake, zenMode, setZenMode } = useGlobalState();
   const repeatOnMistakeRef = useRef(repeatOnMistake);
-
   const [playingCorrectAudio, setPlayingCorrectAudio] = useState(false);
   const [currentAyah, setCurrentAyah] = useState(0);
   const currentAyahRef = useRef(currentAyah);
@@ -265,7 +264,7 @@ export default function SurahPlayer({
           }}
         />
       )}
-      {!collapsed ? (
+      {!collapsed && !zenMode ? (
         <motion.div
           key="controls"
           layout

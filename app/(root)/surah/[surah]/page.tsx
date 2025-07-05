@@ -59,6 +59,7 @@ const Surah = () => {
   const { fontSize } = useGlobalState();
   // USESTATES OPEN/CLOSED STATES START ⭐
   const show = useScrollDirection();
+  const { zenMode, setZenMode } = useGlobalState();
   const [collapsed, setCollapsed] = useState(true);
   // Subdivision of O/C;
   const [currentlyPlayingAyah, setCurrentlyPlayingAyah] = useState<
@@ -279,10 +280,21 @@ const Surah = () => {
         </div>
       </div>
 
+      {zenMode && (
+        <div
+          className="w-full h-8 z-9 flex-center fixed bottom-0 bg-blue-500 text-center cursor-pointer"
+          onClick={() => setZenMode(false)}
+        >
+          <p>Exit Zen Mode</p>
+        </div>
+      )}
+
       <div className="flex flex-col w-full min-h-screen blg:px-24 bpx-4">
         <div className="flex items-center text-center w-full flex-col mb-4">
           <div className="relative">
-            <BismillahIcon className="dark:text-white text-black lg:max-w-96 md:max-w-86 max-w-72  md:mt-0 mt-16" />
+            {!zenMode && (
+              <BismillahIcon className="dark:text-white text-black lg:max-w-96 md:max-w-86 max-w-72  md:mt-0 mt-16" />
+            )}
 
             <button
               onClick={() => setCollapsed((prev) => !prev)}
@@ -351,7 +363,11 @@ const Surah = () => {
               sm:px-8 px-4 sm:py-12 py-4 flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
-              <div className="h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center">
+              <div
+                className={`${
+                  zenMode ? "!hidden" : ""
+                } h-full flex flex-row sm:order-1 order-2 sm:flex-col gap-3 sm:justify-center items-center transition-all duration-300`}
+              >
                 <p className="text-lg font-light text-zinc-400 ">
                   {params.surah}:{ayah.numberInSurah}
                 </p>
@@ -380,12 +396,16 @@ const Surah = () => {
                 </div>
               </div>
 
-              <div className="text-right sm:order-2 order-1 flex flex-col w-full">
+              <div
+                className={`text-${
+                  !zenMode ? "right" : "center"
+                } sm:order-2 order-1 flex flex-col w-full`}
+              >
                 <p
                   lang="ar"
                   id={`atext-${ayah.numberInSurah}`}
-                  className={`${
-                    amiri.className
+                  className={`${amiri.className} ${
+                    zenMode ? "!px-0" : ""
                   } tracking-wide leading-loose font-light sm:pr-8 md:pr-16 lg:pr-26 md:pb-8 ${
                     fontSize === 0
                       ? "text-lg"
@@ -402,16 +422,20 @@ const Surah = () => {
                       : "text-7xl"
                   }`}
                 >
-                  <span className="inline-flex items-center justify-center size-6 rounded-full text-2xl mr-4">
-                    ({convertNumberToArabicNumeral(ayah.numberInSurah)})
-                  </span>
+                  {!zenMode && (
+                    <span className="inline-flex items-center justify-center size-6 rounded-full text-2xl mr-4">
+                      ({convertNumberToArabicNumeral(ayah.numberInSurah)})
+                    </span>
+                  )}
                   {ayah.text}
                 </p>
 
                 <div>
                   <p
                     className={cn(
-                      `text-white md:leading-[1.2] leading-[1.8] md:ml-8 text-left pt-6 lg:w-2/3 md:w-4/6`,
+                      `text-white md:leading-[1.2] leading-[1.8] md:ml-8 text-${
+                        !zenMode ? "left" : "center !w-full !ml-0"
+                      } pt-6 lg:w-2/3 md:w-4/6`,
                       {
                         "text-sm": fontSize === 0,
                         "text-[12px]": fontSize === 1,

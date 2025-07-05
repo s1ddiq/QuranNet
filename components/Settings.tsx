@@ -12,8 +12,14 @@ import {
 import SettingSection from "./SettingSection";
 
 const Settings = () => {
-  const { fontSize, setFontSize, repeatOnMistake, setRepeatOnMistake } =
-    useGlobalState();
+  const {
+    fontSize,
+    setFontSize,
+    repeatOnMistake,
+    setRepeatOnMistake,
+    zenMode,
+    setZenMode,
+  } = useGlobalState();
   const handleFontSizeChange = (value: number[]) => {
     setFontSize(value[0]);
   };
@@ -23,7 +29,7 @@ const Settings = () => {
   }, [repeatOnMistake]);
 
   return (
-    <div className="p-2 rounded-xl bg-transparent space-y-6 max-w-md">
+    <div className="p-4 rounded-xl bg-transparent space-y-6 max-w-md">
       <SettingSection
         title="Font and Text Size"
         control={
@@ -67,14 +73,13 @@ const Settings = () => {
 
       <SettingSection
         title="Zen Mode"
-        control={<Switch />}
+        control={
+          <Switch
+            checked={zenMode}
+            onCheckedChange={() => setZenMode((prev) => !prev)}
+          />
+        }
         description="Enter a distraction-free mode that hides all UI except the Qur’an."
-      />
-
-      <SettingSection
-        title="Show Bismillah"
-        control={<Switch />}
-        description="Toggle the visibility of 'Bismillah' before each surah (except At-Tawbah)."
       />
 
       <SettingSection
