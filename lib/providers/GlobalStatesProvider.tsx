@@ -12,10 +12,6 @@ interface GlobalState {
 
   zenMode: boolean;
   setZenMode: React.Dispatch<React.SetStateAction<boolean>>;
-
-  showBismillah: boolean;
-
-  setShowBismillah: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Create the context with a default value

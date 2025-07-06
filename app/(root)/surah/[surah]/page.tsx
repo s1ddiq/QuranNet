@@ -360,7 +360,7 @@ const Surah = () => {
             <div
               key={ayah.number}
               className="border-b-[0.1px] border-b-[var(--sephia-500)] dark:border-b-[#262629ff]
-              sm:px-8 px-4 sm:py-12 py-4 flex flex-col items-end justify-end sm:flex-row gap-12 transition-all duration-300"
+              sm:px-8 px-4 sm:py-12 py-4 flex flex-col items-end justify-end sm:flex-row  sm:gap-12 gap-4 transition-all duration-300"
               id={`ayah-${ayah.numberInSurah}`}
             >
               <div
@@ -414,7 +414,7 @@ const Surah = () => {
                       : fontSize === 2
                       ? "text-3xl"
                       : fontSize === 3
-                      ? "sm:text-3xl text-2xl"
+                      ? "sm:text-3xl text-xl"
                       : fontSize === 4
                       ? "sm:text-5xl text-4xl"
                       : fontSize === 5
@@ -423,7 +423,7 @@ const Surah = () => {
                   }`}
                 >
                   {!zenMode && (
-                    <span className="inline-flex items-center justify-center size-6 rounded-full text-2xl mr-4">
+                    <span className="inline-flex items-center justify-center size-6 rounded-full text-xl mr-4">
                       ({convertNumberToArabicNumeral(ayah.numberInSurah)})
                     </span>
                   )}

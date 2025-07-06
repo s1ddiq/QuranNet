@@ -37,7 +37,7 @@ const SurahsList = () => {
   const router = useRouter();
   // USE STATES Data: 🔹
   const [surahs, setSurahs] = useState<Surah[]>([]);
-  const [recent, setRecent] = useState<any>(); // ‼ ☹
+  const [recent, setRecent] = useState<Surah>(); // ‼ ☹
   const [deletedAyah, setDeletedAyah] = useState<Ayah>();
   const [savedAyahs, setSavedAyahs] = useState<Ayah[]>(); // ‼ ☹
 
@@ -67,16 +67,15 @@ const SurahsList = () => {
       const resA = await fetchAllSurahs(); //
       const resB = localStorage.getItem("recent");
       const resC = localStorage.getItem("saved-ayahs");
-      if (resB && resC && resA) {
-        setSurahs(resA.data);
-        const parsedRecent = JSON.parse(resB);
-        const parsedSaved = JSON.parse(resC);
-        setRecent(parsedRecent);
-        setSavedAyahs(parsedSaved);
-        console.log(parsedRecent);
-      } else {
-        console.log("No recent data found");
-      }
+      setSurahs(resA.data); // Breaking Change Fix
+
+      // Parse the LocalStorage Data
+      const parsedRecent = JSON.parse(resB ?? "[]"); // if undefined/null return empty array
+      const parsedSaved = JSON.parse(resC ?? "[]");
+
+      // Set the Recent and Saved Ayahs
+      setRecent(parsedRecent);
+      setSavedAyahs(parsedSaved);
     };
     func();
   }, []);
@@ -271,32 +270,34 @@ const SurahsList = () => {
                 Continue Reading
               </h1>
 
-              <Link href={`/surah/${recent?.number}`}>
-                <div className="border border-input bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 group cursor-pointer rounded-md h-full backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg z-4 sm:w-64 w-full">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="size-8 rounded-sm border border-input/30 flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
-                      <p className="-rotate-45 text-white text-sm font-bold">
-                        {recent?.number}
+              {recent && (
+                <Link href={`/surah/${recent?.number}`}>
+                  <div className="border border-input bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 group cursor-pointer rounded-md h-full backdrop-blur-md px-4 py-4 shadow-md transition-all duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg z-4 sm:w-64 w-full">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="size-8 rounded-sm border border-input/30 flex justify-center items-center rotate-45 transition-all group-hover:bg-blue-500 dark:group-hover:bg-blue-500">
+                        <p className="-rotate-45 text-white text-sm font-bold">
+                          {recent?.number}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-col flex-1 space-y-0.5 text-sm">
+                        <p className="font-semibold text-white">
+                          {recent?.englishName}
+                        </p>
+                        <p className="text-xs text-zinc-400">
+                          {recent?.englishNameTranslation}
+                        </p>
+                      </div>
+
+                      <p
+                        className={`${amiriquran.className} text-sm text-white tracking-wide`}
+                      >
+                        {recent?.name}
                       </p>
                     </div>
-
-                    <div className="flex flex-col flex-1 space-y-0.5 text-sm">
-                      <p className="font-semibold text-white">
-                        {recent?.englishName}
-                      </p>
-                      <p className="text-xs text-zinc-400">
-                        {recent?.englishNameTranslation}
-                      </p>
-                    </div>
-
-                    <p
-                      className={`${amiriquran.className} text-sm text-white tracking-wide`}
-                    >
-                      {recent?.name}
-                    </p>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              )}
             </div>
           </div>
         </div>

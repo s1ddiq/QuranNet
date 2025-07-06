@@ -272,7 +272,7 @@ export default function SurahPlayer({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ opacity: { duration: 0.2 } }}
-          className="flex items-center space-x-3 backdrop-blur-md dark:bg-zinc-800/90 p-3 rounded-full shadow-lg"
+          className="flex justify-center items-center gap-3 backdrop-blur-md dark:bg-zinc-800/90 p-3 sm:w-fit w-full rounded-full shadow-lg"
         >
           <button
             onClick={() => setCollapsed(true)}
@@ -294,9 +294,9 @@ export default function SurahPlayer({
                     if (localStorage.getItem("hasSeenReciteGuide") === "true") {
                       unlockAudio();
                       requestMic();
-                      console.log("has seen it!");
+                      // console.log("has seen it!");
                     } else {
-                      console.log("has seen it2!");
+                      // console.log("has seen it2!");
                       setShowReciteGuide(true);
                     }
                   }}
@@ -329,7 +329,7 @@ export default function SurahPlayer({
           >
             <SkipForwardIcon className="size-5" />
           </button>
-          <span className="font-mono text-xs text-white">
+          <span className="md:block hidden font-mono text-xs text-white">
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
           <Popover>
