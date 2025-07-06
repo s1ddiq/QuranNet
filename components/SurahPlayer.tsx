@@ -146,16 +146,16 @@ export default function SurahPlayer({
     wrong.play();
     if (repeatOnMistakeRef.current) {
       try {
-        const resp = await fetchAyahAudio(
+        const res = await fetchAyahAudio(
           surahNumber,
           currentAyahRef.current + 1
         );
-        if (!resp?.data?.audio) throw new Error("Missing audio URL");
-        const audio = new Audio(resp.data.audio);
+        if (!res?.data?.audio) throw new Error("Missing audio URL");
+        const audio = new Audio(res.data.audio);
         await audio.play();
-        await new Promise((r) =>
-          audio.addEventListener("ended", r, { once: true })
-        );
+        // await new Promise((r) =>
+        //   audio.addEventListener("ended", r, { once: true })
+        // );
       } catch (err) {
         toast.error("Failed to replay Ayah.");
       } finally {
