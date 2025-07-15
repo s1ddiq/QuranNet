@@ -211,8 +211,8 @@ const Surah = () => {
             <p className="text-3xl">🧾</p>
 
             <div>
-              <p className="font-semibold">Already saved</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="font-semibold text-blue-500">Already saved</p>
+              <p className="text-sm text-black">
                 This ayah is already in your saved list.
               </p>
             </div>
@@ -229,7 +229,7 @@ const Surah = () => {
         <div className="flex items-center gap-3">
           <Check size={36} />
           <div>
-            <p className="font-semibold">Saved Ayah</p>
+            <p className="font-semibold text-blue-500">Saved Ayah</p>
           </div>
         </div>
       );
@@ -241,7 +241,7 @@ const Surah = () => {
             <p className="font-semibold">
               <span className="text-blue-500">Sign in&nbsp;</span>required
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-black">
               You need to be signed in to save ayahs.
             </p>
           </div>
@@ -260,7 +260,7 @@ const Surah = () => {
   return (
     <section className="w-full flex items-center flex-col dark:bg-zinc-900 bg-[var(--sephia-primary)] flex-1 dark:text-white text-black">
       {/* turn into component */}
-      <SignInPopup />
+      {/* <SignInPopup /> */}
       <div
         className={cn(
           "hidden md:flex items-center justify-between w-full md:min-h-14 px-6 sticky top-0 backdrop-blur-md dark:bg-zinc-900/70 border-b bg-[var(--sephia-200)] border-white/10 transition-all duration-300 z-50 shadow-sm",

@@ -21,15 +21,16 @@ import { cn } from "@/lib/utils";
 
 // Icons / Lucide React ⭐
 import MenuIcon from "@/components/svg/icons/MenuIcon";
-import { Circle, Sparkle, X } from "lucide-react";
+import { ArchiveIcon, Circle, Sparkle, Trash, X, XIcon } from "lucide-react";
 // Hooks ⭐
 import useSurahNavigation from "@/hooks/useSurahNavigation";
 // Fonts ⭐
-import { amiriquran, inter } from "@/app/fonts";
+import { amiri, amiriquran, inter } from "@/app/fonts";
 import MobileSheet from "@/components/sidebar/MobileSheet";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ShufflingAyahs from "@/components/ShufflingAyahs";
+import { toast } from "sonner";
 
 const SurahsList = () => {
   // organize later
@@ -40,7 +41,6 @@ const SurahsList = () => {
   const [recent, setRecent] = useState<Surah>(); // ‼ ☹
   const [deletedAyah, setDeletedAyah] = useState<Ayah>();
   const [savedAyahs, setSavedAyahs] = useState<Ayah[]>(); // ‼ ☹
-
   // USE STATES States: 🔹
   // Active: 🟥
   const [isOpen, setIsOpen] = useState(false);
@@ -80,6 +80,15 @@ const SurahsList = () => {
     func();
   }, []);
 
+  const handleRemoveSavedAyah = (ayah: Ayah) => {
+    const saved = savedAyahs ?? []; // use current state, fallback if needed
+    const updated = saved.filter((a: Ayah) => a.number !== ayah.number);
+
+    localStorage.setItem("saved-ayahs", JSON.stringify(updated));
+    setSavedAyahs(updated); // <- update the state too
+    setDeletedAyah(ayah);
+  };
+
   return (
     <>
       <MobileSheet
@@ -89,7 +98,7 @@ const SurahsList = () => {
         setSearchQuery={setSearchQuery}
         surahs={surahs}
       />
-
+      <div className="sticky top-0 h-20 w-full lg:hidden flex"></div>
       <div className="sticky top-0 z-50 h-20 w-full backdrop-blur-md bg-transparent hidden lg:flex items-center justify-between xl:px-32 lg:px-16 px-4">
         <div className="flex items-end gap-2 text-white">
           <div className="bg-white p-1.5 rounded-md">
@@ -150,8 +159,9 @@ const SurahsList = () => {
       </div>
 
       <div className="space-y-24 w-full flex-col flex-1 text-white xl:px-32 lg:px-16 px-4">
-        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between space-y-24">
-          <div className="grid md:grid-cols-2 grid-cols-1 relative lg:gap-0 gap-6 lg:mt-0 mt-32 xl:gap-12 md:min-h-[calc(100vh-64px)] ">
+        <div className="w-full min-h-[calc(100vh-64px)] flex flex-col justify-between space-y-24 relative">
+          <div className="grid md:grid-cols-2 grid-cols-1 items-center gap-8 md:min-h-[calc(100vh-64px)] py-12 pb-12 md:py-24 relative">
+            {/* 🌟 Left: Text content */}
             <Sparkle
               className="fill-purple-500 text-purple-500 absolute left-62 top-32 animate-pulse rotate-34 z-10"
               size={36}
@@ -182,70 +192,41 @@ const SurahsList = () => {
               className="animate-spin fill-white text-white absolute left-10 top-10 opacity-10 blur-2xl z-0"
               size={126}
             />
-            <div className="w-full flex flex-col justify-center md:space-y-6 space-y-8 md:p-0 p-6">
-              <div className={`${inter.className} space-y-6`}>
-                <h1 className="md:text-6xl text-4xl font-semibold text-white group">
-                  Recite the{" "}
-                  <span className="text-blue-500 group-hover:brightness-125 transition-all duration-300">
-                    <Link href="#start_reading">Quran</Link>
-                  </span>{" "}
-                  in <br /> an orderly and clear <br /> manner
-                  <span className="text-sm text-zinc-400"> - [7:4]</span>
-                </h1>
-                <p className="max-w-md md:text-lg text-base font-medium text-zinc-400 group">
-                  Read, recite, and get it right. With real-time correction and
-                  engaging UI, mastering Pronounciation of the Quran has never
-                  been this simple or rewarding — for all ages
-                </p>
+            <div className="space-y-6">
+              <h1 className="md:text-6xl text-4xl font-semibold text-white group">
+                Recite the{" "}
+                <span className="text-blue-500 group-hover:brightness-125 transition-all duration-300">
+                  <Link href="#start_reading">Quran</Link>
+                </span>{" "}
+                in <br /> an orderly and clear <br /> manner
+                <span className="text-sm text-zinc-400"> - [7:4]</span>
+              </h1>
 
-                <div className="flex gap-4">
-                  <Button className="bg-blue-500 text-white">
-                    Start Reading
-                  </Button>
-                  <Button variant="outline">Sign up for Free</Button>
-                </div>
+              <p className="max-w-md md:text-lg text-base font-medium text-zinc-400">
+                Read, recite, and get it right. With real-time correction and
+                engaging UI, mastering Pronunciation of the Quran has never been
+                this simple or rewarding — for all ages.
+              </p>
+
+              <div className="flex gap-4">
+                <Button className="bg-blue-500 text-white">
+                  Start Reading
+                </Button>
+                <Button variant="outline">Sign up for Free</Button>
               </div>
             </div>
 
-            <div
-              className="
-            absolute top-0 blur-[2px]
-            md:blur-none
-            md:static group
-            md:z-9 -z-1
-             w-full flex flex-col md:items-end items-center justify-center space-y-6
-             md:opacity-50 opacity-35
-             hover:opacity-30 hover:scale-[0.99]
-             transition-all duration-300
-             cursor-pointer
-            "
-            >
-              <div className="lg:w-106 xl:w-full w-full h-96 md:h-full lg:h-[80%] bg-zinc-800/75 border border-input shadow-2xl overflow-hidden rounded-lg relative group">
-                <Image
-                  src="/assets/images/quran_book_open-2.jpg"
-                  alt="Quran Book"
-                  fill
-                  className="object-cover"
-                />
+            {/* 📖 Right: Quran image with sparkles */}
+            <div className="flex flex-col items-center justify-center relative">
+              <Image
+                src="/assets/images/quran-book-isolated.png"
+                alt="Floating Quran"
+                className="w-72 sm:w-96 md:w-[412px] lg:w-[512px] xl:w-[612px] animate-float-mystic pointer-events-none select-none drop-shadow-[0_0_15px_rgba(59,130,246,0.1)]"
+                height={624}
+                width={624}
+              />
 
-                <div
-                  className="
-                  w-42
-                  h-screen
-                  bg-white/85
-                  opacity-50 
-                  border border-input/30
-                  absolute 
-                  blur-[2px]
-                  pointer-events-none
-                  
-                  
-                  -rotate-15
-                  -translate-y-24
-                  -translate-x-72 group-hover:translate-x-256 transition-all duration-750 ease-in-out
-                  "
-                ></div>
-              </div>
+              {/* Sparkles layered using flex, no absolute */}
             </div>
           </div>
 
@@ -299,6 +280,103 @@ const SurahsList = () => {
                 </Link>
               )}
             </div>
+
+            {isSignedIn ? (
+              <div className="space-y-6">
+                <h1 className="md:text-4xl text-3xl font-semibold text-white">
+                  Your Reflections
+                </h1>
+
+                <div className="w-full pb-2">
+                  <div
+                    className="flex gap-6 min-w-full overflow-x-auto scroll-smooth px-1"
+                    style={{
+                      scrollbarWidth: "thin",
+                      scrollbarColor: "#3b82f6 #18181b",
+                    }}
+                  >
+                    {savedAyahs?.length ? (
+                      savedAyahs.map((a: Ayah, index) => (
+                        <div
+                          key={index}
+                          className="min-w-[320px] max-w-sm flex-shrink-0"
+                        >
+                          <div
+                            className="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-500 border border-blue-500/20 backdrop-blur-lg rounded-2xl p-5 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 ease-in-out gap-2 flex flex-col cursor-pointer"
+                            onClick={() =>
+                              router.push(
+                                `/surah/${a.surahNumber}?ayah=${a.numberInSurah}`
+                              )
+                            }
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="bg-zinc-900/80 text-white px-2 py-0.5 rounded text-xs">
+                                Surah {a.surahNumber}
+                              </span>
+                              <span className="bg-blue-900/80 text-white px-2 py-0.5 rounded text-xs">
+                                Ayah {a.numberInSurah}
+                              </span>
+                            </div>
+
+                            <p
+                              className={`${amiri.className} text-white leading-relaxed text-lg line-clamp-3 mt-4`}
+                            >
+                              {a.text}
+                            </p>
+                            <p className="text-white mt-1 line-clamp-2 italic">
+                              {a.translation}
+                            </p>
+
+                            <div className="flex justify-between mt-2">
+                              {/* ❌ Delete Icon */}
+                              <XIcon
+                                className="text-blue-900 size-6 cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // prevent card click
+                                  handleRemoveSavedAyah(a);
+                                }}
+                              />
+
+                              {/* 📦 Archive Icon */}
+                              <ArchiveIcon
+                                className="text-blue-900 size-6 cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation(); // prevent card click
+                                  toast.info(
+                                    "Sorry, that functionality isn't implemented yet."
+                                  );
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-zinc-400 text-center py-8 w-full">
+                        No saved ayahs yet.
+                      </div>
+                    )}
+                  </div>
+                  <style jsx>{`
+                    .flex::-webkit-scrollbar {
+                      height: 8px;
+                      background: #1e293b;
+                      border-radius: 8px;
+                    }
+                    .flex::-webkit-scrollbar-thumb {
+                      background: #3b82f6;
+                      border-radius: 8px;
+                    }
+                  `}</style>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <h1 className="md:text-2xl text-xl font-semibold text-white">
+                  Sign in to access reflections
+                </h1>
+              </div>
+            )}
           </div>
         </div>
 
@@ -355,67 +433,84 @@ const SurahsList = () => {
           </div>
         </div>
 
-        <div className="space-y-12">
+        <div className="space-y-24 py-12">
           {/* Section 1: Focus & Purpose */}
-          <div className="relative space-y-6 sm:text-center">
-            <Circle
-              className="fill-white text-white absolute left-10 top-10 animate-spin opacity-10 blur-2xl z-0"
-              size={64}
-            />
-            <h1 className="md:text-4xl text-3xl font-semibold text-white">
-              Focus with{" "}
-              <span className="text-blue-500 hover:text-blue-400 transition-all">
-                intention
-              </span>{" "}
-              — every moment counts.
-            </h1>
-            <p className="md:text-lg text-base font-medium text-zinc-400">
-              Embrace meaningful recitation. Zen Mode keeps distractions out,
-              letting you connect deeply with the Holy Quran — whenever,
-              wherever.
-            </p>
-            {/* 📷 Suggestion: add a subtle animated GIF of someone reading on a tablet, or a mockup of "Zen Mode" */}
+          <div className="flex flex-col-reverse md:flex-row items-center gap-12 relative">
+            <div className="md:w-1/2 space-y-6 z-10">
+              <h1 className="md:text-4xl text-3xl font-semibold text-white">
+                Focus with{" "}
+                <span className="text-blue-500 hover:text-blue-400 transition-all">
+                  intention
+                </span>{" "}
+                — every moment counts.
+              </h1>
+              <p className="md:text-lg text-base font-medium text-zinc-400">
+                Embrace meaningful recitation. Zen Mode keeps distractions out,
+                letting you connect deeply with the Holy Quran — whenever,
+                wherever.
+              </p>
+            </div>
+            <div className="md:w-1/2 flex justify-center">
+              <img
+                src="/assets/images/plane2.jpg"
+                alt="Zen Mode Reading"
+                className="w-full max-w-md rounded-xl shadow-2xl animate-float-mystic"
+              />
+            </div>
           </div>
 
           {/* Section 2: Generational Wisdom */}
-          <div className="relative space-y-6 sm:text-center">
-            <h1 className="md:text-4xl text-3xl font-semibold text-white">
-              You're not just learning for{" "}
-              <span className="text-blue-500 hover:text-blue-400 transition-all">
-                you
-              </span>
-              .
-            </h1>
-            <p className="md:text-lg text-base font-medium text-zinc-400">
-              Every verse you master is one you can pass on. Empower future
-              generations with the timeless guidance of the Holy Quran.
-            </p>
-            {/* 📷 Suggestion: image of an elder and child reading together or a Quran passed hand-to-hand */}
+          <div className="flex flex-col md:flex-row items-center gap-12 relative">
+            <div className="md:w-1/2 flex justify-center">
+              <img
+                src="/assets/images/quran-generations.jpg"
+                alt="Quran Generations"
+                className="w-full max-w-md rounded-xl shadow-lg"
+              />
+            </div>
+            <div className="md:w-1/2 space-y-6 z-10">
+              <h1 className="md:text-4xl text-3xl font-semibold text-white">
+                You're not just learning for{" "}
+                <span className="text-blue-500 hover:text-blue-400 transition-all">
+                  you
+                </span>
+                .
+              </h1>
+              <p className="md:text-lg text-base font-medium text-zinc-400">
+                Every verse you master is one you can pass on. Empower future
+                generations with the timeless guidance of the Holy Quran.
+              </p>
+            </div>
           </div>
 
           {/* Section 3: Powerful Tech */}
-          <div className="relative space-y-6 sm:text-center">
-            <Circle
-              className="fill-white text-white absolute left-10 top-10 animate-spin opacity-10 blur-2xl z-0"
-              size={64}
-            />
-            <h1 className="md:text-4xl text-3xl font-semibold text-white">
-              More than a{" "}
-              <span className="text-blue-500 hover:text-blue-400 transition-all">
-                web app
-              </span>{" "}
-              — it's a movement.
-            </h1>
-            <p className="md:text-lg text-base font-medium text-zinc-400">
-              Built with precise tarteel detection and smart learning tools,
-              this platform helps you grow — whether you're a beginner or
-              returning reader.
-            </p>
-            {/* 📷 Suggestion: animated waveform, feedback UI, or a gif of the mistake-correction feature in action */}
+          <div className="flex flex-col-reverse md:flex-row items-between gap-12 relative">
+            <div className="md:w-1/2 space-y-6 z-10">
+              <h1 className="md:text-4xl text-3xl font-semibold text-white">
+                More than a{" "}
+                <span className="text-blue-500 hover:text-blue-400 transition-all">
+                  web app
+                </span>{" "}
+                — it's a movement.
+              </h1>
+              <p className="md:text-lg text-base font-medium text-zinc-400">
+                Built with precise tarteel detection and smart learning tools,
+                this platform helps you grow — whether you're a beginner or
+                returning reader.
+              </p>
+            </div>
+            <div className="md:w-1/2 flex justify-center">
+              <img
+                src="/assets/images/plane3.jpg"
+                alt="Recitation Feedback UI"
+                className="w-full max-w-md rounded-xl shadow-lg animate-pulse-slow"
+              />
+            </div>
           </div>
 
+          {/* Animated Ayah Shuffle & Saved Content */}
           <ShufflingAyahs />
-          <div>{/* Saved n stuff here */}</div>
+          <div>{/* Saved reflections etc */}</div>
         </div>
 
         {/* <Hills /> */}
