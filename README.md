@@ -1,4 +1,5 @@
 #### REBRANDING TO MINHAJULQURAN SOON!
+Stay tuned for updates!
 
 # 🌙 QuranNet
 
