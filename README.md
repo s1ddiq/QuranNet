@@ -1,6 +1,6 @@
 #### REBRANDING TO MINHAJULQURAN SOON!
 Stay tuned for updates! https://manhajquran.com
-
+2026!
 # 🌙 QuranNet
 
 **QuranNet** is a modern, beautifully crafted web application designed to help users read, reflect, and connect with the Quran. It provides the full Quranic text in Arabic with multiple English translations, advanced search, bookmarking, and prayer time features—all optimized for speed and accessibility.
