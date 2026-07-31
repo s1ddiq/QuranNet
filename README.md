@@ -1,4 +1,4 @@
-#### REBRANDING TO MINHAJULQURAN SOON!
+#### REBRANDING TO MINHAJULQURAN SOON!!!!!
 Stay tuned for updates! https://manhajquran.com
 2026!
 # 🌙 QuranNet
