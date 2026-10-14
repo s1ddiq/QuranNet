@@ -1,4 +1,4 @@
-#### REBRANDING TO MINHAJULQURAN SOON!!!!!!!.....cZc
+#### REBRANDING TO MINHAJULQURAN SOON!!!!!!!.....cZcfafsa
 Stay tuned for updates! https://manhajquran.com
 2026!
 # 🌙 QuranNet
